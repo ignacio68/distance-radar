@@ -25,7 +25,6 @@
       :disableZoom="false"
       :showUserLocation="true"
       @mapReady="onMapReady"
-      @mapLongClickListener="onTap"
     />
     <GridLayout
       class="right-menu"
@@ -154,10 +153,6 @@
         console.log('MAP READY!')
         setMap(args.map)
         this.$emit('on-map-ready', args)
-      },
-
-      onTap() {
-        console.log('onTap()')
       },
 
       centerCamera() {
