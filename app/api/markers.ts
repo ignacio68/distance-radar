@@ -1,7 +1,7 @@
 import { getMap as map } from '@/store/mapStore'
 import { setNewMarker, updateMarkersStore, getMarkers } from '@/store/markersStore'
 
-import { Marker } from '@/types/types'
+import { Marker, LngLat } from '@/types/types'
 
 export const showMarkers = () => {}
 
@@ -19,3 +19,13 @@ export const updateMarker = (marker: Marker) => {
 }
 
 export const removeMarker = (id: string) => map().removeMarkers(id)
+
+export const setUserMarkerNewCoordinatesOptions = (coordinates: LngLat): Marker => {
+  const { lat, lng } = coordinates
+  const options: Marker = {
+    id: '_user',
+    lat,
+    lng,
+  }
+  return options
+}
