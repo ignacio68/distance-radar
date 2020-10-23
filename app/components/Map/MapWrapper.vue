@@ -59,7 +59,6 @@
   import { Color } from '@nativescript/core/color'
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
-  import { GestureTypes, GestureEventData } from "@nativescript/core/ui/gestures"
 
   import { Marker, PolygonOptions, Coordinates } from '@/types/types'
 
@@ -177,13 +176,10 @@
         await setCenter()
         const initialMarker = this.initialMarker
         await addMarker(initialMarker)
-        map().setOnMapLongClickListener(function(point){
-          console.log("Map clicked at latitude: ")
+        map().setOnMapLongClickListener((point) => {
+          console.log(`Map clicked at latitude: ${point.lat} and Longitude ${point.lng}` )
           return true
         })
-        // map().setOnMapLongClickListener(() => {
-        //   console.log("Map longpressed ")
-        // })
 
         if (!hasMarkers() || (numberOfMarkers() === 1 && getMarker('_user'))) this.$emit('first-marker-alert')
 
@@ -220,14 +216,12 @@
 
 /***** MARKERS *****/
 
-      newMarker(values) {
+      newMarker(values) { // TODO: Add true type
         console.log(`newMarker()`)
         // if(!values.id || !values.coordinates) {
         //   this.hasNewMarkerError = true
         //   return
         // }
-        // TODO: activate when fix userLocation
-        // const coordinates = this.userLocation
         const marker: Marker = {
           id: values.id,
           group: values.group,
@@ -235,7 +229,7 @@
           lng: values.coordinates.lng,
           title: values.id,
           selected: true,
-          onTap: () => this.newSecurityArea(values.id, values.color),
+          // onTap: () => this.newSecurityArea(values.id, values.color),
         }
         // TODO: sustituir por el código de abajo
         addMarker(marker)
@@ -249,14 +243,14 @@
 
       },
 
-      updateMarkerCoordinates(options): Marker {
+      updateMarkerCoordinates(options): Marker { // TODO: Add true type
         const { id, coordinates } = options
         const currentMarker = getMarker(id)
         const updatedMarker = Object.assign(currentMarker, coordinates)
         return updatedMarker
       },
 
-      updateMarker(options) {
+      updateMarker(options) { // TODO: Add true type
         const updatedMarker: Marker = this.updateMarkerCoordinates(options)
         updatedMarker.update(options.coordinates)
         updateMarker(updatedMarker)
@@ -275,7 +269,7 @@
         removeMarker(id)
       },
       // showMarkers() {
-      //   this.activeUser = 'user'
+      //   this.activeUser = '_user'
       //   this.newMarker(this.activeUser)
       //   console.log('showMarkers')
       //   console.dir(JSON.stringify(this.markers))

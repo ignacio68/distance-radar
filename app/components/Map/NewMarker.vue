@@ -64,8 +64,6 @@ import { setVisibility } from '@/composables/useComponent'
 
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
 
-import { Marker } from '@/types/types'
-
 import TextForm from '@/components/UI/TextForm.vue'
 
 export default Vue.extend({

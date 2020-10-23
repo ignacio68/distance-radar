@@ -47,11 +47,8 @@
 <script script lang="ts">
 
   import { setInterval, clearInterval } from '@nativescript/core/timer'
-  // import * as geocoding from 'nativescript-geocoding'
 
   import { searchLocations } from '@/services/geocodingService'
-
-  import { Location } from '@/services/types'
 
   import CustomSearchBar from './CustomSearchBar.vue'
   import LocationItem from './LocationItem.vue'
@@ -165,28 +162,28 @@
 
     methods: {
 
-      setOldSearchedLocation(): void {
+      setOldSearchedLocation() {
         this.oldSearchedLocation = this.searchedLocation
       },
 
       async fetchLocationsList() {
         console.log('fetchLocationsList()')
-        let searchLocationsResult
+        let searchLocationsResult // TODO: Add type
         searchLocationsResult = await searchLocations(this.searchedLocation)
         if(searchLocationsResult.length > 0) this.locationsList = searchLocationsResult
       },
 
-      resetSearchBar(): void {
+      resetSearchBar() {
         this.searchedLocation = ""
       },
 
-      resetLocationList(): void {
+      resetLocationList() {
         this.locationsList = []
       },
 
-      loadSearch(): void {
+      loadSearch() {
         console.log('loadsearch()')
-        const vm: any = this
+        const vm: any = this // TODO: Add true type
         let search: number = setInterval(() => {
           if(vm.searchedLocation !== vm.oldSearchedLocation) {
             vm.setOldSearchedLocation()
@@ -196,13 +193,13 @@
         }, vm.interval)
       },
 
-      onClear(): void {
+      onClear() {
         this.resetSearchBar()
         this.resetLocationList()
         this.$emit('on-hide-geocoder')
       },
 
-      onTextChange(string): void {
+      onTextChange(string: string) {
         console.log(`onTextChange: ${string}`)
         this.searchedLocation = string
       },
@@ -211,7 +208,7 @@
       //   this.$emit('on-text-change', e)
       // },
 
-      onItemTap(args): void {
+      onItemTap(args) { // TODO: Add true type
         this.$emit('on-location-selected', args.item)
         this.onClear()
       }
