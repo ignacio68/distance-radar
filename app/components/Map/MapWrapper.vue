@@ -176,8 +176,16 @@
         await setCenter()
         const initialMarker = this.initialMarker
         await addMarker(initialMarker)
+        const vm = this
         map().setOnMapLongClickListener(function (point: LngLat) {
           console.log(`Map clicked at latitude: ${point.lat} and Longitude ${point.lng}` )
+          const { lat, lng } = point
+          const options: Marker = {
+            id: '_user',
+            lat,
+            lng
+          }
+          vm.updateMarker(options)
           return true
         })
 
