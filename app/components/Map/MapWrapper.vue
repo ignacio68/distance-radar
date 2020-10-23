@@ -9,7 +9,7 @@
       :userLongitude="initialLocation.lng"
       @on-map-ready="onMapReady($event)"
       @on-marker-updated="updateMarker"
-      @on-set-center="centerMarker"
+      @set-center="centerMarker"
     />
     <Frame
       id="bottomSheet"
@@ -60,7 +60,7 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { Marker, PolygonOptions, LngLat, UpdatedMarkerCoordinatesOptions } from '@/types/types'
+  import { Marker, PolygonOptions, LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
 
@@ -230,6 +230,7 @@
           title: values.id,
           selected: true,
           // onTap: () => this.newSecurityArea(values.id, values.color),
+          onTap: () => console.log('onTap marker')
         }
         // TODO: sustituir por el código de abajo
         addMarker(marker)
@@ -243,31 +244,19 @@
 
       },
 
-      updateMarkerCoordinates(options: UpdatedMarkerCoordinatesOptions): Marker { // TODO: Add true type
-        const { id, coordinates } = options
-        const currentMarker = getMarker(id)
-        const updatedMarker = Object.assign(currentMarker, coordinates)
-        return updatedMarker
-      },
-
-      updateMarker(options: UpdatedMarkerCoordinatesOptions) { // TODO: Add true type
-        const updatedMarker: Marker = this.updateMarkerCoordinates(options)
-        const coordinates: any = options.coordinates
-        updatedMarker.update(coordinates)
-      },
-
-      setUpdatedMarkerCoordinatesOptions(coordinates: LngLat) {
-        const options: UpdatedMarkerCoordinatesOptions = {
-          id: '_user',
-          coordinates
-        }
-        return options
+      updateMarker(values: Marker) { // TODO: Add true type
+        const currentMarker: Marker = getMarker(values.id)
+        currentMarker.update(values)
+        updateMarker(values)
       },
 
       centerMarker() {
-        const coordinates = userLocation()
-        const options: UpdatedMarkerCoordinatesOptions = this.setUpdatedMarkerCoordinatesOptions(coordinates)
-        this.updateMarker(options)
+        const values: Marker = {
+          id: '_user',
+          lat: userLocation().lat,
+          lng: userLocation().lng
+        }
+        this.updateMarker(values)
       },
 
       removeMarker(id: string) {

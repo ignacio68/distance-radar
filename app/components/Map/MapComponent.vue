@@ -158,7 +158,7 @@
       centerCamera() {
         console.log('centerCamera()')
         setCenter()
-        this.$emit('on-set-center')
+        this.$emit('set-center')
       },
 
       flyTo(location: LngLat) {
@@ -178,13 +178,15 @@
       onLocationSelected(location: [Location]){
         console.log(`onLocationSelected: ${JSON.stringify(location)}`)
         setVisibility('geocoder', false)
-        const updatedCoordinates: LngLat = this.updateCoordinates(location)
+        const newCoordinates: LngLat = this.updateCoordinates(location)
+        const { lat, lng } = newCoordinates
         const options = {
           id: '_user',
-          coordinates: updatedCoordinates
+          lat,
+          lng
         }
         this.$emit('on-marker-updated', options)
-        this.flyTo(updatedCoordinates)
+        this.flyTo(newCoordinates)
       },
 
       changeMapStyle() {
