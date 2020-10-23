@@ -48,6 +48,7 @@
   import {  addMarker,
             updateMarker,
             removeMarker,
+            setUserMarkerNewCoordinatesOptions
           } from '@/api/markers'
   import {  addSource,
             setSecurityArea,
@@ -178,14 +179,8 @@
         await addMarker(initialMarker)
         const vm = this
         map().setOnMapLongClickListener(function (point: LngLat) {
-          console.log(`Map clicked at latitude: ${point.lat} and Longitude ${point.lng}` )
-          const { lat, lng } = point
-          const options: Marker = {
-            id: '_user',
-            lat,
-            lng
-          }
-          vm.updateMarker(options)
+          const values:Marker = setUserMarkerNewCoordinatesOptions(point)
+          vm.updateMarker(values)
           return true
         })
 
@@ -259,11 +254,7 @@
       },
 
       centerMarker() {
-        const values: Marker = {
-          id: '_user',
-          lat: userLocation().lat,
-          lng: userLocation().lng
-        }
+        const values: Marker = setUserMarkerNewCoordinatesOptions(userLocation())
         this.updateMarker(values)
       },
 

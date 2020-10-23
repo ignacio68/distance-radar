@@ -92,6 +92,7 @@
   import Vue from 'nativescript-vue'
 
   import { setCenter, flyTo } from '@/api/map'
+  import { setUserMarkerNewCoordinatesOptions } from '@/api/markers'
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
 
@@ -99,7 +100,7 @@
 
   import { Elevation } from '@/types/enums/elevations'
   import { Location } from '@/types/types/geocoder'
-  import { LngLat } from '@/types/types'
+  import { LngLat, Marker } from '@/types/types'
 
   import '@/plugins/installFAB'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
@@ -179,14 +180,9 @@
         console.log(`onLocationSelected: ${JSON.stringify(location)}`)
         setVisibility('geocoder', false)
         const newCoordinates: LngLat = this.updateCoordinates(location)
-        const { lat, lng } = newCoordinates
-        const options = {
-          id: '_user',
-          lat,
-          lng
-        }
-        this.$emit('on-marker-updated', options)
+        const values: Marker = setUserMarkerNewCoordinatesOptions(newCoordinates)
         this.flyTo(newCoordinates)
+        this.$emit('on-marker-updated', values)
       },
 
       changeMapStyle() {
