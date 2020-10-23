@@ -98,8 +98,8 @@
   import { setMap, getMap as map } from '@/store/mapStore'
 
   import { Elevation } from '@/types/enums/elevations'
-
-  import { Location, LngLat, GeocodingCoordinates } from '@/types/types'
+  import { Location } from '@/types/types/geocoder'
+  import { LngLat } from '@/types/types'
 
   import '@/plugins/installFAB'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
