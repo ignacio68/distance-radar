@@ -2,7 +2,7 @@ import { getCurrentUserLocation } from '@/services/geolocationService'
 
 import { getMap as map } from '@/store/mapStore'
 
-import { Coordinates } from '@/types/types'
+import { LngLat } from '@/types/types'
 
 export const setCenter = async () => {
   console.log('setCenter()')
@@ -20,7 +20,7 @@ export const setCenter = async () => {
   })
 }
 
-export const flyTo = (location: Coordinates) => {
+export const flyTo = (location: LngLat) => {
   map().animateCamera({
      target: location,
      zoomLevel: 15, // Android

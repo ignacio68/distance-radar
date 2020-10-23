@@ -60,7 +60,7 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { Marker, PolygonOptions, Coordinates } from '@/types/types'
+  import { Marker, PolygonOptions, LngLat, LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
 
@@ -115,7 +115,7 @@
       userLocation,
       numberOfMarkers,
       initialMarker(): Marker {
-        console.log(`Current Coordinates: ${JSON.stringify(userLocation())}`)
+        console.log(`Current LngLat: ${JSON.stringify(userLocation())}`)
         const initialMarkerCoordinates = userLocation()
         const initialMarker: Marker = {
           id: '_user',
@@ -176,7 +176,7 @@
         await setCenter()
         const initialMarker = this.initialMarker
         await addMarker(initialMarker)
-        map().setOnMapLongClickListener((point) => {
+        map().setOnMapLongClickListener((point: LngLat) => {
           console.log(`Map clicked at latitude: ${point.lat} and Longitude ${point.lng}` )
           return true
         })

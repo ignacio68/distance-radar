@@ -1,12 +1,12 @@
 import { getCurrentUserLocation } from '@/services/geolocationService'
 import { getCirclePointsCoordinates } from '@/utils/circle'
 
-import { Coordinates, Circle } from '@/types/types'
+import { LngLat, Circle } from '@/types/types'
 
 import { getCurrentUserLocation as userCurrentLocation } from '@/store/userLocationStore'
 
 // TODO: eliminar
-export const coordinates: Coordinates = userCurrentLocation()
+export const coordinates: LngLat = userCurrentLocation()
 
 export const getSecurityAreaPoints = (radius: number) => {
   console.log('getSecurityAreaPoints')

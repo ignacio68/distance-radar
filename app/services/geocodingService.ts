@@ -1,6 +1,6 @@
 import * as geocoding from 'nativescript-geocoding'
 
-import { Location } from './types'
+import { Location } from '@/types/types/geocoder'
 
 type SearchLocationsResult =  void | Location[]
 

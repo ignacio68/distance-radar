@@ -2,7 +2,7 @@ import * as geolocation from '@nativescript/geolocation'
 
 import { Accuracy } from '@nativescript/core/ui/enums'
 
-import { Coordinates } from '@/types/types'
+import { LngLat } from '@/types/types'
 
 import { setCurrentUserLocation } from '@/store/userLocationStore'
 
@@ -24,7 +24,7 @@ export const isLocationServicesEnabled = async () =>
 const fetchCurrentUserLocation = () =>
   geolocation.getCurrentLocation({}).then(
     result => {
-      const location: Coordinates = {
+      const location: LngLat = {
         lat: result.latitude,
         lng: result.longitude,
       }
@@ -55,7 +55,7 @@ export const watchUserLocation = () => {
   console.log('watchUserLocation()')
   geolocation.watchLocation(
     position => {
-      const currentLocation: Coordinates = {
+      const currentLocation: LngLat = {
         lat: position.latitude,
         lng: position.longitude,
       }

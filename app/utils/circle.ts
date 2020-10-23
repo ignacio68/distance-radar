@@ -4,15 +4,15 @@ import {
   radiansToDegrees as degrees
 } from './maths'
 
-import { Coordinates, Circle, Azimuth, LocationInCircle } from '../types/types'
+import { LngLat, Circle, Azimuth, LocationInCircle } from '../types/types'
 
 const PI = Math.PI
 const EARTH_RADIUS = 6378 // km
 
 const setDy = (theta: number, radius: number): number => Math.sin(radians(theta)) * radius
 const setDx = (theta: number, radius: number): number => Math.cos(radians(theta)) * radius
-const setLatitude = (center: Coordinates, dy: number): number => center.lat + degrees(dy / EARTH_RADIUS)
-const setLongitude = (center: Coordinates, dx: number): number => center.lng + (degrees(dx / EARTH_RADIUS)) / Math.cos(radians((center.lat * PI) / 180))
+const setLatitude = (center: LngLat, dy: number): number => center.lat + degrees(dy / EARTH_RADIUS)
+const setLongitude = (center: LngLat, dx: number): number => center.lng + (degrees(dx / EARTH_RADIUS)) / Math.cos(radians((center.lat * PI) / 180))
 
 const getPointCoordinates = ({ theta, radius, center }: Azimuth) => {
   // const dx = radius / (111.320 * Math.cos(radians(center.lat)))
@@ -22,7 +22,7 @@ const getPointCoordinates = ({ theta, radius, center }: Azimuth) => {
   const newLatitude = setLatitude(center, dy)
   const newLongitude = setLongitude(center, dx)
 
-  const coordinates: Coordinates = { lat: newLatitude, lng: newLongitude }
+  const coordinates: LngLat = { lat: newLatitude, lng: newLongitude }
 
   return coordinates
 }
@@ -35,7 +35,7 @@ const getPointCoordinates = ({ theta, radius, center }: Azimuth) => {
 //   const newLongitude =
 //     center.lng + (degrees(dx / EARTH_RADIUS)) / Math.cos(radians((center.lat * PI) / 180))
 
-//   const coordinates: Coordinates = { lat: newLatitude, lng: newLongitude }
+//   const coordinates: LngLat = { lat: newLatitude, lng: newLongitude }
 
 //   return coordinates
 // }
@@ -47,7 +47,7 @@ export const getCirclePointsCoordinates = ({ center, radius, numberOfPoints }: C
 
   const thetasList = getThetas(numberOfPoints)
 
-  const allPointsCoordinates: Coordinates[] = thetasList.map((theta) => {
+  const allPointsCoordinates: LngLat[] = thetasList.map((theta) => {
     return getPointCoordinates({ theta, radius, center })
   })
 

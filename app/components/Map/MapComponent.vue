@@ -99,7 +99,7 @@
 
   import { Elevation } from '@/types/enums/elevations'
 
-  import { Location, Coordinates, GeocodingCoordinates } from '@/types/types'
+  import { Location, LngLat, GeocodingCoordinates } from '@/types/types'
 
   import '@/plugins/installFAB'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
@@ -161,14 +161,14 @@
         this.$emit('on-set-center')
       },
 
-      flyTo(location: Coordinates) {
+      flyTo(location: LngLat) {
         console.log('flyTo()')
         flyTo(location)
       },
 
-      updateCoordinates(location: Location): Coordinates {
+      updateCoordinates(location: Location): LngLat {
         const {latitude: lat, longitude: lng} = location
-        const newCoordinates: Coordinates = {
+        const newCoordinates: LngLat = {
           lat: lat,
           lng: lng
         }
@@ -178,7 +178,7 @@
       onLocationSelected(location: [Location]){
         console.log(`onLocationSelected: ${JSON.stringify(location)}`)
         setVisibility('geocoder', false)
-        const updatedCoordinates: Coordinates = this.updateCoordinates(location)
+        const updatedCoordinates: LngLat = this.updateCoordinates(location)
         const options = {
           id: '_user',
           coordinates: updatedCoordinates
