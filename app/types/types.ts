@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core/color'
-import { AddPolygonOptions } from '@nstudio/nativescript-mapbox'
+import { AddPolygonOptions, LatLng } from '@nstudio/nativescript-mapbox'
 
 export interface InitialCoordinates {
   /**
@@ -123,8 +123,4 @@ export interface User {
   id: string
   location?: LngLat
   phoneNumber: string
-}
-
-export interface UpdatedMarkerCoordinatesOptions extends LngLat{
-  id: string
 }
