@@ -60,7 +60,7 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { Marker, PolygonOptions, LngLat, LngLat } from '@/types/types'
+  import { Marker, PolygonOptions, LngLat, UpdatedMarkerCoordinatesOptions } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
 
@@ -176,7 +176,7 @@
         await setCenter()
         const initialMarker = this.initialMarker
         await addMarker(initialMarker)
-        map().setOnMapLongClickListener((point: LngLat) => {
+        map().setOnMapLongClickListener(function (point: LngLat) {
           console.log(`Map clicked at latitude: ${point.lat} and Longitude ${point.lng}` )
           return true
         })
@@ -243,25 +243,30 @@
 
       },
 
-      updateMarkerCoordinates(options): Marker { // TODO: Add true type
+      updateMarkerCoordinates(options: UpdatedMarkerCoordinatesOptions): Marker { // TODO: Add true type
         const { id, coordinates } = options
         const currentMarker = getMarker(id)
         const updatedMarker = Object.assign(currentMarker, coordinates)
         return updatedMarker
       },
 
-      updateMarker(options) { // TODO: Add true type
+      updateMarker(options: UpdatedMarkerCoordinatesOptions) { // TODO: Add true type
         const updatedMarker: Marker = this.updateMarkerCoordinates(options)
-        updatedMarker.update(options.coordinates)
-        updateMarker(updatedMarker)
+        const coordinates: any = options.coordinates
+        updatedMarker.update(coordinates)
+      },
+
+      setUpdatedMarkerCoordinatesOptions(coordinates: LngLat) {
+        const options: UpdatedMarkerCoordinatesOptions = {
+          id: '_user',
+          coordinates
+        }
+        return options
       },
 
       centerMarker() {
         const coordinates = userLocation()
-        const options = {
-          id: '_user',
-          coordinates
-        }
+        const options: UpdatedMarkerCoordinatesOptions = this.setUpdatedMarkerCoordinatesOptions(coordinates)
         this.updateMarker(options)
       },
 
