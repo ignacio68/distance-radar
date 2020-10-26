@@ -66,15 +66,19 @@ export interface LocationInCircle extends LngLat {
   circleRadius: number
 }
 
-export interface Marker extends LngLat {
+export interface BasicMarker extends LngLat {
+  id: string
+}
+
+export interface Marker extends BasicMarker {
   id: string
   group?: string
   title?: string
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: Function
-  onCalloutTap?: Function
+  onTap?(): unknown
+  onCalloutTap?(): unknown
   selected?: boolean
   isFollowed?: boolean
   update?: (newSettings: Marker) => void
