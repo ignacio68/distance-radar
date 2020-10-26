@@ -5,6 +5,9 @@ module.exports = {
     es6: true,
     jest: true
   },
+  plugins: [
+    "vue"
+  ],
   extends: [
     // consider switching to `plugin:vue/strongly-recommended` or `plugin:vue/recommended` for stricter rules.
     'plugin:vue/recommended',
