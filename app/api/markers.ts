@@ -3,14 +3,21 @@ import { setNewMarker, updateMarkersStore, getMarkers } from '@/store/markersSto
 
 import { Marker, LngLat } from '@/types/types'
 
+export const setMarker = (options: Marker): Marker => {
+  const newMarker = options
+  return newMarker
+}
+
 export const showMarkers = () => {}
 
 export const addMarker = (marker: Marker) => {
+  console.log('addMarker()')
   const newMarker = []
   newMarker.push(marker)
   map()
     .addMarkers(newMarker)
     .then(() => setNewMarker(marker))
+  console.log(`New marker: ${JSON.stringify(getMarkers)}`)
 }
 
 export const updateMarker = (marker: Marker) => {

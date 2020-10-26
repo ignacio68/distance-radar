@@ -45,7 +45,8 @@
   import { mapToken } from '@/setup/map'
 
   import { setCenter } from '@/api/map'
-  import {  addMarker,
+  import {  setMarker,
+            addMarker,
             updateMarker,
             removeMarker,
             setUserMarkerNewCoordinatesOptions
@@ -61,7 +62,7 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { Marker, PolygonOptions, LngLat } from '@/types/types'
+  import { BasicMarker, Marker, PolygonOptions, LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
 
@@ -115,13 +116,12 @@
       map,
       userLocation,
       numberOfMarkers,
-      initialMarker(): Marker {
+      initialMarker(): BasicMarker {
         console.log(`Current LngLat: ${JSON.stringify(userLocation())}`)
-        const initialMarkerCoordinates = userLocation()
         const initialMarker: Marker = {
           id: '_user',
-          lat: initialMarkerCoordinates.lat,
-          lng: initialMarkerCoordinates.lng
+          lat: userLocation().lat,
+          lng: userLocation().lng
         }
         return initialMarker
       },
@@ -175,8 +175,7 @@
       async onMapReady() {
         console.log('onMapReady()')
         await setCenter()
-        const initialMarker = this.initialMarker
-        await addMarker(initialMarker)
+        await addMarker(this.initialMarker)
         const vm = this
         map().setOnMapLongClickListener(function (point: LngLat) {
           const values:Marker = setUserMarkerNewCoordinatesOptions(point)
@@ -218,23 +217,25 @@
       },
 
 /***** MARKERS *****/
+      onTapMarker() {
+        console.log('onTap marker')
+      },
 
-      newMarker(values) { // TODO: Add true type
+      onCalloutTapMarker() {
+        console.log('onCallOutTap marker')
+      },
+
+      newMarker(values: Marker) {
         console.log(`newMarker()`)
         // if(!values.id || !values.coordinates) {
         //   this.hasNewMarkerError = true
         //   return
         // }
-        const marker: Marker = {
-          id: values.id,
-          group: values.group,
-          lat: values.coordinates.lat,
-          lng: values.coordinates.lng,
-          title: values.id,
-          selected: true,
-          // onTap: () => this.newSecurityArea(values.id, values.color),
-          onTap: () => console.log('onTap marker')
-        }
+        values.selected = true
+        values.onTap = this.onTapMarker()
+        values.onCalloutTap = this.onCalloutTapMarker()
+        const marker = setMarker(values)
+
         // TODO: sustituir por el código de abajo
         addMarker(marker)
         this.hideBottomSheet()
