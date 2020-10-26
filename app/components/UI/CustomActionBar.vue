@@ -54,8 +54,6 @@
         // TODO: Refactoring
         isVisibleSecurityArea: false,
 
-        // geocoderEnabledIconColor: '#03dfcc',
-        // geocoderDisabledIconColor: 'white',
         securityAreaVisibilityOnIcon: 'res://ic_visibility_white_24dp',
         securityAreaVisibilityOffIcon: 'res://ic_visibility_off_white_24dp',
         geocoderEnabledIcon: 'res://ic_location_searching_white_24dp',
@@ -74,11 +72,6 @@
           ? this.securityAreaVisibilityOffIcon
           : this.securityAreaVisibilityOnIcon
       },
-
-      // geocoderIconColor(): string {
-      //   if(this.isVisibleGeocoder) return this.geocoderEnabledIconColor
-      //   else return this.geocoderDisabledIconColor
-      // },
 
       geocoderIcon(): string {
         return this.isVisibleGeocoder
