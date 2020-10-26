@@ -83,12 +83,12 @@ export default Vue.extend({
 
       marker: {
         id: null,
-        coordinates: {
-          lat: '0',
-          lng: '0',
-        },
+        lat: '0',
+        lng: '0',
         group: null,
         color: null,
+        selected: true,
+        icon: 'res://ic_person_pin_pink_48dp'
       },
       hasGroupError: false,
       hasIdError: false,
@@ -122,9 +122,8 @@ export default Vue.extend({
     },
 
     setNewMarkerCoordinates() {
-      this.marker.coordinates = userLocation()
-      // this.marker.coordinates.lat = userLocation().lat
-      // this.marker.coordinates.lng = userLocation().lng
+      this.marker.lat = userLocation().lat
+      this.marker.lng = userLocation().lng
     },
 
     isValidMarkerID() {
@@ -151,7 +150,8 @@ export default Vue.extend({
       this.setNewMarkerCoordinates()
       await this.isValidMarkerID().then(() => {
         this.hideNewMarkerMenu()
-        if (this.hasError === null) this.$emit('add-new-marker', this.marker)
+        console.log(`onAddNewMarker: ${JSON.stringify(this.marker)}`)
+        if (!this.hasError) this.$emit('add-new-marker', this.marker)
         else return
       })
     },
