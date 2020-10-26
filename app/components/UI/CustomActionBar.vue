@@ -29,8 +29,7 @@
     <Icon
       col="2"
       class="action-bar_search-button m-r-0"
-      name="res://ic_search_white_24dp"
-      :iconColor="geocoderIconColor"
+      :name="geocoderIcon"
       :rippleDuration="300"
       :rippleOpacity="0.2"
       @on-tap="onTapSearchLocations"
@@ -55,10 +54,12 @@
         // TODO: Refactoring
         isVisibleSecurityArea: false,
 
-        geocoderEnabledIconColor: '#03dfcc',
-        geocoderDisabledIconColor: 'white',
+        // geocoderEnabledIconColor: '#03dfcc',
+        // geocoderDisabledIconColor: 'white',
         securityAreaVisibilityOnIcon: 'res://ic_visibility_white_24dp',
         securityAreaVisibilityOffIcon: 'res://ic_visibility_off_white_24dp',
+        geocoderEnabledIcon: 'res://ic_location_searching_white_24dp',
+        geocoderDisabledIcon: 'res://ic_location_disabled_white_24dp'
       }
     },
 
@@ -74,10 +75,16 @@
           : this.securityAreaVisibilityOnIcon
       },
 
-      geocoderIconColor(): string {
-        if(this.isVisibleGeocoder) return this.geocoderEnabledIconColor
-        else return this.geocoderDisabledIconColor
-      },
+      // geocoderIconColor(): string {
+      //   if(this.isVisibleGeocoder) return this.geocoderEnabledIconColor
+      //   else return this.geocoderDisabledIconColor
+      // },
+
+      geocoderIcon(): string {
+        return this.isVisibleGeocoder
+          ? this.geocoderDisabledIcon
+          : this.geocoderEnabledIcon
+      }
     },
 
     methods: {
@@ -90,6 +97,7 @@
 
       onTapSearchLocations() {
         toggleVisibility('geocoder')
+        console.log(`isVisibleGeocoder? ${this.isVisibleGeocoder}`)
       },
     },
   })
