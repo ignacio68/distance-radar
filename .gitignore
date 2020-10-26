@@ -29,6 +29,7 @@ hooks/
 platforms/
 app/setup/
 nsconfig.json
+layout
 
 # Visual Studio Code
 .vscode/*
