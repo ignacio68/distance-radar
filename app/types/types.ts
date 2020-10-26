@@ -77,11 +77,11 @@ export interface Marker extends BasicMarker {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?(): unknown
-  onCalloutTap?(): unknown
+  onTap?: () => unknown
+  onCalloutTap?: () => unknown
   selected?: boolean
   isFollowed?: boolean
-  update?: (newSettings: Marker) => void
+  update?: (newSettings: Marker) => unknown
   ios?: boolean
   android?: boolean
 }
