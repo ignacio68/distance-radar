@@ -13,10 +13,7 @@
 
 - geocoder icon method
 - Refactored marker types
-
-### Fixed
-
-- Fixed item
+- Updated linter
 
 ### Removed
 
