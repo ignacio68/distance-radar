@@ -1,5 +1,27 @@
 # Changelog
 
+# Changelog
+
+## [0.1.2] - 2020-10-26
+
+### Added
+
+- Custom marker icon
+- setMarker method
+
+### Changed
+
+- geocoder icon method
+- Refactored marker types
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- geocoder icon color option
+
 ##
 ## [0.1.1] - 2020-10-23
 
