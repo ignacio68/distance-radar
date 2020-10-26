@@ -26,7 +26,7 @@
   "author": "Ignacio Lopez-Amor <ignaciolopezamor@gmail.com>",
   "main": "app.js",
   "scripts": {
-    "devan": "tns debug android --no-hmr --env.snapshot --env.uglify",
+    "devan": "tns debug android --no-hmr --env.snapshot --env.uglify --bundle",
     "runan": "tns run android --env.snapshot --env.uglify"
   },
   "dependencies": {
