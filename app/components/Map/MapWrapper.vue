@@ -176,18 +176,21 @@
         console.log('onMapReady()')
         await setCenter()
         await addMarker(this.initialMarker)
+        this.setOnMapLongClickAction()
+        if (!hasMarkers() || (numberOfMarkers() === 1 && getMarker('_user'))) this.$emit('first-marker-alert')
+
+        // TODO: Change source name, add options
+        // addSource('main')
+        // this.showMarkers()
+      },
+
+      setOnMapLongClickAction() {
         const vm = this
         map().setOnMapLongClickListener(function (point: LngLat) {
           const values:Marker = setUserMarkerNewCoordinatesOptions(point)
           vm.updateMarker(values)
           return true
         })
-
-        if (!hasMarkers() || (numberOfMarkers() === 1 && getMarker('_user'))) this.$emit('first-marker-alert')
-
-        // TODO: Change source name, add options
-        // addSource('main')
-        // this.showMarkers()
       },
 
       isEnabledFAB(bool) {
