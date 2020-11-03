@@ -6,7 +6,7 @@
   >
     <GridLayout
       class="home"
-      rows="auto, *"
+      rows="auto, *, 56"
       columns="*"
     >
       <CustomActionBar
@@ -19,6 +19,10 @@
         id="Map"
         row="1"
         @first-marker-alert="onFirstMarkerAlert"
+      />
+      <BottomAppBar
+        class="BottomBar"
+        row="2"
       />
     </GridLayout>
   </Page>
@@ -34,13 +38,15 @@
   import { firstMarkerAlert } from '@/components/UI/FirstMarkerAlert'
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
+  import BottomAppBar from '@/components/UI/BottomAppBar.vue'
 
   export default({
     name: 'Home',
 
     components: {
       CustomActionBar,
-      Map: MapWrapper
+      Map: MapWrapper,
+      BottomAppBar,
     },
     data() {
       return {
@@ -54,6 +60,7 @@
 
     created() {
       onBackEvent(this.backEvent)
+      // setCenter()
     },
 
     beforeDestroy() {
