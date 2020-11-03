@@ -1,6 +1,28 @@
 # Changelog
 
-# Changelog
+
+## [0.1.3] - 2020-11-02
+### Added
+
+- Bottom App bar
+- Timeline debugger
+- Android permission: FINE_LOCATION
+- Nativescript Android permissions plugin
+- setOnMapLongClickAction method
+
+### Changed
+
+- Refactored get current user location methods and types
+
+### Fixed
+
+- Polygon options type
+- get current user location methods and types
+
+### Removed
+
+- Remove item
+
 
 ## [0.1.2] - 2020-10-26
 
@@ -19,7 +41,7 @@
 
 - geocoder icon color option
 
-##
+
 ## [0.1.1] - 2020-10-23
 
 ### Added
