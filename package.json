@@ -27,8 +27,8 @@
   "main": "app.js",
   "scripts": {
     "lint": "eslint --fix . && echo 'Lint complete.'",
-    "devan": "tns debug android --no-hmr --env.snapshot --env.uglify --bundle",
-    "runan": "tns run android --env.snapshot --env.uglify"
+    "devan": "tns debug android --no-hmr  --env.snapshot --env.uglify --bundle | timeline-view",
+    "runan": "tns run android --env.snapshot --env.uglify  --no-hmr | timeline-view"
   },
   "dependencies": {
     "@nativescript-community/ui-material-button": "^5.0.25",
