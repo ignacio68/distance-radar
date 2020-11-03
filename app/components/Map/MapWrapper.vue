@@ -62,7 +62,7 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { BasicMarker, Marker, PolygonOptions, LngLat } from '@/types/types'
+  import { BasicMarker, Marker, BasicPolygonOptions, LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
 
@@ -105,8 +105,6 @@
         radius: 1,
         fillOpacity: 5,
         activeUser: null,
-        // map,
-        // userLocation,
         // hasMarkers
         initialLocation: initialLocation()
       }
@@ -121,7 +119,8 @@
         const initialMarker: Marker = {
           id: '_user',
           lat: userLocation().lat,
-          lng: userLocation().lng
+          lng: userLocation().lng,
+          onTap: () => console.log('on tap marker!')
         }
         return initialMarker
       },
@@ -165,8 +164,9 @@
     },
 
     async mounted() {
-      // console.log('mounted()')
+      console.log('mounted()')
       // // this.$root.$on('remove-security-area', value => this.removeSecurityArea(value.name))
+      await setCenter()
     },
 
     methods: {
@@ -174,8 +174,10 @@
       /***** MAP *****/
       async onMapReady() {
         console.log('onMapReady()')
-        await setCenter()
-        await addMarker(this.initialMarker)
+        const vm = this
+        await setCenter().then(() => addMarker(vm.initialMarker))
+        // setCenter()
+        // addMarker(this.initialMarker)
         this.setOnMapLongClickAction()
         if (!hasMarkers() || (numberOfMarkers() === 1 && getMarker('_user'))) this.$emit('first-marker-alert')
 
@@ -258,8 +260,10 @@
       },
 
       centerMarker() {
-        const values: Marker = setUserMarkerNewCoordinatesOptions(userLocation())
+        const values: BasicMarker = setUserMarkerNewCoordinatesOptions(userLocation())
+        values.id = '_user'
         this.updateMarker(values)
+        setCenter()
       },
 
       removeMarker(id: string) {
@@ -279,7 +283,7 @@
           console.log(`${id} exist, choose another name`)
           return
         }
-        const polygonOptions: PolygonOptions = {
+        const polygonOptions: BasicPolygonOptions = {
           id: id,
           radius: this.radius,
           fillColor: new Color(color),
