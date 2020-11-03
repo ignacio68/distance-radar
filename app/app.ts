@@ -16,10 +16,9 @@ import VueDevtools from 'nativescript-vue-devtools'
 // Internationalization
 import { i18n, setLanguage } from '@/locales'
 
-// Geolocation
-import { getCurrentUserLocation } from '@/services/geolocationService'
 //Components
 import Home from './views/Home.vue'
+import Modal from './views/first/Modal.vue'
 
 if (TNS_ENV !== 'production') {
   Vue.use(VueDevtools as any)
@@ -33,9 +32,7 @@ new Vue({
   i18n,
   beforeCreate() {
     setLanguage()
-  },
-  async mounted() {
-    await getCurrentUserLocation()
+
   },
   render: (h) => h('frame', [h(Home)]),
 }).$start()
