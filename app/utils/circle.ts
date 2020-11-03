@@ -42,7 +42,7 @@ const getPointCoordinates = ({ theta, radius, center }: Azimuth) => {
 
 const getThetas = (numberOfPoints: number): number[] => range(0, 360, 360 / numberOfPoints)
 
-export const getCirclePointsCoordinates = ({ center, radius, numberOfPoints }: Circle) => {
+export const getCirclePointsCoordinates = ({ center, radius, numberOfPoints }: Circle): LngLat[] => {
   console.log('getCirclePointsCoordinates()')
 
   const thetasList = getThetas(numberOfPoints)

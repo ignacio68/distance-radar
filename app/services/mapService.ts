@@ -8,12 +8,12 @@ import { getCurrentUserLocation as userCurrentLocation } from '@/store/userLocat
 // TODO: eliminar
 export const coordinates: LngLat = userCurrentLocation()
 
-export const getSecurityAreaPoints = (radius: number) => {
+export const getSecurityAreaPoints = async (radius: number): Promise<LngLat[]> => {
   console.log('getSecurityAreaPoints')
 
-  const points = getCurrentUserLocation().then( center => {
+  const points = await getCurrentUserLocation().then( center => {
     const circlePolygonProps: Circle = {
-    center: center,
+    center: center as LngLat,
     radius: radius,
     numberOfPoints: 32,
   }

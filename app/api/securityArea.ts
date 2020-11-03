@@ -1,6 +1,6 @@
 import { getSecurityAreaPoints } from '@/services/mapService'
 
-import { PolygonOptions, CircleLayer} from '@/types/types'
+import { LngLat, BasicPolygonOptions, PolygonOptions, CircleLayer } from '@/types/types'
 
 import { getMap as map } from '@/store/mapStore'
 import securityArea from '@/store/securityAreaStore'
@@ -24,15 +24,18 @@ export const addCircleLayer = (options: CircleLayer) => {
   })
 }
 
-export const setSecurityArea = (polygonOptions: PolygonOptions) => {
+export const setSecurityArea = (initialPolygonOptions: BasicPolygonOptions) => {
   console.log('setSecurityArea()')
-  getSecurityAreaPoints(polygonOptions.radius).then((points) => {
-    polygonOptions.points = points
-
-    // FIXME: refactoring PolygonOptions type
-    // map().addPolygon(polygonOptions).then(() => {
-    //   securityArea.setNewSecurityArea(polygonOptions)
-    // })
+  getSecurityAreaPoints(initialPolygonOptions.radius).then((points) => {
+    const polygonOptions: PolygonOptions = {
+      points,
+      ...initialPolygonOptions,
+    }
+    map()
+      .addPolygon(polygonOptions)
+      .then(() => {
+        securityArea.setNewSecurityArea(polygonOptions)
+      })
   })
 }
 

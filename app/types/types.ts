@@ -86,18 +86,20 @@ export interface Marker extends BasicMarker {
   android?: boolean
 }
 
-export interface PolygonOptions {
-  id: any
-  group?: string
-  points?: LngLat[]
+export interface BasicPolygonOptions {
+  id: string
   radius?: number
   fillColor?: string | Color
   fillOpacity?: number
+  isVisible?: boolean
+}
+export interface PolygonOptions extends BasicPolygonOptions{
+  group?: string
+  points: LngLat[]
   oldFillOpacity?: number
   strokeColor?: string | Color
   strokeWidth?: number
   strokeOpacity?: number
-  isVisible?: boolean
 }
 
 export interface LocationInCircle {
