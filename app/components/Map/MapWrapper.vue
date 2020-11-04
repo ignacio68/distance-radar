@@ -8,8 +8,6 @@
       :userLatitude="initialLocation.lat"
       :userLongitude="initialLocation.lng"
       @on-map-ready="onMapReady($event)"
-      @on-marker-updated="updateMarker"
-      @set-center="centerMarker"
     />
     <Frame
       id="bottomSheet"
@@ -22,7 +20,7 @@
     >
       <StackLayout>
         <NewMarker
-          v-if="isVisibleNewMarkerMenu"
+          v-if="isVisibleNewLocationMenu"
           class="newMarker m-16"
           backgroundColor="white"
           @enabled-fab="isEnabledFAB"
@@ -45,12 +43,8 @@
   import { mapToken } from '@/setup/map'
 
   import { setCenter } from '@/api/map'
-  import {  setMarker,
-            addMarker,
-            updateMarker,
-            removeMarker,
-            setUserMarkerNewCoordinatesOptions
-          } from '@/api/markers'
+  import { setNewUserMarker, updateUserMarker } from '@/api/userMarker'
+  import { newLocation, removeLocation } from '@/api/locations'
   import {  addSource,
             setSecurityArea,
             showSecurityArea,
@@ -62,16 +56,18 @@
   import { Screen } from '@nativescript/core'
   import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
-  import { BasicMarker, Marker, BasicPolygonOptions, LngLat } from '@/types/types'
+  import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
+  import { setVisibility } from '@/composables/useComponent'
 
   import { getMap as map } from '@/store/mapStore'
   import {
             getInitialLocation as initialLocation,
             getCurrentUserLocation as userLocation
           } from '@/store/userLocationStore'
-  import { hasMarkers, numberOfMarkers, getMarker } from '@/store/markersStore'
+  import { getUserMarker as userMarker } from '@/store/userMarkerStore'
+  import { numberOfLocations } from '@/store/locationsStore'
   import securityArea from '@/store/securityAreaStore'
 
   import MapComponent from './MapComponent.vue'
@@ -105,28 +101,16 @@
         radius: 1,
         fillOpacity: 5,
         activeUser: null,
-        // hasMarkers
-        initialLocation: initialLocation()
       }
     },
 
     computed: {
       map,
       userLocation,
-      numberOfMarkers,
-      initialMarker(): BasicMarker {
-        console.log(`Current LngLat: ${JSON.stringify(userLocation())}`)
-        const initialMarker: Marker = {
-          id: '_user',
-          lat: userLocation().lat,
-          lng: userLocation().lng,
-          onTap: () => console.log('on tap marker!')
-        }
-        return initialMarker
-      },
-
-      isVisibleNewMarkerMenu() {
-        return getVisibility('newMarkerMenu')
+      userMarker,
+      initialLocation, //TODO: Change to the user's country default center point
+      isVisibleNewLocationMenu() {
+        return getVisibility('newLocationMenu')
       },
 
       bottomSheet() {
@@ -153,8 +137,8 @@
         this.showSecurityArea('user', newValue)
       },
 
-      isVisibleNewMarkerMenu(newValue){
-        console.log('isVisibleNewMarkerMenu change')
+      isVisibleNewLocationMenu(newValue){
+        console.log('isVisibleNewLocationMenu change')
         newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
       },
 
@@ -163,34 +147,22 @@
       }
     },
 
-    async mounted() {
-      console.log('mounted()')
-      // // this.$root.$on('remove-security-area', value => this.removeSecurityArea(value.name))
-      await setCenter()
-    },
-
     methods: {
 
       /***** MAP *****/
-      async onMapReady() {
+      onMapReady() {
         console.log('onMapReady()')
-        const vm = this
-        await setCenter().then(() => addMarker(vm.initialMarker))
-        // setCenter()
-        // addMarker(this.initialMarker)
+        setCenter().then(() => setNewUserMarker())
         this.setOnMapLongClickAction()
-        if (!hasMarkers() || (numberOfMarkers() === 1 && getMarker('_user'))) this.$emit('first-marker-alert')
-
+        if (!numberOfLocations()) this.$emit('first-location-alert')
         // TODO: Change source name, add options
         // addSource('main')
         // this.showMarkers()
       },
 
       setOnMapLongClickAction() {
-        const vm = this
         map().setOnMapLongClickListener(function (point: LngLat) {
-          const values:Marker = setUserMarkerNewCoordinatesOptions(point)
-          vm.updateMarker(values)
+          updateUserMarker(point)
           return true
         })
       },
@@ -221,28 +193,31 @@
         })
       },
 
-/***** MARKERS *****/
+      /***** USER MARKER *****/
       onTapMarker() {
         console.log('onTap marker')
+        setVisibility('newLocationMenu', true)
       },
 
-      onCalloutTapMarker() {
-        console.log('onCallOutTap marker')
+      /***** LOCATIONS ******/
+      onTapLocation() {
+        console.log('onTapLocation()')
+        setVisibility('newLocationMenu', true)
       },
 
-      newMarker(values: Marker) {
-        console.log(`newMarker()`)
-        // if(!values.id || !values.coordinates) {
-        //   this.hasNewMarkerError = true
-        //   return
-        // }
+      onCalloutTapLocation() {
+        console.log('onCalloutTapLocation()')
+      },
+
+      newLocation(values: Location) {
+        console.log(`newLocation()`)
         values.selected = true
-        values.onTap = this.onTapMarker()
-        values.onCalloutTap = this.onCalloutTapMarker()
-        const marker = setMarker(values)
+        values.onTap = this.onTapLocation()
+        values.onCalloutTap = this.onCalloutTapLocation()
+        // const Location = setLocation(values)
 
         // TODO: sustituir por el código de abajo
-        addMarker(marker)
+        // addLocation(marker)
         this.hideBottomSheet()
         // setStorage(marker.id, marker).then(success => {
         //   console.log(`setStorage? ${success}`)
@@ -250,31 +225,11 @@
         //     addMarker(this.map, marker)
         //   }
         // })
-
       },
 
-      updateMarker(values: Marker) { // TODO: Add true type
-        const currentMarker: Marker = getMarker(values.id)
-        currentMarker.update(values)
-        updateMarker(values)
+      removeLocation(id: string) {
+        removeLocation(id)
       },
-
-      centerMarker() {
-        const values: BasicMarker = setUserMarkerNewCoordinatesOptions(userLocation())
-        values.id = '_user'
-        this.updateMarker(values)
-        setCenter()
-      },
-
-      removeMarker(id: string) {
-        removeMarker(id)
-      },
-      // showMarkers() {
-      //   this.activeUser = '_user'
-      //   this.newMarker(this.activeUser)
-      //   console.log('showMarkers')
-      //   console.dir(JSON.stringify(this.markers))
-      // },
 
       /***** SECURITY AREA ******/
 

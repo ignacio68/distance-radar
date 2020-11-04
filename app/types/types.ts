@@ -66,11 +66,13 @@ export interface LocationInCircle extends LngLat {
   circleRadius: number
 }
 
-export interface BasicMarker extends LngLat {
+export interface UserMarker extends LngLat {
   id: string
+  onTap?: () => unknown
+  update?: (newSettings: Location) => unknown
 }
 
-export interface Marker extends BasicMarker {
+export interface Location extends LngLat {
   id: string
   group?: string
   title?: string
@@ -81,7 +83,7 @@ export interface Marker extends BasicMarker {
   onCalloutTap?: () => unknown
   selected?: boolean
   isFollowed?: boolean
-  update?: (newSettings: Marker) => unknown
+  update?: (newSettings: Location) => unknown
   ios?: boolean
   android?: boolean
 }
