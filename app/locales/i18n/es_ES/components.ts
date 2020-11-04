@@ -1,18 +1,18 @@
 export default {
   actionBar: {
-    title: 'Áreas de Seguridad',
+    title: 'Radar de Distancias',
   },
-  newMarker: {
-    title: 'Nueva Localización',
+  newLocation: {
+    title: 'Nueva Ubicación',
     id: 'Nombre:',
-    groupError: 'El marcador necesita un grupo',
+    groupError: 'La ubicación necesita un grupo',
     idError: 'Hace falta un nombre',
     group: 'Grupo: ',
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
   },
   newArea: {
-    title: 'Nuevo Area',
+    title: 'Nueva Area de Seguridad',
     distance: 'Distancia',
     opacity: 'Opacidad',
     cancelButton: 'Cancelar',
@@ -25,9 +25,10 @@ export default {
     hint: 'Buscar...',
     noResultsText: 'No se han encontrado resultados',
   },
-  firstMarkerAlert: {
+  firstLocationAlert: {
+    title: "Ubicación",
     message:
-      'No tienes ningún marcador todavía ¿Quieres instalar uno en tu posición actual?',
+      'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
     okButton: '¡Adelante!',
     cancelButton: 'Luego',
   },
