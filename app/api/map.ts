@@ -1,87 +1,48 @@
+import { setNewUserMarker, updateUserMarker } from './userMarker'
+
 import { getCurrentUserLocation } from '@/services/geolocationService'
 
 import { getMap as map } from '@/store/mapStore'
+import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
 import { LngLat } from '@/types/types'
 
-// export const setCenter = async () => {
-//   console.log('setCenter()')
-//   await setLocationServicesEnabled().then((isEnabled) => {
-//     if (isEnabled) {
-//       getCurrentUserLocation().then((coordinates) => {
-//         console.log(`set Center coordinates: ${JSON.stringify(coordinates)}`)
-//         map().setCenter({
-//           lng: coordinates.lng,
-//           lat: coordinates.lat,
-//           animated: true,
-//         })
-//         map().setZoomLevel({
-//           level: 15,
-//           animated: true,
-//         })
-//       })
-//     } else {
-//       console.log('The Geolocation service is not enabled!!')
-//     }
-//   })
-
-// }
-// export const setCenter = async () => {
-//   try {
-//     console.log('setCenter()')
-//     const coordinates = await getCurrentUserLocation() as LngLat
-//     console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
-//     map().setCenter({
-//       lng: coordinates.lng,
-//       lat: coordinates.lat,
-//       animated: true,
-//     })
-//     map().setZoomLevel({
-//       level: 15,
-//       animated: true,
-//     })
-//     // await getCurrentUserLocation().then((coordinates: LngLat) => {
-//     //     console.log(`set Center coordinates: ${JSON.stringify(coordinates)}`)
-//     //     map().setCenter({
-//     //       lng: coordinates.lng,
-//     //       lat: coordinates.lat,
-//     //       animated: true,
-//     //     })
-//     //     map().setZoomLevel({
-//     //       level: 15,
-//     //       animated: true,
-//     //     })
-//     //   })
-//   } catch (error) {
-//       console.log(`setCenter() error: ${error.message}`)
-//     }
-// }
 export const setCenter = async () => {
-    console.log('setCenter()')
-    await getCurrentUserLocation().then((coordinates: LngLat) => {
-        console.log(`set Center coordinates: ${JSON.stringify(coordinates)}`)
-        map().setZoomLevel({
-          level: 15,
-          animated: true,
-        })
-        map().setCenter({
-          lat: coordinates.lat,
-          lng: coordinates.lng,
-          animated: true,
-        })
+  console.log('setCenter()')
+  await getCurrentUserLocation().then((coordinates: LngLat) => {
+    console.log(`set Center coordinates: ${JSON.stringify(coordinates)}`)
+    map()
+      .setCenter({
+        lat: coordinates.lat,
+        lng: coordinates.lng,
+        animated: true,
       })
+      .then(() =>
+        map()
+          .setZoomLevel({
+            level: 15,
+            animated: true,
+          })
+          .then(() => {
+            if (userMarker()) updateUserMarker(coordinates)
+            else {
+              console.log('There is not marker!')
+              setNewUserMarker()
+            }
+          })
+      )
+  })
 }
 
 export const flyTo = (location: LngLat) => {
-  map().animateCamera({
-     target: location,
-     zoomLevel: 15, // Android
-     bearing: 270, // Where the camera is pointing, 0-360 (degrees)
-     tilt: 50,
-    //  TODO: calculate programmatically the duration
-     duration: 5000, // default 10000 (milliseconds)
-   })
+  map()
+    .animateCamera({
+      target: location,
+      zoomLevel: 15, // Android
+      bearing: 270, // Where the camera is pointing, 0-360 (degrees)
+      tilt: 50,
+      //  TODO: calculate programmatically the duration
+      duration: 5000, // default 10000 (milliseconds)
+    })
+    .then(() => updateUserMarker(location))
 }
-
-/****** MARKERS ******/
-
