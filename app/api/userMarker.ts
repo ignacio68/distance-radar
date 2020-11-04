@@ -5,20 +5,20 @@ import {
   updateUserMarkerPosition,
 } from '@/store/userMarkerStore'
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
+import { getVisibility, toggleVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LngLat } from '@/types/types'
 
+const onTap = () => !getVisibility('newLocationMenu') ? toggleVisibility('newLocationMenu') : console.log('The new location menu is just activated!')
 export const setNewUserMarker = () => {
   console.log('addMarker()')
   const initialValues: UserMarker = {
     id: '_user',
     lat: userLocation().lat,
     lng: userLocation().lng,
-    onTap: () => console.log('on tap marker!'),
+    onTap: () => onTap(),
   }
-  console.log(`New Marker values: ${JSON.stringify(initialValues)}`)
   const newUserMarker = [initialValues]
-  console.log(`New marker: ${JSON.stringify(newUserMarker)}`)
   map()
     .addMarkers(newUserMarker)
     .then(() => setUserMarker(initialValues))
