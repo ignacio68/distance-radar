@@ -19,7 +19,7 @@
       @loaded="loadBottomSheet"
     >
       <StackLayout>
-        <NewMarker
+        <NewLocation
           v-if="isVisibleNewLocationMenu"
           class="newMarker m-16"
           backgroundColor="white"
@@ -71,7 +71,7 @@
   import securityArea from '@/store/securityAreaStore'
 
   import MapComponent from './MapComponent.vue'
-  import NewMarker from './NewMarker.vue'
+  import NewLocation from './NewLocation.vue'
   // import NewArea from './NewArea.vue'
 
   export default({
@@ -79,7 +79,7 @@
 
     components: {
       MapComponent,
-      NewMarker,
+      NewLocation,
       // NewArea
     },
 

@@ -3,7 +3,7 @@
     <StackLayout orientation="vertical">
       <Label
         class="menu_title"
-        :text="$t('lang.components.newMarker.title')"
+        :text="$t('lang.components.newLocation.title')"
         height="32"
         borderColor="#00251e"
       />
@@ -17,7 +17,7 @@
           row="0"
           class="new-marker-menu__id"
           :labelWidth="64"
-          :labelText="$t('lang.components.newMarker.id')"
+          :labelText="$t('lang.components.newLocation.id')"
           returnKeyType="done"
           :maxLengthText="24"
           @on-text-change="setId"
@@ -27,7 +27,7 @@
           v-if="hasIdError"
           row="1"
           class="new-marker-menu_error"
-          :text="$t('lang.components.newMarker.idError')"
+          :text="$t('lang.components.newLocation.idError')"
         />
         <StackLayout
           row="4"
@@ -39,7 +39,7 @@
           <MDButton
             class="new-marker-menu_button_cancel"
             width="144"
-            :text="$t('lang.components.newMarker.cancelButton')"
+            :text="$t('lang.components.newLocation.cancelButton')"
             borderColor="#007a70"
             borderWidth="1"
             @tap="onCancel"
@@ -47,8 +47,8 @@
           <MDButton
             class="new-marker-menu_button_add m-r-0"
             width="144"
-            :text="$t('lang.components.newMarker.addButton')"
-            @tap="onAddNewMarker"
+            :text="$t('lang.components.newLocation.addButton')"
+            @tap="onAddNewLocation"
           />
         </StackLayout>
       </GridLayout>
@@ -67,7 +67,7 @@ import { getCurrentUserLocation as userLocation } from '@/store/userLocationStor
 import TextForm from '@/components/UI/TextForm.vue'
 
 export default Vue.extend({
-  name: 'NewMarker',
+  name: 'NewLocation',
   components: {
     TextForm,
   },
@@ -109,9 +109,9 @@ export default Vue.extend({
       setVisibility('textFieldSoftKeyboard', false)
     },
 
-    hideNewMarkerMenu() {
+    hideNewLocationMenu() {
       this.hiddenSoftKeyboard()
-      setVisibility('newMarkerMenu', false)
+      setVisibility('newLocationMenu', false)
     },
 
     setId(id: string) {
@@ -121,12 +121,12 @@ export default Vue.extend({
       this.$emit('enabled-fab', false)
     },
 
-    setNewMarkerCoordinates() {
+    setNewLocationCoordinates() {
       this.marker.lat = userLocation().lat
       this.marker.lng = userLocation().lng
     },
 
-    isValidMarkerID() {
+    isValidLocationID() {
       console.log('isValid()')
       const isValid = Promise.resolve(
         this.marker.id ? console.log('There are not errors') : this.hasIdError = true
@@ -142,15 +142,15 @@ export default Vue.extend({
     onCancel() {
       console.log('onCancel()')
       this.reset()
-      this.hideNewMarkerMenu()
+      this.hideNewLocationMenu()
     },
 
-    async onAddNewMarker() {
+    async onAddNewLocation() {
       console.log('onAdd()')
-      this.setNewMarkerCoordinates()
-      await this.isValidMarkerID().then(() => {
-        this.hideNewMarkerMenu()
-        console.log(`onAddNewMarker: ${JSON.stringify(this.marker)}`)
+      this.setNewLocationCoordinates()
+      await this.isValidLocationID().then(() => {
+        this.hideNewLocationMenu()
+        console.log(`onAddNewLocation: ${JSON.stringify(this.marker)}`)
         if (!this.hasError) this.$emit('add-new-marker', this.marker)
         else return
       })
