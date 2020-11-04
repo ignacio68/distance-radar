@@ -1,9 +1,8 @@
 import { confirm, ConfirmOptions } from '@nativescript/core'
-import { FirstMarkerAlert } from './types'
+import { FirstLocationAlert } from './types'
 import { setVisibility } from '@/composables/useComponent'
 
-//  TODO: Internationalizate
-export const firstMarkerAlert = (options: FirstMarkerAlert) => {
+export const firstLocationAlert = (options: FirstLocationAlert) => {
   const confirmOptions: ConfirmOptions = {
     title: 'Markers',
     message: options.message,
@@ -11,6 +10,6 @@ export const firstMarkerAlert = (options: FirstMarkerAlert) => {
     cancelButtonText: options.cancelButtonText,
   }
   confirm(confirmOptions).then((result) => {
-    if (result) setVisibility('newMarkerMenu', true)
+    if (result) setVisibility('newLocationMenu', true)
   })
 }
