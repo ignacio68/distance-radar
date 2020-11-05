@@ -8,5 +8,5 @@ export default {
     v8Flags: '--expose_gc',
     markingMode: 'none',
   },
-  profiling: "timeline"
+  // profiling: "timeline"
 } as NativeScriptConfig
