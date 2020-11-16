@@ -23,8 +23,9 @@
           v-if="isVisibleNewLocationMenu"
           class="newMarker m-16"
           backgroundColor="white"
+          isPassThroughParentEnabled="false"
           @enabled-fab="isEnabledFAB"
-          @add-new-marker="newMarker"
+          @add-new-location="newLocation"
         />
         <!-- <NewArea
           v-if="isNewAreaMenuShowing"
@@ -40,39 +41,47 @@
 </template>
 
 <script lang="ts">
-  import { mapToken } from '@/setup/map'
 
+  /***** MAP *****/
+  import MapComponent from './MapComponent.vue'
+  import { mapToken } from '@/setup/map'
   import { setCenter } from '@/api/map'
-  import { setNewUserMarker, updateUserMarker } from '@/api/userMarker'
+  import { getMap as map } from '@/store/mapStore'
+
+  /***** USER MARKER *****/
+  import { updateUserMarker } from '@/api/userMarker'
+  import { getUserMarker as userMarker } from '@/store/userMarkerStore'
+
+  /***** USER LOCATION *****/
+  import {
+            getInitialLocation as initialLocation,
+            getCurrentUserLocation as userLocation,
+          } from '@/store/userLocationStore'
+
+  /***** LOCATIONS *****/
+  import NewLocation from './NewLocation.vue'
   import { newLocation, removeLocation } from '@/api/locations'
-  import {  addSource,
+  import { numberOfLocations } from '@/store/locationsStore'
+
+  /***** SECURITY AREAS *****/
+  // import NewArea from './NewArea.vue'
+  import securityArea from '@/store/securityAreaStore'
+  import {
+            addSource,
             setSecurityArea,
             showSecurityArea,
             removeSecurityArea,
           } from '@/api/securityArea'
 
+
   // import { setStorage } from '@/api/storage'
   import { Color } from '@nativescript/core/color'
-  import { Screen } from '@nativescript/core'
-  import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
+  import { Screen, Enums } from '@nativescript/core'
+  // import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
   import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
 
-  import { getVisibility } from '@/composables/useComponent'
-  import { setVisibility } from '@/composables/useComponent'
-
-  import { getMap as map } from '@/store/mapStore'
-  import {
-            getInitialLocation as initialLocation,
-            getCurrentUserLocation as userLocation
-          } from '@/store/userLocationStore'
-  import { getUserMarker as userMarker } from '@/store/userMarkerStore'
-  import { numberOfLocations } from '@/store/locationsStore'
-  import securityArea from '@/store/securityAreaStore'
-
-  import MapComponent from './MapComponent.vue'
-  import NewLocation from './NewLocation.vue'
-  // import NewArea from './NewArea.vue'
+  import { getVisibility, setVisibility } from '@/composables/useComponent'
 
   export default({
     name: 'Home',
@@ -98,6 +107,7 @@
       return {
         mapToken: mapToken,
         screenHeight: Screen.mainScreen.heightDIPs,
+        screenWidth: Screen.mainScreen.widthDIPs,
         radius: 1,
         fillOpacity: 5,
         activeUser: null,
@@ -138,7 +148,7 @@
       },
 
       isVisibleNewLocationMenu(newValue){
-        console.log('isVisibleNewLocationMenu change')
+        console.log(`isVisibleNewLocationMenu?: ${newValue}`)
         newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
       },
 
@@ -150,11 +160,12 @@
     methods: {
 
       /***** MAP *****/
-      onMapReady() {
+      async onMapReady() {
         console.log('onMapReady()')
-        setCenter().then(() => setNewUserMarker())
         this.setOnMapLongClickAction()
-        if (!numberOfLocations()) this.$emit('first-location-alert')
+        await setCenter().then(() => {
+          if (!numberOfLocations()) this.$emit('first-location-alert')
+        })
         // TODO: Change source name, add options
         // addSource('main')
         // this.showMarkers()
@@ -181,6 +192,7 @@
       },
       showBottomSheet() {
         this.animationBottomSheet(600)
+        // this.$showModal(NewLocation)
       },
       hideBottomSheet() {
         this.animationBottomSheet(0)
@@ -189,35 +201,16 @@
         this.bottomSheet.animate({
           duration: 1000,
           translate: { x: 0, y: this.screenHeight - height },
-          curve: new CubicBezierAnimationCurve(.44, .63, 0, 1)
+          // curve: new CubicBezierAnimationCurve(.44, .63, 0, 1)
+          curve: Enums.AnimationCurve.cubicBezier(.44, .63, 0, 1)
         })
       },
 
-      /***** USER MARKER *****/
-      onTapMarker() {
-        console.log('onTap marker')
-        setVisibility('newLocationMenu', true)
-      },
-
       /***** LOCATIONS ******/
-      onTapLocation() {
-        console.log('onTapLocation()')
-        setVisibility('newLocationMenu', true)
-      },
-
-      onCalloutTapLocation() {
-        console.log('onCalloutTapLocation()')
-      },
-
       newLocation(values: Location) {
         console.log(`newLocation()`)
-        values.selected = true
-        values.onTap = this.onTapLocation()
-        values.onCalloutTap = this.onCalloutTapLocation()
-        // const Location = setLocation(values)
-
         // TODO: sustituir por el código de abajo
-        // addLocation(marker)
+        newLocation(values)
         this.hideBottomSheet()
         // setStorage(marker.id, marker).then(success => {
         //   console.log(`setStorage? ${success}`)
