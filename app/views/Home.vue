@@ -18,7 +18,7 @@
       <Map
         id="Map"
         row="1"
-        @first-marker-alert="onFirstMarkerAlert"
+        @first-location-alert="onFirstLocationAlert"
       />
       <BottomAppBar
         class="BottomBar"
@@ -33,9 +33,10 @@
 
   import { onBackEvent, clearBackEvent } from '@/utils/backButton'
 
-  import { FirstMarkerAlert } from '@/components/UI/types'
+  import { FirstLocationAlert } from '@/components/UI/types'
 
-  import { firstMarkerAlert } from '@/components/UI/FirstMarkerAlert'
+  import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
+
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
@@ -59,8 +60,7 @@
     },
 
     created() {
-      onBackEvent(this.backEvent)
-      // setCenter()
+       onBackEvent(this.backEvent)
     },
 
     beforeDestroy() {
@@ -69,9 +69,9 @@
 
     methods: {
       backEvent() {
-      console.log('Has presionado el botón de volver de Android!!')
-      application.android.foregroundActivity.finish();
-    },
+        console.log('Has presionado el botón de volver de Android!!')
+        application.android.foregroundActivity.finish();
+      },
 
       // TODO: Refactoring
       onTapVisibility(): void {
@@ -79,14 +79,14 @@
         this.isVisibleSecurityArea = !this.isVisibleSecurityArea
       },
 
-      onFirstMarkerAlert() {
-        const firstMarkersOptions: FirstMarkerAlert = {
-          message: `${this.$t('lang.components.firstMarkerAlert.message')}`,
-          okButtonText: `${this.$t('lang.components.firstMarkerAlert.okButton')}`,
-          cancelButtonText: `${this.$t('lang.components.firstMarkerAlert.cancelButton')}`
+      onFirstLocationAlert() {
+        const firstLocationOptions: FirstLocationAlert  = {
+          title: `${this.$t('lang.components.firstLocationAlert.title')}`,
+          message: `${this.$t('lang.components.firstLocationAlert.message')}`,
+          okButtonText: `${this.$t('lang.components.firstLocationAlert.okButton')}`,
+          cancelButtonText: `${this.$t('lang.components.firstLocationAlert.cancelButton')}`
         }
-
-        firstMarkerAlert(firstMarkersOptions)
+        firstLocationAlert(firstLocationOptions)
       }
     }
   }
