@@ -4,7 +4,7 @@ import { setVisibility } from '@/composables/useComponent'
 
 export const firstLocationAlert = (options: FirstLocationAlert) => {
   const confirmOptions: ConfirmOptions = {
-    title: 'Markers',
+    title: options.title,
     message: options.message,
     okButtonText: options.okButtonText,
     cancelButtonText: options.cancelButtonText,
