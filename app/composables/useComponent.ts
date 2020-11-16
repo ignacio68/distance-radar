@@ -2,7 +2,7 @@ import Vue from 'nativescript-vue'
 
 const isVisible = Vue.observable({
   geocoder: false,
-  newMarkerMenu: false,
+  newLocationMenu: false,
   securityArea: false,
   textFieldSoftKeyboard: true,
 })
