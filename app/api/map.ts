@@ -1,4 +1,4 @@
-import { setNewUserMarker, updateUserMarker } from './userMarker'
+import { createUserMarker, updateUserMarker } from './userMarker'
 
 import { getCurrentUserLocation } from '@/services/geolocationService'
 
@@ -26,8 +26,8 @@ export const setCenter = async () => {
           .then(() => {
             if (userMarker()) updateUserMarker(coordinates)
             else {
-              console.log('There is not marker!')
-              setNewUserMarker()
+              console.log('There is not user marker!')
+              createUserMarker()
             }
           })
       )

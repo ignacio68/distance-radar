@@ -5,12 +5,13 @@ import {
   updateUserMarkerPosition,
 } from '@/store/userMarkerStore'
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
-import { getVisibility, toggleVisibility } from '@/composables/useComponent'
+import { getVisibility, toggleVisibility, setVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LngLat } from '@/types/types'
 
-const onTap = () => !getVisibility('newLocationMenu') ? toggleVisibility('newLocationMenu') : console.log('The new location menu is just activated!')
-export const setNewUserMarker = () => {
+const onTap = () => !getVisibility('newLocationMenu') ? setVisibility('newLocationMenu', true) : console.log('The new location menu is just activated!')
+
+export const createUserMarker = () => {
   console.log('addMarker()')
   const initialValues: UserMarker = {
     id: '_user',
