@@ -10,28 +10,27 @@ import { LngLat } from '@/types/types'
 export const setCenter = async () => {
   console.log('setCenter()')
   await getCurrentUserLocation().then((coordinates: LngLat) => {
-    console.log(`set Center coordinates: ${JSON.stringify(coordinates)}`)
+    console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
     map()
-      .setCenter({
-        lat: coordinates.lat,
-        lng: coordinates.lng,
+      .setZoomLevel({
+        level: 15,
         animated: true,
       })
-      .then(() =>
-        map()
-          .setZoomLevel({
-            level: 15,
-            animated: true,
-          })
+      .then(() => {
+        map().setCenter({
+          lat: coordinates.lat,
+          lng: coordinates.lng,
+          animated: true,
+        })
           .then(() => {
             if (userMarker()) updateUserMarker(coordinates)
             else {
-              console.log('There is not user marker!')
+              console.log('There is not user marker, create one!')
               createUserMarker()
             }
-          })
-      )
-  })
+           })
+        })
+    })
 }
 
 export const flyTo = (location: LngLat) => {
