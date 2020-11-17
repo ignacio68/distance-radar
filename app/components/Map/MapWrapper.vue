@@ -1,32 +1,51 @@
 <template>
-  <GridLayout>
-    <MapComponent
-      height="100%"
-      row="0"
-      :mapToken="mapToken"
-      :zoomLevel="15"
-      :userLatitude="initialLocation.lat"
-      :userLongitude="initialLocation.lng"
-      @on-map-ready="onMapReady($event)"
-    />
-    <Frame
-      id="bottomSheet"
-      ref="bottomSheet"
-      borderTopLeftRadius="16"
-      borderTopRightRadius="16"
-      backgroundColor="white"
-      verticalAlignment="top"
-      @loaded="loadBottomSheet"
-    >
-      <StackLayout>
-        <NewLocation
-          v-if="isVisibleNewLocationMenu"
-          class="newMarker m-16"
-          backgroundColor="white"
-          isPassThroughParentEnabled="false"
-          @enabled-fab="isEnabledFAB"
-          @add-new-location="newLocation"
-        />
+  <Page actionBarHidden="true">
+    <GridLayout>
+      <MapComponent
+        height="100%"
+        row="0"
+        :mapToken="mapToken"
+        :zoomLevel="15"
+        :userLatitude="initialLocation.lat"
+        :userLongitude="initialLocation.lng"
+        @on-map-ready="onMapReady($event)"
+      />
+      <StackLayout
+        v-if="backgroundFilter"
+        class="backgroundFilter"
+        row="0"
+        height="100%"
+        width="100%"
+      />
+      <!-- <Button
+        id="bottomSheet"
+        ref="bottomSheet"
+        borderTopLeftRadius="16"
+        borderTopRightRadius="16"
+        backgroundColor="white"
+        verticalAlignment="top"
+        height="600"
+        width="100%"
+        @loaded="loadBottomSheet"
+      > -->
+      <Frame
+        id="bottomSheet"
+        ref="bottomSheet"
+        borderTopLeftRadius="16"
+        borderTopRightRadius="16"
+        backgroundColor="white"
+        verticalAlignment="top"
+        androidElevation="16"
+        @loaded="loadBottomSheet"
+        @tap="preventBubbling"
+      >
+        <StackLayout>
+          <NewLocation
+            v-if="isVisibleNewLocationMenu"
+            class="newMarker m-16"
+            backgroundColor="white"
+            @enabled-fab="isEnabledFAB"
+          />
         <!-- <NewArea
           v-if="isNewAreaMenuShowing"
           class="newArea m-16"
@@ -35,12 +54,15 @@
           @on-new-area-cancel="hideBottomSheet()"
           @on-new-area-done="newSecurityArea"
         /> -->
-      </StackLayout>
-    </Frame>
-  </GridLayout>
+        </StackLayout>
+      </Frame>
+    </GridLayout>
+  </Page>
 </template>
 
 <script lang="ts">
+  import Vue from 'nativescript-vue'
+  // import BottomAppMenuModal from '@/views/Modals/BottomAppMenuModal.vue'
 
   /***** MAP *****/
   import MapComponent from './MapComponent.vue'
@@ -60,19 +82,17 @@
 
   /***** LOCATIONS *****/
   import NewLocation from './NewLocation.vue'
-  import { newLocation, removeLocation } from '@/api/locations'
   import { numberOfLocations } from '@/store/locationsStore'
 
   /***** SECURITY AREAS *****/
   // import NewArea from './NewArea.vue'
-  import securityArea from '@/store/securityAreaStore'
-  import {
-            addSource,
-            setSecurityArea,
-            showSecurityArea,
-            removeSecurityArea,
-          } from '@/api/securityArea'
-
+  // import securityArea from '@/store/securityAreaStore'
+  // import {
+  //           addSource,
+  //           setSecurityArea,
+  //           showSecurityArea,
+  //           removeSecurityArea,
+  //         } from '@/api/securityArea'
 
   // import { setStorage } from '@/api/storage'
   import { Color } from '@nativescript/core/color'
@@ -83,7 +103,7 @@
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
 
-  export default({
+  export default Vue.extend({
     name: 'Home',
 
     components: {
@@ -111,6 +131,7 @@
         radius: 1,
         fillOpacity: 5,
         activeUser: null,
+        backgroundFilter: false
       }
     },
 
@@ -127,19 +148,23 @@
         return this.$refs.bottomSheet.nativeView
       },
 
-      getRadius: {
-        get: function() { return this.radius },
-        set: function (value: number) {
-          this.radius = value
-        }
+      bottomSheetHeight() {
+        return this.screenHeight - 600
       },
 
-      getFillOpacity: {
-        get: function () {return this.fillOpacity},
-        set: function (value: number) {
-          this.fillOpacity = value
-        }
-      }
+      // getRadius: {
+      //   get: function() { return this.radius },
+      //   set: function (value: number) {
+      //     this.radius = value
+      //   }
+      // },
+
+      // getFillOpacity: {
+      //   get: function () {return this.fillOpacity},
+      //   set: function (value: number) {
+      //     this.fillOpacity = value
+      //   }
+      // }
     },
 
     watch: {
@@ -149,6 +174,11 @@
 
       isVisibleNewLocationMenu(newValue){
         console.log(`isVisibleNewLocationMenu?: ${newValue}`)
+        // if(newValue === true) this.$showModal(BottomAppMenuModal, {
+        //   fullscreen: false,
+        //   animated: true,
+        //   cancelable: true, // only for development
+        // })
         newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
       },
 
@@ -158,6 +188,10 @@
     },
 
     methods: {
+      preventBubbling(){
+        console.log('onTap')
+        return
+      },
 
       /***** MAP *****/
       async onMapReady() {
@@ -191,11 +225,13 @@
         this.bottomSheet.translateY = this.screenHeight
       },
       showBottomSheet() {
+        this.backgroundFilter = true
         this.animationBottomSheet(600)
         // this.$showModal(NewLocation)
       },
-      hideBottomSheet() {
-        this.animationBottomSheet(0)
+      async hideBottomSheet() {
+         await this.animationBottomSheet(0)
+         this.backgroundFilter = false
       },
       animationBottomSheet(height: number) {
         this.bottomSheet.animate({
@@ -206,54 +242,55 @@
         })
       },
 
-      /***** LOCATIONS ******/
-      newLocation(values: Location) {
-        console.log(`newLocation()`)
-        // TODO: sustituir por el código de abajo
-        newLocation(values)
-        this.hideBottomSheet()
-        // setStorage(marker.id, marker).then(success => {
-        //   console.log(`setStorage? ${success}`)
-        //   if(success){
-        //     addMarker(this.map, marker)
-        //   }
-        // })
-      },
+      // /***** LOCATIONS ******/
+      // newLocation(values: Location) {
+      //   console.log(`newLocation()`)
+      //   // TODO: sustituir por el código de abajo
+      //   newLocation(values)
+      //   this.hideBottomSheet()
+      //   // setStorage(marker.id, marker).then(success => {
+      //   //   console.log(`setStorage? ${success}`)
+      //   //   if(success){
+      //   //     addMarker(this.map, marker)
+      //   //   }
+      //   // })
+      // },
 
-      removeLocation(id: string) {
-        removeLocation(id)
-      },
+      // /***** SECURITY AREA ******/
 
-      /***** SECURITY AREA ******/
+      // newSecurityArea(id: string, color: any) {
+      //   if (securityArea.getSecurityArea(id)) {
+      //     console.log(`${id} exist, choose another name`)
+      //     return
+      //   }
+      //   const polygonOptions: BasicPolygonOptions = {
+      //     id: id,
+      //     radius: this.radius,
+      //     fillColor: new Color(color),
+      //     fillOpacity: this.fillOpacity / 10,
+      //     isVisible: true
+      //   }
+      //   setSecurityArea(polygonOptions)
+      // },
 
-      newSecurityArea(id: string, color: any) {
-        if (securityArea.getSecurityArea(id)) {
-          console.log(`${id} exist, choose another name`)
-          return
-        }
-        const polygonOptions: BasicPolygonOptions = {
-          id: id,
-          radius: this.radius,
-          fillColor: new Color(color),
-          fillOpacity: this.fillOpacity / 10,
-          isVisible: true
-        }
-        setSecurityArea(polygonOptions)
-      },
+      // showSecurityArea(id: string, value:boolean) {
+      //   showSecurityArea(id, value)
+      // },
 
-      showSecurityArea(id: string, value:boolean) {
-        showSecurityArea(id, value)
-      },
-
-      removeSecurityArea(id: string) {
-        console.log(`remove polygon: ${id}`)
-        removeSecurityArea(id)
-      }
+      // removeSecurityArea(id: string) {
+      //   console.log(`remove polygon: ${id}`)
+      //   removeSecurityArea(id)
+      // }
     }
   })
 </script>
 <style lang="scss" scoped>
 @import '../../app-variables';
+
+.backgroundFilter {
+  // background-color: red
+  background-color: rgba(255, 255, 255, .5)
+}
 
 .newMarker {
   color: $primary-dark;
