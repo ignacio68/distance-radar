@@ -9,7 +9,8 @@ import { getVisibility, toggleVisibility, setVisibility } from '@/composables/us
 
 import { UserMarker, LngLat } from '@/types/types'
 
-const onTap = () => !getVisibility('newLocationMenu') ? setVisibility('newLocationMenu', true) : console.log('The new location menu is just activated!')
+const onTap = () => toggleVisibility('newLocationMenu')
+// const onTap = () => !getVisibility('newLocationMenu') ? setVisibility('newLocationMenu', true) : console.log('The new location menu is just activated!')
 
 export const createUserMarker = () => {
   console.log('addMarker()')
