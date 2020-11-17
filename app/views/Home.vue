@@ -15,11 +15,15 @@
         width="100%"
         @tap-visibility="onTapVisibility"
       />
-      <Map
+      <Frame
         id="Map"
         row="1"
-        @first-location-alert="onFirstLocationAlert"
-      />
+      >
+        <MapWrapper
+          id="MapWrapper"
+          @first-location-alert="onFirstLocationAlert"
+        />
+      </Frame>
       <BottomAppBar
         class="BottomBar"
         row="2"
@@ -29,6 +33,8 @@
 </template>
 
 <script lang="ts">
+  import Vue from 'nativescript-vue'
+
   import { Application as application } from '@nativescript/core'
 
   import { onBackEvent, clearBackEvent } from '@/utils/backButton'
@@ -37,18 +43,20 @@
 
   import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
 
+
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
 
-  export default({
+  export default Vue.extend({
     name: 'Home',
 
     components: {
       CustomActionBar,
-      Map: MapWrapper,
+      MapWrapper,
       BottomAppBar,
     },
+
     data() {
       return {
         // TODO: Refactoring
@@ -56,11 +64,8 @@
       }
     },
 
-    computed: {
-    },
-
     created() {
-       onBackEvent(this.backEvent)
+      onBackEvent(this.backEvent)
     },
 
     beforeDestroy() {
