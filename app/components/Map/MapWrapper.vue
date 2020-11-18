@@ -17,17 +17,6 @@
         height="100%"
         width="100%"
       />
-      <!-- <Button
-        id="bottomSheet"
-        ref="bottomSheet"
-        borderTopLeftRadius="16"
-        borderTopRightRadius="16"
-        backgroundColor="white"
-        verticalAlignment="top"
-        height="600"
-        width="100%"
-        @loaded="loadBottomSheet"
-      > -->
       <Frame
         id="bottomSheet"
         ref="bottomSheet"
@@ -164,12 +153,12 @@
       },
 
       /***** MAP *****/
-      async onMapReady() {
+      onMapReady() {
         console.log('onMapReady()')
-        await setCenter().then(() => {
+        this.setOnMapLongClickAction()
+        setCenter().then(() => {
           if (!numberOfLocations()) this.$emit('first-location-alert')
         })
-        this.setOnMapLongClickAction()
         // TODO: Change source name, add options
         // addSource('main')
         // this.showMarkers()8
