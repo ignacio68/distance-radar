@@ -12,18 +12,16 @@ const locationOptions: geolocation.Options = {
   timeout: 10000,
 }
 
-const enableLocationRequest = async (option: boolean) =>
-{
+const enableLocationRequest = async (option: boolean): Promise<void> => {
   console.log('enableLocationRequest()')
   await geolocation.enableLocationRequest(option).then(() => {
     isLocationServicesEnabled()
   })
 }
 
-const isLocationServicesEnabled = async () =>
-{
+const isLocationServicesEnabled = async (): Promise<boolean> => {
   console.log('isLocationServicesEnabled()')
-  const isEnabled = await geolocation.isEnabled().then(async(isEnabled) => {
+  const isEnabled = await geolocation.isEnabled().then(async (isEnabled) => {
     if (!isEnabled) {
       console.log('The location service is not enabled')
       await enableLocationRequest(true)
@@ -34,21 +32,22 @@ const isLocationServicesEnabled = async () =>
   return isEnabled
 }
 
-const fetchCurrentUserLocation = async () =>
-{
+const fetchCurrentUserLocation = async (): Promise<LngLat> => {
   console.log('fetchCurrentUserLocation()')
-  const location = await geolocation.getCurrentLocation(locationOptions).then((result) => {
-    const location: LngLat = {
-      lat: result.latitude,
-      lng: result.longitude,
-    }
-    console.log(`fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
-    return location
-  })
+  const location = await geolocation
+    .getCurrentLocation(locationOptions)
+    .then((result) => {
+      const location: LngLat = {
+        lat: result.latitude,
+        lng: result.longitude,
+      }
+      console.log(`fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
+      return location
+    })
   return location
 }
 
-export const getCurrentUserLocation = async () => {
+export const getCurrentUserLocation = async (): Promise<LngLat> => {
   console.log('getUserCurrentLocation()')
   await isLocationServicesEnabled()
   const location = await fetchCurrentUserLocation()
@@ -57,25 +56,24 @@ export const getCurrentUserLocation = async () => {
       setCurrentUserLocation(location)
       return location
     })
-    .catch(
-      (error) =>
-        console.log(`getCurrentLocation() error: ${JSON.stringify(error.message || error)}`)
-        //throw error
-    )
+    .catch((error) => {
+      console.log(`getCurrentLocation() error: ${JSON.stringify(error)}`)
+      throw error
+    })
   return location
 }
 
-export const watchUserLocation = () => {
+export const watchUserLocation = (): void => {
   console.log('watchUserLocation()')
   geolocation.watchLocation(
-    position => {
+    (position) => {
       const currentLocation: LngLat = {
         lat: position.latitude,
         lng: position.longitude,
       }
       setCurrentUserLocation(currentLocation)
     },
-    error => {
+    (error) => {
       console.log(`failed to get location: ${error}`)
     },
     {

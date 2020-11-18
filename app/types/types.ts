@@ -1,5 +1,5 @@
 import { Color } from '@nativescript/core/color'
-import { AddPolygonOptions, LatLng } from '@nstudio/nativescript-mapbox'
+// import { AddPolygonOptions } from '@nstudio/nativescript-mapbox'
 
 export interface InitialCoordinates {
   /**
@@ -25,7 +25,6 @@ export interface LngLat {
 }
 
 export interface GeocodingCoordinates {
-
   /**
    * The latitude of the geolocation, in degrees.
    */
@@ -37,7 +36,6 @@ export interface GeocodingCoordinates {
 }
 
 export interface Circle {
-
   /**
    * The point of the center of the security area circle, lat & lng in degrees
    */
@@ -95,7 +93,7 @@ export interface BasicPolygonOptions {
   fillOpacity?: number
   isVisible?: boolean
 }
-export interface PolygonOptions extends BasicPolygonOptions{
+export interface PolygonOptions extends BasicPolygonOptions {
   group?: string
   points: LngLat[]
   oldFillOpacity?: number
