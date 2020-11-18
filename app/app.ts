@@ -7,7 +7,7 @@
  * @version 0.1.0
  */
 
-import Vue from "nativescript-vue"
+import Vue from 'nativescript-vue'
 
 // Plugins
 import '@/plugins/installMapbox'
@@ -18,15 +18,14 @@ import { i18n, setLanguage } from '@/locales'
 
 //Components
 import Home from './views/Home.vue'
-import Modal from './views/first/Modal.vue'
 
 if (TNS_ENV !== 'production') {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Vue.use(VueDevtools as any)
 }
 
 // Prints Vue logs when --env.production is *NOT* set while building
 Vue.config.silent = TNS_ENV === 'production'
-
 
 new Vue({
   i18n,
