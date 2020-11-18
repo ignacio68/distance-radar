@@ -21,7 +21,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'nativescript-vue'
 
 // import Icon from '@/components/UI/Icon.vue'
 

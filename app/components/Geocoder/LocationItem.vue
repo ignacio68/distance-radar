@@ -26,10 +26,12 @@
 </template>
 
 <script lang="ts">
+  import Vue from 'nativescript-vue'
+
   import { formattedLocation } from '@/api/geocoder'
   // import { getShortLocationString } from '@/utils/text'
 
-  export default({
+  export default Vue.extend({
     name: "LocationItem",
 
     props: {

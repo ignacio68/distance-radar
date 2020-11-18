@@ -39,7 +39,7 @@
   </StackLayout>
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'nativescript-vue'
 
 // const AnimationCurve = require('tns-core-modules/ui/enums').AnimationCurve
 import { AnimationCurve } from '@nativescript/core/ui/enums'

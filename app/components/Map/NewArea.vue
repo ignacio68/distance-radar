@@ -63,7 +63,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'nativescript-vue'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
