@@ -35,6 +35,7 @@
       :autocorrect="false"
       @returnPress="onTextChange"
       @textChange="onTextChange"
+      @focus="onFocus"
     />
     <Image
       class="remove-icon"
@@ -49,9 +50,11 @@
 </template>
 
 <script lang="ts">
+  import Vue from 'nativescript-vue'
+
   import { Elevation } from '@/types/enums/elevations'
 
-  export default({
+  export default Vue.extend({
     name: "CustomSearchBar",
     props: {
       borderRadius: {
@@ -126,8 +129,13 @@
       },
 
       onClear() {
+        console.log('onClear()')
         this.searchedString = ""
         this.$emit('on-clear')
+      },
+
+      onFocus() {
+        console.log('onFocus()')
       }
     }
   })
