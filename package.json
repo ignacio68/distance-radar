@@ -29,7 +29,7 @@
     "lint": "eslint --fix . && echo 'Lint complete.'",
     "devan": "tns debug android --no-hmr  --env.snapshot --env.uglify --bundle",
     "devantime": "tns debug android --no-hmr  --env.snapshot --env.uglify --bundle | timeline-view",
-    "runan": "tns run android --env.snapshot --env.uglify  --no-hmr",
+    "runan": "tns run android --env.snapshot --env.uglify",
     "runantime": "tns run android --env.snapshot --env.uglify  --no-hmr | timeline-view"
   },
   "dependencies": {
@@ -55,6 +55,8 @@
     "@nativescript/types": "^7.0.4",
     "@nativescript/webpack": "^3.0.5",
     "@types/node": "^14.11.2",
+    "@typescript-eslint/eslint-plugin": "^4.8.1",
+    "@typescript-eslint/parser": "^4.8.1",
     "babel-eslint": "^10.1.0",
     "babel-loader": "~8.0.0",
     "eslint": "^7.12.0",
