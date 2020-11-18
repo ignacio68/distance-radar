@@ -1,5 +1,63 @@
 # Changelog
 
+## [0.1.5] - 2020-11-16
+
+### Added
+
+- Create user marker without device connection
+- Locations API
+- Locations page
+- Locations Store
+- Title prop to First Location Alert component
+- Fake page only for tests
+
+### Changed
+
+- Create user's marker method
+- Reorder MapWrapper imports by components
+
+### Fixed
+
+- No device connection bug
+- Dismiss soft keyboard on cancel
+- Keep Alive Text Form component
+- Prevent bubling gestures in Bottom App Menu
+- Geolocation service issues
+- Set locations in map in true coordinates
+- setCenter method bug
+
+### Removed
+
+- MapWrappers unused methods
+
+
+# Changelog
+
+## [0.1.4] - 2020-11-04
+
+### Added
+
+- More texts to locales
+- User Marker onTap method to call to new location menu
+- User Marker Store
+- User Marker API
+- User Marker types
+- Locations Store
+- Locations API
+- Locations types
+
+### Changed
+
+- Reorder User Marker & Locations methods
+- First Location Alert component name
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- Remove generic marker methods & API
 
 ## [0.1.3] - 2020-11-02
 ### Added
@@ -18,10 +76,6 @@
 
 - Polygon options type
 - get current user location methods and types
-
-### Removed
-
-- Remove item
 
 
 ## [0.1.2] - 2020-10-26
