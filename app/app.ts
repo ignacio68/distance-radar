@@ -30,9 +30,8 @@ Vue.config.silent = TNS_ENV === 'production'
 
 new Vue({
   i18n,
-  beforeCreate() {
+  created() {
     setLanguage()
-
   },
   render: (h) => h('frame', [h(Home)]),
 }).$start()
