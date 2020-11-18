@@ -40,12 +40,14 @@
         @tap="preventBubbling"
       >
         <StackLayout>
+          <keep-alive>
           <NewLocation
             v-if="isVisibleNewLocationMenu"
             class="newMarker m-16"
             backgroundColor="white"
             @enabled-fab="isEnabledFAB"
           />
+          </keep-alive>
         <!-- <NewArea
           v-if="isNewAreaMenuShowing"
           class="newArea m-16"
@@ -62,7 +64,6 @@
 
 <script lang="ts">
   import Vue from 'nativescript-vue'
-  // import BottomAppMenuModal from '@/views/Modals/BottomAppMenuModal.vue'
 
   /***** MAP *****/
   import MapComponent from './MapComponent.vue'
@@ -174,11 +175,6 @@
 
       isVisibleNewLocationMenu(newValue){
         console.log(`isVisibleNewLocationMenu?: ${newValue}`)
-        // if(newValue === true) this.$showModal(BottomAppMenuModal, {
-        //   fullscreen: false,
-        //   animated: true,
-        //   cancelable: true, // only for development
-        // })
         newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
       },
 
@@ -225,11 +221,13 @@
         this.bottomSheet.translateY = this.screenHeight
       },
       showBottomSheet() {
+        console.log('showBottomSheet()')
         this.backgroundFilter = true
         this.animationBottomSheet(600)
         // this.$showModal(NewLocation)
       },
       async hideBottomSheet() {
+        console.log('hideBottomSheet()')
          await this.animationBottomSheet(0)
          this.backgroundFilter = false
       },
@@ -241,20 +239,6 @@
           curve: Enums.AnimationCurve.cubicBezier(.44, .63, 0, 1)
         })
       },
-
-      // /***** LOCATIONS ******/
-      // newLocation(values: Location) {
-      //   console.log(`newLocation()`)
-      //   // TODO: sustituir por el código de abajo
-      //   newLocation(values)
-      //   this.hideBottomSheet()
-      //   // setStorage(marker.id, marker).then(success => {
-      //   //   console.log(`setStorage? ${success}`)
-      //   //   if(success){
-      //   //     addMarker(this.map, marker)
-      //   //   }
-      //   // })
-      // },
 
       // /***** SECURITY AREA ******/
 
