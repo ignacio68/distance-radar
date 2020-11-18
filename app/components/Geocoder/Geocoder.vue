@@ -45,6 +45,7 @@
 </template>
 
 <script script lang="ts">
+  import Vue from 'nativescript-vue'
 
   import { setInterval, clearInterval } from '@nativescript/core/timer'
 
@@ -53,7 +54,7 @@
   import CustomSearchBar from './CustomSearchBar.vue'
   import LocationItem from './LocationItem.vue'
 
-  export default({
+  export default Vue.extend({
     name: "Geocoder",
 
     components: {
