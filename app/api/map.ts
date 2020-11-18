@@ -27,7 +27,7 @@ export const setCenter = async (): Promise<void> => {
             if (userMarker()) updateUserMarker(coordinates)
             else {
               console.log('There is not user marker, create one!')
-              createUserMarker()
+              createUserMarker(coordinates)
             }
           })
       })
