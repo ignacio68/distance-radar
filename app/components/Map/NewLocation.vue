@@ -9,30 +9,28 @@
       />
       <GridLayout
         class="new-location-menu"
-        rows="auto, 64"
+        rows="auto, auto, 64"
         columns="*"
       >
         <TextForm
           ref="textForm"
-          :value="location.id"
-          row="0"
           class="new-location-menu__id"
+          row="0"
           :labelWidth="64"
           :labelText="$t('lang.components.newLocation.id')"
           returnKeyType="done"
           :maxLengthText="24"
-          :resetValue="resetValue"
-          @on-text-change="setId"
-          @on-return-press="enabledFab"
+          :dismissKeyboard="dismissKeyboard"
+          @on-return-press="onReturnPress"
         />
         <Label
-          v-if="hasIdError"
+          v-if="idError"
           row="1"
-          class="new-location-menu_error"
-          :text="$t('lang.components.newLocation.idError')"
+          class="new-location-id_error"
+          :text="$tc('lang.components.newLocation.idError', idError)"
         />
         <StackLayout
-          row="4"
+          row="2"
           class="new-location-menu_buttons"
           width="100%"
           orientation="horizontal"
@@ -49,6 +47,7 @@
           <MDButton
             class="new-location-menu_button_add m-r-0"
             width="144"
+            :isEnabled="isEnabledAddButton"
             :text="$t('lang.components.newLocation.addButton')"
             @tap="onAddNewLocation"
           />
@@ -59,13 +58,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'nativescript-vue'
+
 import '@/plugins/installMDAButton'
 
 import { setVisibility } from '@/composables/useComponent'
 
+import { newLocation } from '@/api/locations'
+// import { hideSoftKeyboard } from '@/services/commonsService'
 import { hasId } from '@/store/locationsStore'
-import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
+
+import { Location } from '@/types/types'
 
 import TextForm from '@/components/UI/TextForm.vue'
 
@@ -88,87 +91,73 @@ export default Vue.extend({
       locationValue: '',
       location: {
         id: '',
-        lat: '0',
-        lng: '0',
         group: null,
         color: null,
         selected: true,
         icon: 'res://ic_person_pin_pink_48dp'
       },
-      hasGroupError: false,
-      hasIdError: false,
-      resetValue: false
+      // hasGroupError: false,
+      idError: '0',
+      dismissKeyboard: false,
+      isEnabledAddButton: false,
     }
   },
 
-  computed: {
-    userLocation,
+  async mounted() {
+    await this.reset()
   },
 
   methods: {
+    async onReturnPress(textValue: string) {
+      await this.setId(textValue)
+      this.isEnabledAddButton = true
+    },
+
     reset() {
-      this.location.id = ''
-      this.resetValue = true
+      this.setId(null)
+      this.idError = 0
+      this.isEnabledAddButton = false
       // this.group = null
     },
 
-    enabledFab() {
-      this.$emit('enabled-fab', true)
-    },
-
-    hiddenSoftKeyboard() {
-      setVisibility('textFieldSoftKeyboard', false)
-      console.log(`hiddenSofKeyboard() text: ${this.location.id}`)
-    },
-
-    hideNewLocationMenu() {
-      this.hiddenSoftKeyboard()
-      this.reset()
+    async hideNewLocationMenu() {
+      await this.reset()
+      this.dismissKeyboard = false
       setVisibility('newLocationMenu', false)
-      // this.$modal.close()
     },
 
     setId(id: string) {
       this.location.id = id
+      this.idError = 0
       console.log(`id: ${this.location.id}`)
-      this.hasIdError = false
-      this.$emit('enabled-fab', false)
+      // this.$emit('enabled-fab', false)
     },
 
-    setNewLocationCoordinates() {
-      this.location.lat = userLocation().lat
-      this.location.lng = userLocation().lng
+    hasIdError() {
+      !this.location.id ?
+        this.idError = 1
+          : hasId(this.location.id) ?
+          this.idError = 2
+            : this.idError = 0
     },
-
-    isValidLocationID() {
-      console.log('isValid()')
-      const isValid = Promise.resolve(
-        this.location.id ? console.log('There are not errors') : this.hasIdError = true
-      )
-      return isValid
-    },
-
-    // onRadiusChange(radius) {
-    //   console.log('onRadiusChange()')
-    //   this.$emit('on-radius-change', radius)
-    // },
 
     onCancel() {
       console.log('onCancel()')
+      this.dismissKeyboard = true
       this.hideNewLocationMenu()
-      // this.$modal.close()
     },
+
+    async newLocation(values: Location) {
+        console.log(`newLocation()`)
+        await newLocation(values)
+        await this.reset()
+        this.hideNewLocationMenu()
+      },
 
     async onAddNewLocation() {
       console.log('onAdd()')
-      this.setNewLocationCoordinates()
-      await this.isValidLocationID().then(() => {
-        console.log(`ID: ${this.location.id}`)
-        console.log(`onAddNewLocation: ${JSON.stringify(this.location)}`)
-        if (!this.hasError) this.$emit('add-new-location', this.location)
-        else return
-      })
-      this.hideNewLocationMenu()
+      await this.hasIdError()
+      !this.idError ? this.newLocation(this.location) : console.log(`ID error is: ${this.idError}`)
     },
   },
 })
@@ -184,8 +173,9 @@ export default Vue.extend({
  opacity: .8;
  border-bottom: 1, solid, rgba($primary, .1);
 }
-.new-location-menu_error {
+.new-location-id_error {
   color: red;
+  font-size: $font-sz-m;
 }
 .new-location-menu_button_cancel {
   color: $primary;

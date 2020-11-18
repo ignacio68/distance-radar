@@ -45,17 +45,17 @@
             v-if="isVisibleNewLocationMenu"
             class="newMarker m-16"
             backgroundColor="white"
-            @enabled-fab="isEnabledFAB"
           />
           </keep-alive>
-        <!-- <NewArea
-          v-if="isNewAreaMenuShowing"
-          class="newArea m-16"
-          backgroundColor="white"
-          @enabled-fab="isEnabledFAB"
-          @on-new-area-cancel="hideBottomSheet()"
-          @on-new-area-done="newSecurityArea"
-        /> -->
+          <keep-alive>
+          <NewArea
+            v-if="isNewAreaMenuShowing"
+            class="newArea m-16"
+            backgroundColor="white"
+            @on-new-area-cancel="hideBottomSheet()"
+            @on-new-area-done="newSecurityArea"
+          />
+          </keep-alive>
         </StackLayout>
       </Frame>
     </GridLayout>
@@ -73,13 +73,11 @@
 
   /***** USER MARKER *****/
   import { updateUserMarker } from '@/api/userMarker'
-  import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
   /***** USER LOCATION *****/
   import {
             getInitialLocation as initialLocation,
-            getCurrentUserLocation as userLocation,
-          } from '@/store/userLocationStore'
+           } from '@/store/userLocationStore'
 
   /***** LOCATIONS *****/
   import NewLocation from './NewLocation.vue'
@@ -98,7 +96,6 @@
   // import { setStorage } from '@/api/storage'
   import { Color } from '@nativescript/core/color'
   import { Screen, Enums } from '@nativescript/core'
-  // import { CubicBezierAnimationCurve } from  '@nativescript/core/ui/animation'
 
   import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
 
@@ -129,17 +126,12 @@
         mapToken: mapToken,
         screenHeight: Screen.mainScreen.heightDIPs,
         screenWidth: Screen.mainScreen.widthDIPs,
-        radius: 1,
-        fillOpacity: 5,
-        activeUser: null,
         backgroundFilter: false
       }
     },
 
     computed: {
       map,
-      userLocation,
-      userMarker,
       initialLocation, //TODO: Change to the user's country default center point
       isVisibleNewLocationMenu() {
         return getVisibility('newLocationMenu')
@@ -148,24 +140,6 @@
       bottomSheet() {
         return this.$refs.bottomSheet.nativeView
       },
-
-      bottomSheetHeight() {
-        return this.screenHeight - 600
-      },
-
-      // getRadius: {
-      //   get: function() { return this.radius },
-      //   set: function (value: number) {
-      //     this.radius = value
-      //   }
-      // },
-
-      // getFillOpacity: {
-      //   get: function () {return this.fillOpacity},
-      //   set: function (value: number) {
-      //     this.fillOpacity = value
-      //   }
-      // }
     },
 
     watch: {
@@ -192,13 +166,13 @@
       /***** MAP *****/
       async onMapReady() {
         console.log('onMapReady()')
-        this.setOnMapLongClickAction()
         await setCenter().then(() => {
           if (!numberOfLocations()) this.$emit('first-location-alert')
         })
+        this.setOnMapLongClickAction()
         // TODO: Change source name, add options
         // addSource('main')
-        // this.showMarkers()
+        // this.showMarkers()8
       },
 
       setOnMapLongClickAction() {
@@ -208,13 +182,6 @@
         })
       },
 
-      isEnabledFAB(bool) {
-        console.log(`isEnabledFAB(): ${bool}`)
-        this.$emit('enabled-fab', bool)
-      },
-      // onRadiusChange(value) {
-      //    this.getRadius = value
-      // },
 
       /***** BOTTOM SHEET *****/
       loadBottomSheet() {

@@ -12,8 +12,8 @@
       :text="labelText"
     />
     <TextField
-      ref="testField"
-      v-model="value"
+      ref="textField"
+      v-model="textFieldValue"
       class="TextForm_editable p-l-0 m-r-16"
       col="1"
       :width="textFieldWidth"
@@ -24,14 +24,14 @@
       :keyboardType="keyboardType"
       :returnKeyType="returnKeyType"
       :maxLength="maxLengthText"
-      :text="value"
+      :text="textFieldValue"
       @returnPress="onReturnPress"
       @textChange="onTextChange"
     />
   </GridLayout>
 </template>
 <script lang="ts">
-import Vue from 'vue'
+import Vue from 'nativescript-vue'
 
 import { getVisibility, setVisibility } from '@/composables/useComponent'
 
@@ -80,43 +80,41 @@ export default Vue.extend({
       type: Number,
       default: 0
     },
+    dismissKeyboard: {
+      type: Boolean,
+      default: false
+    }
   },
   data(){
    return{
-     value:''
+     textFieldValue: null,
    }
   },
-  computed: {
-    isSoftKeyboardVisible() {
-      return getVisibility('textFieldSoftKeyboard')
-    }
 
-  },
   watch: {
-    // FIXME: Arreglar la ocultación del teclado
-    isSoftKeyboardVisible(newValue) {
-      console.log('isSoftKeyboardVisible change')
-      if(newValue === false) {
-        this.hiddenSoftKeyboard()
-        setVisibility('textFieldSoftKeyboard', true)
-      } else console.log('Hola Don Pepito!')
+    dismissKeyboard(newValue: boolean) {
+      newValue ? this.reset() : console.log('The keyboard can be shown')
     }
+  },
+
+  mounted() {
+    this.reset()
   },
 
   methods: {
-    hiddenSoftKeyboard() {
-      console.log('hiddenSoftKeyboard()')
-      this.$refs.testField.nativeView.dismissSoftInput()
-    },
-
-    onReturnPress(e) {
-      this.$emit('on-return-press', e)
+    onReturnPress() {
+      this.$emit('on-return-press', this.textFieldValue)
     },
 
     onTextChange() {
-      console.log(`value: ${this.value}`)
-      this.$emit('on-text-change', this.value)
-    }
+      console.log(`value: ${this.textFieldValue}`)
+    },
+
+    reset() {
+      console.log('TextForm reset()')
+      this.textFieldValue = null
+      this.$refs.textField.nativeView.dismissSoftInput()
+    },
   }
 })
 </script>
@@ -125,6 +123,7 @@ export default Vue.extend({
 
 .TextForm_label {
   color: $primary-dark;
+  font-size: $font-sz-m;
 }
 .TextForm_editable {
   border-radius: 4;
