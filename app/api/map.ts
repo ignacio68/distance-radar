@@ -7,7 +7,7 @@ import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
 import { LngLat } from '@/types/types'
 
-export const setCenter = async () => {
+export const setCenter = async (): Promise<void> => {
   console.log('setCenter()')
   await getCurrentUserLocation().then((coordinates: LngLat) => {
     console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
@@ -17,23 +17,24 @@ export const setCenter = async () => {
         animated: true,
       })
       .then(() => {
-        map().setCenter({
-          lat: coordinates.lat,
-          lng: coordinates.lng,
-          animated: true,
-        })
+        map()
+          .setCenter({
+            lat: coordinates.lat,
+            lng: coordinates.lng,
+            animated: true,
+          })
           .then(() => {
             if (userMarker()) updateUserMarker(coordinates)
             else {
               console.log('There is not user marker, create one!')
               createUserMarker()
             }
-           })
-        })
-    })
+          })
+      })
+  })
 }
 
-export const flyTo = (location: LngLat) => {
+export const flyTo = (location: LngLat): void => {
   map()
     .animateCamera({
       target: location,

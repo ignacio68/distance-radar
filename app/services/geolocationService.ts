@@ -12,19 +12,18 @@ const locationOptions: geolocation.Options = {
   timeout: 10000,
 }
 
-const enableLocationRequest = async (option: boolean): Promise<void> => {
-  console.log('enableLocationRequest()')
-  await geolocation.enableLocationRequest(option).then(() => {
+const enableLocationRequest = async (): Promise<void> =>
+  await geolocation.enableLocationRequest(true).then(() => {
+    console.log('enableLocationRequest()')
     isLocationServicesEnabled()
   })
-}
 
 const isLocationServicesEnabled = async (): Promise<boolean> => {
   console.log('isLocationServicesEnabled()')
   const isEnabled = await geolocation.isEnabled().then(async (isEnabled) => {
     if (!isEnabled) {
       console.log('The location service is not enabled')
-      await enableLocationRequest(true)
+      await enableLocationRequest()
     }
     console.log(`The location service is enabled? ${JSON.stringify(isEnabled)}`)
     return isEnabled

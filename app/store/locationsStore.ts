@@ -9,9 +9,10 @@ const state = Vue.observable({
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
 
+// export const hasId = (id: string): boolean =>
+//   (findIndex(id) as unknown) as boolean
 export const hasId = (id: string): boolean =>
-  (findIndex(id) as unknown) as boolean
-// export const hasId = (id: string): boolean => findIndex(id) ? true : false
+  findIndex(id) >= 0 ? true : false
 
 export const numberOfLocations = (): number => state.locations.length
 
@@ -22,6 +23,13 @@ export const getLocations = state.locations
 
 export const addNewLocation = (location: Location): number =>
   state.locations.push(location)
+
+// setStorage(location.id, location).then(success => {
+//   console.log(`setStorage? ${success}`)
+//   if(success){
+//     addMarker(this.map, location)
+//   }
+// })
 
 const updateLocation = (location: Location): Location => {
   const currentLocation = getLocation(location.id)
