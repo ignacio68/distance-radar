@@ -32,7 +32,17 @@
   },
   "peacock.color": "#42b883",
   "cSpell.words": [
+    "TS's",
     "devantime",
     "runantime"
-  ]
+  ],
+  "eslint.validate": [
+    "javascript",
+    "Babel Javascript",
+    "typescript",
+  ],
+  "eslint.alwaysShowStatus": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": true
+  },
 }
