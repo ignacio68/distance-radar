@@ -5,14 +5,13 @@ import {
   updateUserMarkerPosition,
 } from '@/store/userMarkerStore'
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
-import { getVisibility, toggleVisibility, setVisibility } from '@/composables/useComponent'
+import { toggleVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LngLat } from '@/types/types'
 
 const onTap = () => toggleVisibility('newLocationMenu')
-// const onTap = () => !getVisibility('newLocationMenu') ? setVisibility('newLocationMenu', true) : console.log('The new location menu is just activated!')
 
-export const createUserMarker = () => {
+export const createUserMarker = (): void => {
   console.log('addMarker()')
   const initialValues: UserMarker = {
     id: '_user',
@@ -26,17 +25,18 @@ export const createUserMarker = () => {
     .then(() => setUserMarker(initialValues))
 }
 
-export const updateUserMarker = (coordinates: LngLat) => { // TODO: Add true type
-        const values = {
-          id: '_user',
-          lat: coordinates.lat,
-          lng: coordinates.lng,
-        }
-        const currentUserMarker: UserMarker = userMarker()
-        if (currentUserMarker) {
-          currentUserMarker.update(values)
-          updateUserMarkerPosition(coordinates)
-        } else {
-          console.log('There is not user marker')
-        }
-      }
+export const updateUserMarker = (coordinates: LngLat): void => {
+  // TODO: Add true type
+  const values = {
+    id: '_user',
+    lat: coordinates.lat,
+    lng: coordinates.lng,
+  }
+  const currentUserMarker: UserMarker = userMarker()
+  if (currentUserMarker) {
+    currentUserMarker.update(values)
+    updateUserMarkerPosition(coordinates)
+  } else {
+    console.log('There is not user marker')
+  }
+}
