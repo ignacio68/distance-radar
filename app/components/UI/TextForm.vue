@@ -83,6 +83,10 @@ export default Vue.extend({
     dismissKeyboard: {
       type: Boolean,
       default: false
+    },
+    resetTextField: {
+      type: Boolean,
+      default: false
     }
   },
   data(){
@@ -94,6 +98,10 @@ export default Vue.extend({
   watch: {
     dismissKeyboard(newValue: boolean) {
       newValue ? this.reset() : console.log('The keyboard can be shown')
+    },
+
+    resetTextField(newValue: boolean) {
+      newValue ? this.textFieldValue = null : console.log('The TextField is empty')
     }
   },
 
@@ -104,6 +112,7 @@ export default Vue.extend({
   methods: {
     onReturnPress() {
       this.$emit('on-return-press', this.textFieldValue)
+
     },
 
     onTextChange() {
@@ -114,6 +123,7 @@ export default Vue.extend({
       console.log('TextForm reset()')
       this.textFieldValue = null
       this.$refs.textField.nativeView.dismissSoftInput()
+
     },
   }
 })

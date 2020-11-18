@@ -21,6 +21,7 @@
           returnKeyType="done"
           :maxLengthText="24"
           :dismissKeyboard="dismissKeyboard"
+          :resetTextField="resetTextField"
           @on-return-press="onReturnPress"
         />
         <Label
@@ -99,17 +100,21 @@ export default Vue.extend({
       // hasGroupError: false,
       idError: '0',
       dismissKeyboard: false,
+      resetTextField: false,
       isEnabledAddButton: false,
     }
   },
 
   async mounted() {
     await this.reset()
+    this.dismissKeyboard = false
+    this.resetTextField = false
   },
 
   methods: {
     async onReturnPress(textValue: string) {
       await this.setId(textValue)
+      await this.hasIdError()
       this.isEnabledAddButton = true
     },
 
@@ -117,12 +122,14 @@ export default Vue.extend({
       this.setId(null)
       this.idError = 0
       this.isEnabledAddButton = false
+      this.resetTextField = true
       // this.group = null
     },
 
     async hideNewLocationMenu() {
       await this.reset()
       this.dismissKeyboard = false
+      this.resetTextField = false
       setVisibility('newLocationMenu', false)
     },
 
@@ -144,19 +151,20 @@ export default Vue.extend({
     onCancel() {
       console.log('onCancel()')
       this.dismissKeyboard = true
+      this.resetTextField = true
       this.hideNewLocationMenu()
     },
 
     async newLocation(values: Location) {
         console.log(`newLocation()`)
         await newLocation(values)
-        await this.reset()
-        this.hideNewLocationMenu()
+        await this.hideNewLocationMenu()
+        this.reset()
       },
 
     async onAddNewLocation() {
       console.log('onAdd()')
-      await this.hasIdError()
+      // await this.hasIdError()
       !this.idError ? this.newLocation(this.location) : console.log(`ID error is: ${this.idError}`)
     },
   },
