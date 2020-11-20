@@ -18,6 +18,7 @@ import { i18n, setLanguage } from '@/locales'
 
 //Components
 import Home from './views/Home.vue'
+// import HomeTest from './views/TestViews/HomeTest.vue'
 
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,4 +34,5 @@ new Vue({
     setLanguage()
   },
   render: (h) => h('frame', [h(Home)]),
+  // render: (h) => h('frame', [h(HomeTest)]),
 }).$start()
