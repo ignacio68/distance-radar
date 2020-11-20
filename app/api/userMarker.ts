@@ -5,11 +5,11 @@ import {
   updateUserMarkerPosition,
 } from '@/store/userMarkerStore'
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
-import { toggleVisibility } from '@/composables/useComponent'
+import { setVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LngLat } from '@/types/types'
 
-const onTap = () => toggleVisibility('newLocationMenu')
+const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
 const isUserMarker = async (coordinates: LngLat): Promise<void> => {
   Promise.resolve(
