@@ -15,15 +15,11 @@
         width="100%"
         @tap-visibility="onTapVisibility"
       />
-      <Frame
-        id="Map"
+      <MapWrapper
+        id="MapWrapper"
         row="1"
-      >
-        <MapWrapper
-          id="MapWrapper"
-          @first-location-alert="onFirstLocationAlert"
-        />
-      </Frame>
+        @first-location-alert="onFirstLocationAlert"
+      />
       <BottomAppBar
         class="BottomBar"
         row="2"
