@@ -4,11 +4,7 @@
       <MapComponent
         height="100%"
         row="0"
-        :mapToken="mapToken"
-        :zoomLevel="15"
-        :userLatitude="initialLocation.lat"
-        :userLongitude="initialLocation.lng"
-        @on-map-ready="onMapReady($event)"
+        @first-location-alert="$emit('first-location-alert')"
       />
       <StackLayout
         v-if="backgroundFilter"
@@ -22,30 +18,22 @@
         ref="bottomSheet"
         borderTopLeftRadius="16"
         borderTopRightRadius="16"
-        backgroundColor="white"
+        backgroundColor="red"
         verticalAlignment="top"
         androidElevation="16"
         @loaded="loadBottomSheet"
         @tap="preventBubbling"
       >
+      <Page actionBarHidden="true">
         <StackLayout>
           <keep-alive>
-          <NewLocation
-            v-if="isVisibleNewLocationMenu"
-            class="newMarker m-16"
-            backgroundColor="white"
-          />
-          </keep-alive>
-          <keep-alive>
-          <NewArea
-            v-if="isNewAreaMenuShowing"
-            class="newArea m-16"
-            backgroundColor="white"
-            @on-new-area-cancel="hideBottomSheet()"
-            @on-new-area-done="newSecurityArea"
-          />
+            <component
+              v-bind:is="bottomSheetContent"
+              class="m-16"
+            ></component>
           </keep-alive>
         </StackLayout>
+      </Page>
       </Frame>
     </GridLayout>
   </Page>
@@ -54,41 +42,13 @@
 <script lang="ts">
   import Vue from 'nativescript-vue'
 
-  /***** MAP *****/
-  import MapComponent from './MapComponent.vue'
-  import { mapToken } from '@/setup/map'
-  import { setCenter } from '@/api/map'
-  import { getMap as map } from '@/store/mapStore'
-
-  /***** USER MARKER *****/
-  import { updateUserMarker } from '@/api/userMarker'
-
-  /***** USER LOCATION *****/
-  import {
-            getInitialLocation as initialLocation,
-           } from '@/store/userLocationStore'
-
-  /***** LOCATIONS *****/
-  import NewLocation from './NewLocation.vue'
-  import { numberOfLocations } from '@/store/locationsStore'
-
-  /***** SECURITY AREAS *****/
-  // import NewArea from './NewArea.vue'
-  // import securityArea from '@/store/securityAreaStore'
-  // import {
-  //           addSource,
-  //           setSecurityArea,
-  //           showSecurityArea,
-  //           removeSecurityArea,
-  //         } from '@/api/securityArea'
-
-  // import { setStorage } from '@/api/storage'
-  import { Color } from '@nativescript/core/color'
-  import { Screen, Enums } from '@nativescript/core'
-
+  import { getVisibility, setVisibility } from '@/composables/useComponent'
+  import { Color, Screen, Enums } from '@nativescript/core'
   import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
 
-  import { getVisibility, setVisibility } from '@/composables/useComponent'
+  import MapComponent from './MapComponent.vue'
+  import NewLocation from './NewLocation.vue'
+  import NewSecurityArea from './NewSecurityArea.vue'
 
   export default Vue.extend({
     name: 'Home',
@@ -96,7 +56,7 @@
     components: {
       MapComponent,
       NewLocation,
-      // NewArea
+      NewSecurityArea
     },
 
     props:{
@@ -104,26 +64,27 @@
         type: Boolean,
         default: true
       },
-      isNewAreaMenuShowing: {
-        type: Boolean,
-        default: false
-      }
     },
 
     data() {
       return {
-        mapToken: mapToken,
         screenHeight: Screen.mainScreen.heightDIPs,
         screenWidth: Screen.mainScreen.widthDIPs,
-        backgroundFilter: false
+        backgroundFilter: false,
+        bottomSheetContent: NewLocation,
       }
     },
 
     computed: {
-      map,
-      initialLocation, //TODO: Change to the user's country default center point
-      isVisibleNewLocationMenu() {
+
+      isVisibleNewLocationMenu(): boolean {
+        console.log(`MapWrapper::computed:isVisibleNewLocationMenu() ${getVisibility('newLocationMenu')}`)
         return getVisibility('newLocationMenu')
+      },
+
+      isVisibleNewSecurityAreaMenu(): boolean {
+        console.log(`MapWrapper::computed:isVisibleNewSecurityAreaMenu() ${getVisibility('newSecurityAreaMenu')}`)
+        return getVisibility('newSecurityAreaMenu')
       },
 
       bottomSheet() {
@@ -132,48 +93,40 @@
     },
 
     watch: {
-      isVisible: function(newValue) {
-        this.showSecurityArea('user', newValue)
+      // isVisible: function(newValue: boolean, oldValue: boolean) {
+      //   this.showSecurityArea('user', newValue)
+      // },
+
+      isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
+        console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
+        if(newValue) {
+          this.bottomSheetContent = NewLocation
+          this.showBottomSheet()
+        } else {
+          this.hideBottomSheet()
+        }
       },
 
-      isVisibleNewLocationMenu(newValue){
-        console.log(`isVisibleNewLocationMenu?: ${newValue}`)
-        newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
-      },
-
-      isNewAreaMenuShowing(newValue){
-        newValue === true ? this.showBottomSheet() : this.hideBottomSheet()
+      isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
+        console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
+        if(newValue) {
+          this.bottomSheetContent = NewSecurityArea
+          this.showBottomSheet()
+        } else {
+          this.hideBottomSheet()
+        }
       }
     },
 
     methods: {
-      preventBubbling(){
+      preventBubbling() {
         console.log('onTap')
         return
       },
 
-      /***** MAP *****/
-      onMapReady() {
-        console.log('onMapReady()')
-        this.setOnMapLongClickAction()
-        setCenter().then(() => {
-          if (!numberOfLocations()) this.$emit('first-location-alert')
-        })
-        // TODO: Change source name, add options
-        // addSource('main')
-        // this.showMarkers()8
-      },
-
-      setOnMapLongClickAction() {
-        map().setOnMapLongClickListener(function (point: LngLat) {
-          updateUserMarker(point)
-          return true
-        })
-      },
-
-
       /***** BOTTOM SHEET *****/
       loadBottomSheet() {
+        console.log('loadBottomSheet()')
         this.bottomSheet.translateY = this.screenHeight
       },
       showBottomSheet() {
@@ -195,32 +148,6 @@
           curve: Enums.AnimationCurve.cubicBezier(.44, .63, 0, 1)
         })
       },
-
-      // /***** SECURITY AREA ******/
-
-      // newSecurityArea(id: string, color: any) {
-      //   if (securityArea.getSecurityArea(id)) {
-      //     console.log(`${id} exist, choose another name`)
-      //     return
-      //   }
-      //   const polygonOptions: BasicPolygonOptions = {
-      //     id: id,
-      //     radius: this.radius,
-      //     fillColor: new Color(color),
-      //     fillOpacity: this.fillOpacity / 10,
-      //     isVisible: true
-      //   }
-      //   setSecurityArea(polygonOptions)
-      // },
-
-      // showSecurityArea(id: string, value:boolean) {
-      //   showSecurityArea(id, value)
-      // },
-
-      // removeSecurityArea(id: string) {
-      //   console.log(`remove polygon: ${id}`)
-      //   removeSecurityArea(id)
-      // }
     }
   })
 </script>
