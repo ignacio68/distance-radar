@@ -18,7 +18,7 @@
         ref="bottomSheet"
         borderTopLeftRadius="16"
         borderTopRightRadius="16"
-        backgroundColor="red"
+        backgroundColor="white"
         verticalAlignment="top"
         androidElevation="16"
         @loaded="loadBottomSheet"
@@ -133,7 +133,6 @@
         console.log('showBottomSheet()')
         this.backgroundFilter = true
         this.animationBottomSheet(600)
-        // this.$showModal(NewLocation)
       },
       async hideBottomSheet() {
         console.log('hideBottomSheet()')
@@ -144,7 +143,6 @@
         this.bottomSheet.animate({
           duration: 1000,
           translate: { x: 0, y: this.screenHeight - height },
-          // curve: new CubicBezierAnimationCurve(.44, .63, 0, 1)
           curve: Enums.AnimationCurve.cubicBezier(.44, .63, 0, 1)
         })
       },
