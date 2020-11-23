@@ -1,5 +1,4 @@
 <template>
-  <Page actionBarHidden="true">
     <GridLayout>
       <MapComponent
         height="100%"
@@ -24,19 +23,18 @@
         @loaded="loadBottomSheet"
         @tap="preventBubbling"
       >
-      <Page actionBarHidden="true">
-        <StackLayout>
-          <keep-alive>
-            <component
-              v-bind:is="bottomSheetContent"
-              class="m-16"
-            ></component>
-          </keep-alive>
-        </StackLayout>
-      </Page>
+        <Page actionBarHidden="true">
+          <StackLayout>
+            <keep-alive>
+              <component
+                v-bind:is="bottomSheetContent"
+                class="m-16"
+              ></component>
+            </keep-alive>
+          </StackLayout>
+        </Page>
       </Frame>
     </GridLayout>
-  </Page>
 </template>
 
 <script lang="ts">
