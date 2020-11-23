@@ -13,26 +13,26 @@
 </template>
 
 <script lang="ts">
-  // import { setGeolocationServicesEnabled } from '@/api/geolocation'
-  // import { getIsEnabled as isGeolocationServicesEnabled } from '@/composables/useGeolocation'
-  // import Home from '@/views/Home.vue'
+//   import { setGeolocationServicesEnabled } from '@/api/geolocation'
+//   import { getIsEnabled as isGeolocationServicesEnabled } from '@/composables/useGeolocation'
+//   import Home from '@/views/Home.vue'
 
-  // export default {
-  //   name: "Modal",
-  //   computed: {
-  //     isGeolocationServicesEnabled
-  //   },
-  //   watch: {
-  //     isGeolocationServicesEnabled(newValue: boolean) {
-  //       console.log(`Modal: ${this.isGeolocationServicesEnabled}`)
-  //       // TODO: Add error handler
-  //       newValue ? this.$navigateTo(Home) : console.log('An error ocurred')
-  //     }
-  //   },
-  //   mounted() {
-  //     setGeolocationServicesEnabled()
-  //     console.log(`isGeolocationServicesEnabled? ${JSON.stringify(this.isGeolocationServicesEnabled)}` )
-  //   }
+//   export default {
+//     name: "Modal",
+//     computed: {
+//       isGeolocationServicesEnabled
+//     },
+//     watch: {
+//       isGeolocationServicesEnabled(newValue: boolean) {
+//         console.log(`Modal: ${this.isGeolocationServicesEnabled}`)
+//         // TODO: Add error handler
+//         newValue ? this.$navigateTo(Home) : console.log('An error ocurred')
+//       }
+//     },
+//     mounted() {
+//       setGeolocationServicesEnabled()
+//       console.log(`isGeolocationServicesEnabled? ${JSON.stringify(this.isGeolocationServicesEnabled)}` )
+//     }
 // }
 </script>
 
