@@ -6,39 +6,61 @@ import {
   updateLocationsStore,
   getLocations,
   deleteLocation,
+  setSelectedLocation,
+  getSelectedLocation,
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
 import { Location } from '@/types/types'
 
-export const showLocations = getLocations
+export const showLocations = getLocations()
 
-const onTap = (): boolean => setVisibility('newSecurityAreaMenu', true)
+const onTap = (id: string): void => {
+  setVisibility('newSecurityAreaMenu', true)
+  setSelectedLocation(id)
+}
 
-const onCalloutTap = () => console.log('onCalloutTapLocation()')
+const onCalloutTap = (): void =>
+  console.log(`locations.ts::onCalloutTapLocation()`)
 
 export const newLocation = (location: Location): void => {
-  console.log('addLocation()')
   const opts = {
     lat: userMarker().lat,
     lng: userMarker().lng,
     title: location.id,
     selected: true,
-    onTap: () => onTap(),
-    onCalloutTap: onCalloutTap(),
+    onTap: () => onTap(opts.title),
+    onCalloutTap: () => onCalloutTap(),
   }
-  location = Object.assign({ ...location, ...opts })
-  const newLocation = []
-  newLocation.push(location)
+  const completeLocation: Location = { ...location, ...opts }
+  console.log(
+    `locations.ts::addLocation(): ${JSON.stringify(completeLocation)}`
+  )
+  const newLocation: Location[] = []
+  newLocation.push(completeLocation)
   map()
     .addMarkers(newLocation)
-    .then(() => addNewLocation(location))
-  console.log(`New location: ${JSON.stringify(getLocations)}`)
+    .then(() => {
+      addNewLocation(completeLocation).then(() => {
+        console.log(`locations.ts::new location:`)
+        console.dir(getLocations())
+      })
+    })
 }
 
-export const updateLocation = (location: Location): void => {
-  updateLocationsStore(location)
-  console.dir(getLocations)
+export const fetchSelectedLocation = (): Location => {
+  console.log(
+    `locations.ts::fetchSelectedLocation() ${JSON.stringify(
+      getSelectedLocation()
+    )}`
+  )
+  return getSelectedLocation()
+}
+
+export const updateLocation = async (location: Location): Promise<void> => {
+  await updateLocationsStore(location)
+  console.log(`locations.ts::new location:`)
+  console.dir(getLocations())
 }
 
 export const removeLocation = (id: string): Location[] => deleteLocation(id)
