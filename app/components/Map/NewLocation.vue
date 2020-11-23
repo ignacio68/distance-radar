@@ -1,5 +1,4 @@
 <template>
-  <Page actionBarHidden="true">
     <StackLayout orientation="vertical">
       <Label
         class="menu_title"
@@ -48,25 +47,24 @@
           <MDButton
             class="new-location-menu_button_add m-r-0"
             width="144"
-            :isEnabled="isEnabledAddButton"
+            :isEnabled="enabledAddButton"
             :text="$t('lang.components.newLocation.addButton')"
             @tap="onAddNewLocation"
           />
         </StackLayout>
       </GridLayout>
     </StackLayout>
-  </Page>
 </template>
 
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import '@/plugins/installMDAButton'
+import '@/plugins/installMDButton'
 
 import { setVisibility } from '@/composables/useComponent'
 
 import { newLocation } from '@/api/locations'
-// import { hideSoftKeyboard } from '@/services/commonsService'
+
 import { hasId } from '@/store/locationsStore'
 
 import { Location } from '@/types/types'
@@ -97,75 +95,93 @@ export default Vue.extend({
         selected: true,
         icon: 'res://ic_person_pin_pink_48dp'
       },
-      // hasGroupError: false,
+      //GroupError: '0',
       idError: '0',
       dismissKeyboard: false,
       resetTextField: false,
-      isEnabledAddButton: false,
+      enabledAddButton: false,
     }
   },
 
   async mounted() {
+    console.log('NewLocationMenu::mounted()')
     await this.reset()
-    this.dismissKeyboard = false
-    this.resetTextField = false
+    await this.isDismissKeyboard(false)
+    await this.isResetTextField(false)
   },
 
   methods: {
-    async onReturnPress(textValue: string) {
-      await this.setId(textValue)
-      await this.hasIdError()
-      this.isEnabledAddButton = true
+    isDismissKeyboard(value: boolean) {
+      this.dismissKeyboard = value
     },
 
-    reset() {
-      this.setId(null)
-      this.idError = 0
-      this.isEnabledAddButton = false
-      this.resetTextField = true
+    isResetTextField(value: boolean) {
+      this.resetTextField = value
+      console.log(`NewLocation::isResetTextField(): ${this.resetTextField}`)
+    },
+
+    isEnabledAddButton(value: boolean) {
+      this.enabledAddButton = value
+    },
+
+    setIdError(value: number) {
+      this.idError = value
+    },
+
+    async reset() {
+      console.log('NewLocation::reset()')
+      await this.setId(null)
+      await this.isResetTextField(true)
+      await this.setIdError(0)
+      this.isEnabledAddButton(false)
       // this.group = null
     },
 
     async hideNewLocationMenu() {
-      await this.reset()
-      this.dismissKeyboard = false
-      this.resetTextField = false
+      console.log('NewLocation::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
+      await this.reset()
+      await this.isIsmissKeyboard(true)
+      await this.isResetTextField(false)
     },
 
     setId(id: string) {
       this.location.id = id
-      this.idError = 0
-      console.log(`id: ${this.location.id}`)
+      this.setIdError(0)
+      // console.log(`id: ${this.location.id}`)
       // this.$emit('enabled-fab', false)
     },
 
     hasIdError() {
       !this.location.id ?
-        this.idError = 1
+        this.setIdError(1)
           : hasId(this.location.id) ?
-          this.idError = 2
-            : this.idError = 0
+          this.setIdError(2)
+            : this.setIdError(0)
     },
 
-    onCancel() {
-      console.log('onCancel()')
-      this.dismissKeyboard = true
-      this.resetTextField = true
+    async newLocation() {
+        // console.log(`newLocation()`)
+        await newLocation(this.location)
+        this.hideNewLocationMenu()
+      },
+
+    async onReturnPress(textValue: string) {
+      await this.setId(textValue)
+      await this.hasIdError()
+      this.isEnabledAddButton(true)
+    },
+
+    async onCancel() {
+      // console.log('onCancel()')
+      await this.reset()
       this.hideNewLocationMenu()
     },
 
-    async newLocation(values: Location) {
-        console.log(`newLocation()`)
-        await newLocation(values)
-        await this.hideNewLocationMenu()
-        this.reset()
-      },
-
     async onAddNewLocation() {
-      console.log('onAdd()')
-      // await this.hasIdError()
-      !this.idError ? this.newLocation(this.location) : console.log(`ID error is: ${this.idError}`)
+      // console.log('onAddNewLocation()')
+      !this.idError ? await this.newLocation() : console.log(`ID error is: ${this.idError}`)
+
     },
   },
 })
