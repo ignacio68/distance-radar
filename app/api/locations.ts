@@ -8,6 +8,7 @@ import {
   deleteLocation,
   setSelectedLocation,
   getSelectedLocation,
+  hasSecurityArea,
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
@@ -16,8 +17,14 @@ import { Location } from '@/types/types'
 export const showLocations = getLocations()
 
 const onTap = (id: string): void => {
-  setVisibility('newSecurityAreaMenu', true)
-  setSelectedLocation(id)
+  hasSecurityArea(id).then((result) => {
+    if (result) {
+      console.log('The location has a security area')
+    } else {
+      setVisibility('newSecurityAreaMenu', true)
+      setSelectedLocation(id)
+    }
+  })
 }
 
 const onCalloutTap = (): void =>
@@ -29,6 +36,7 @@ export const newLocation = (location: Location): void => {
     lng: userMarker().lng,
     title: location.id,
     selected: true,
+    hasSecurityArea: false,
     onTap: () => onTap(opts.title),
     onCalloutTap: () => onCalloutTap(),
   }

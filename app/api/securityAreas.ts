@@ -1,4 +1,7 @@
+import { updateLocation } from './locations'
+
 import { getMap as map } from '@/store/mapStore'
+
 import {
   addNewSecurityArea,
   getSecurityArea,
@@ -13,6 +16,7 @@ import {
   CircleLayer,
   LngLat,
   Circle,
+  Location,
 } from '@/types/types'
 
 // TODO: using layers
@@ -58,6 +62,15 @@ export const newSecurityArea = (args: BasicPolygonOptions): void => {
     map()
       .addPolygon(polygonOptions)
       .then(() => addNewSecurityArea(polygonOptions))
+      .then(() => {
+        const newSettings: Location = {
+          id: polygonOptions.id,
+          lat: polygonOptions.center.lat,
+          lng: polygonOptions.center.lng,
+          hasSecurityArea: true,
+        }
+        updateLocation(newSettings)
+      })
   })
 }
 
