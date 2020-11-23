@@ -10,10 +10,6 @@ const state = Vue.observable({
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
 
-// const findSelectedLocation: number = state.locations.findIndex(
-//   (location) => location.selected === true
-// )
-
 // export const hasId = (id: string): boolean =>
 //   (findIndex(id) as unknown) as boolean
 export const hasId = (id: string): boolean =>
@@ -57,10 +53,10 @@ export const setSelectedLocation = (id: string): string => {
   return (state.selectedLocation = id)
 }
 
-// export const getSelectedLocation = (): Location => {
-//   const index = findSelectedLocation
-//   return state.locations[index]
-// }
-
 export const getSelectedLocation = (): Location =>
   getLocation(state.selectedLocation)
+
+export const hasSecurityArea = async (id: string): Promise<boolean> => {
+  const location = findIndex(id)
+  return state.locations[location].hasSecurityArea
+}
