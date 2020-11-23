@@ -88,7 +88,8 @@ export interface Location extends LngLat {
 
 export interface BasicPolygonOptions {
   id: string
-  radius?: number
+  radius: number
+  center: LngLat
   fillColor?: string | Color
   fillOpacity?: number
   isVisible?: boolean
