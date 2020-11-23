@@ -1,7 +1,7 @@
 {
   "name": "distance-radar",
   "displayName": "Blank",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "private": "true",
   "description": "NativeScript Application",
   "keywords": [
@@ -35,6 +35,7 @@
   "dependencies": {
     "@nativescript-community/ui-material-button": "^5.0.25",
     "@nativescript-community/ui-material-floatingactionbutton": "^5.0.14",
+    "@nativescript-community/ui-material-slider": "^5.1.4",
     "@nativescript/core": "^7.0.9",
     "@nativescript/geolocation": "^7.0.0",
     "@nativescript/theme": "^2.5.0",
