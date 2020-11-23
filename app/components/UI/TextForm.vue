@@ -95,12 +95,17 @@ export default Vue.extend({
    }
   },
 
+  computed: {
+
+  },
+
   watch: {
     dismissKeyboard(newValue: boolean) {
       newValue ? this.reset() : console.log('The keyboard can be shown')
     },
 
-    resetTextField(newValue: boolean) {
+    resetTextField(newValue: boolean, oldValue:boolean) {
+      console.log(`TextForm::resetTextField: ${this.resetTextField}`)
       newValue ? this.textFieldValue = null : console.log('The TextField is empty')
     }
   },
