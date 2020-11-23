@@ -51,7 +51,7 @@ export default Vue.extend({
     }
   },
   methods:{
-      onTap(color) {
+      onTap(color: { name: string, color: string }) {
         this.colorItemRipple
         this.$emit('on-selected-color', color)
         console.log(`color: ${color.name}`)

@@ -94,8 +94,8 @@ export default Vue.extend({
           lng: 0,
         },
         radius: 1,
-        color: '#31aec4',
-        opacity: .5,
+        fillColor: '',
+        fillOpacity: .5,
         group: null,
         isVisible: true,
       },
@@ -148,13 +148,18 @@ export default Vue.extend({
       console.log('NewSecurityArea.vue::onOpacityChanged()')
     },
 
-    setColor(color: any) {
+    setColor(color: { name: string, color: string }) {
       console.log(`NewSecurityArea.vue::color: ${color.name}`)
-      this.securityArea.color = color.color
+      this.securityArea.fillColor = new Color(color.color)
+    },
+
+    setRadius(value: number) {
+      this.securityArea.radius = value
     },
 
     setOpacity(value: number) {
-      this.securityArea = value / 10
+      console.log('NewSecurityArea.vue::setRadius()')
+      this.securityArea.fillOpacity  = value / 10
     },
 
     setIdError(value: number) {
@@ -169,7 +174,7 @@ export default Vue.extend({
             : this.setIdError(0)
     },
 
-    async setOptions() {
+    async setOptions(): Promise<void> {
       console.log('NewSecurityArea.vue::setOptions()')
       const options = await fetchSelectedLocation()
       console.log(`NewSecurityArea.vue::options:  + ${JSON.stringify(options)}`)
@@ -178,12 +183,8 @@ export default Vue.extend({
       this.securityArea.center.lng = options.lng
     },
 
-    async newSecurityArea() {
+    async newSecurityArea(): Promise<void>{
       console.log('NewSecurityArea.vue::newSecurityArea()')
-      // const polygonOptions: BasicPolygonOptions = {
-      //   fillColor: new Color(color),
-      //   fillOpacity: this.fillOpacity / 10,
-      // }
       await this.setOptions()
       console.log(`NewSecurityArea.vue::securityArea: ${JSON.stringify(this.securityArea)}`)
       await newSecurityArea(this.securityArea)
