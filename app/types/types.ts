@@ -67,7 +67,7 @@ export interface LocationInCircle extends LngLat {
 export interface UserMarker extends LngLat {
   id: string
   onTap?: () => unknown
-  update?: (newSettings: Location) => unknown
+  update?: (newSettings: UserMarker) => void
 }
 
 export interface Location extends LngLat {
@@ -77,11 +77,12 @@ export interface Location extends LngLat {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: () => unknown
-  onCalloutTap?: () => unknown
+  onTap?: () => void
+  onCalloutTap?: () => void
   selected?: boolean
+  hasSecurityArea: boolean
   isFollowed?: boolean
-  update?: (newSettings: Location) => unknown
+  update?: (newSettings: unknown) => void
   ios?: boolean
   android?: boolean
 }

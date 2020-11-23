@@ -26,7 +26,9 @@ export const getSecurityArea = (id: string): PolygonOptions => {
   return securityArea
 }
 
-export const addNewSecurityArea = (securityArea: PolygonOptions): void => {
+export const addNewSecurityArea = async (
+  securityArea: PolygonOptions
+): Promise<void> => {
   state.securityAreas.push(securityArea)
 }
 
