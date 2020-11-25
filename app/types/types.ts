@@ -45,11 +45,11 @@ export interface Circle {
    * The radius of the security area circle.
    */
 
-  radius: number
+  radius?: number
   /**
    * The number of points of the polygon of the security area circle.
    */
-  numberOfPoints: number
+  numberOfEdges?: number
 }
 
 export interface Azimuth {
