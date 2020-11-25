@@ -113,16 +113,18 @@ export default Vue.extend({
   watch: {
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
         console.log(`NewLocationMenu::watch:isVisibleNewLocationMenu(): ${newValue}`)
-        newValue ? this.isResetTextField(false) : this.isResetTextField(true)
+        if(newValue){
+          this.isResetTextField(false)
+          this.isDismissKeyboard(false)
+        } else {
+          this.isResetTextField(true)
+        }
         }
       },
-
 
   async mounted() {
     console.log('NewLocationMenu::mounted()')
     await this.reset()
-    await this.isDismissKeyboard(false)
-    // await this.isResetTextField(true)
   },
 
   methods: {
@@ -156,7 +158,7 @@ export default Vue.extend({
       console.log('NewLocationMenu::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
       await this.reset()
-      await this.isIsmissKeyboard(true)
+      this.isDismissKeyboard(true)
     },
 
     setId(id: string) {
