@@ -12,56 +12,61 @@ const locationOptions: geolocation.Options = {
   timeout: 10000,
 }
 
-const enableLocationRequest = async (): Promise<void> =>
-  await geolocation.enableLocationRequest(true).then(() => {
-    console.log('enableLocationRequest()')
+const enableLocationRequest = (): void => {
+  geolocation.enableLocationRequest(true).then(() => {
+    console.log('geolocationService::enableLocationRequest()')
     isLocationServicesEnabled()
   })
+}
 
-const isLocationServicesEnabled = async (): Promise<boolean> => {
-  console.log('isLocationServicesEnabled()')
-  const isEnabled = await geolocation.isEnabled().then(async (isEnabled) => {
+const isLocationServicesEnabled = async (): Promise<void> => {
+  console.log('geolocationService::isLocationServicesEnabled()')
+  await geolocation.isEnabled().then(async (isEnabled) => {
     if (!isEnabled) {
       console.log('The location service is not enabled')
-      await enableLocationRequest()
+      enableLocationRequest()
     }
-    console.log(`The location service is enabled? ${JSON.stringify(isEnabled)}`)
-    return isEnabled
   })
-  return isEnabled
 }
 
 const fetchCurrentUserLocation = async (): Promise<LngLat> => {
-  console.log('fetchCurrentUserLocation()')
-  const location = await geolocation.getCurrentLocation(locationOptions).then((result) => {
+  console.log('geolocationService::fetchCurrentUserLocation()')
+  const fetchLocation = await geolocation.getCurrentLocation(locationOptions).then((result) => {
     const location: LngLat = {
       lat: result.latitude,
       lng: result.longitude,
     }
-    console.log(`fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
+    console.log(`geolocationService::fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
     return location
   })
-  return location
+  return fetchLocation
 }
 
 export const getCurrentUserLocation = async (): Promise<LngLat> => {
-  console.log('getUserCurrentLocation()')
+  console.log('geolocationService::getUserCurrentLocation()')
   await isLocationServicesEnabled()
-  const location = await fetchCurrentUserLocation()
-    .then((location) => {
-      console.log(`getUserCurrentLocation(): ${JSON.stringify(location)}`)
-      setCurrentUserLocation(location)
-      return location
-    })
-    .catch((error) => {
-      console.log(`getCurrentLocation() error: ${JSON.stringify(error)}`)
-      throw error
-    })
+  const location = await fetchCurrentUserLocation().catch((error) => {
+    console.log(`geolocationService::getCurrentLocation() error: ${JSON.stringify(error)}`)
+    throw error
+  })
+  setCurrentUserLocation(location)
   return location
+  // const location = await fetchCurrentUserLocation()
+  //   .then((location) => {
+  //     console.log(`getUserCurrentLocation(): ${JSON.stringify(location)}`)
+  //     setCurrentUserLocation(location)
+  //     return location
+  //   })
+  //   .catch((error) => {
+  //     console.log(`getCurrentLocation() error: ${JSON.stringify(error)}`)
+  //     throw error
+  //   })
+  // return location
 }
 
-export const watchUserLocation = (): void => {
+export const watchUserLocation = async (): Promise<void> => {
   console.log('watchUserLocation()')
+  await isLocationServicesEnabled()
   geolocation.watchLocation(
     (position) => {
       const currentLocation: LngLat = {
