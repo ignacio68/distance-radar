@@ -57,13 +57,6 @@ export interface Azimuth {
   radius: number
   center: LngLat
 }
-
-export interface LocationInCircle extends LngLat {
-  circleLng: number
-  circleLat: number
-  circleRadius: number
-}
-
 export interface UserMarker extends LngLat {
   id: string
   onTap?: () => unknown
