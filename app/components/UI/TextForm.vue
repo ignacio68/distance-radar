@@ -80,11 +80,11 @@ export default Vue.extend({
       type: Number,
       default: 0
     },
-    dismissKeyboard: {
+    isDismissedKeyboard: {
       type: Boolean,
       default: false
     },
-    resetTextField: {
+    isResetTextField: {
       type: Boolean,
       default: false
     }
@@ -100,12 +100,12 @@ export default Vue.extend({
   },
 
   watch: {
-    dismissKeyboard(newValue: boolean) {
+    isDismissedKeyboard(newValue: boolean) {
       newValue ? this.reset() : console.log('TextForm::"The keyboard can be shown"')
     },
 
-    resetTextField(newValue: boolean, oldValue:boolean) {
-      console.log(`TextForm::resetTextField: ${this.resetTextField}`)
+    isResetTextField(newValue: boolean, oldValue:boolean) {
+      console.log(`TextForm::isResetTextField: ${this.isResetTextField}`)
       newValue ? this.textFieldValue = null : console.log('TextForm::"The TextField is empty"')
     }
   },

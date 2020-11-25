@@ -19,8 +19,8 @@
           :labelText="$t('lang.components.newLocation.id')"
           returnKeyType="done"
           :maxLengthText="24"
-          :dismissKeyboard="dismissKeyboard"
-          :resetTextField="resetTextField"
+          :isDismissedKeyboard="isDismissedKeyboard"
+          :isResetTextField="isResetTextField"
           @on-return-press="onReturnPress"
         />
         <Label
@@ -47,7 +47,7 @@
           <MDButton
             class="new-location-menu_button_add m-r-0"
             width="144"
-            :isEnabled="enabledAddButton"
+            :isEnabled="isEnabledAddButton"
             :text="$t('lang.components.newLocation.addButton')"
             @tap="onAddNewLocation"
           />
@@ -97,9 +97,9 @@ export default Vue.extend({
       },
       //GroupError: '0',
       idError: '0',
-      dismissKeyboard: false,
-      resetTextField: false,
-      enabledAddButton: false,
+      isDismissedKeyboard: false,
+      isResetTextField: false,
+      isEnabledAddButton: false,
     }
   },
 
@@ -114,10 +114,10 @@ export default Vue.extend({
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
         console.log(`NewLocationMenu::watch:isVisibleNewLocationMenu(): ${newValue}`)
         if(newValue){
-          this.isResetTextField(false)
-          this.isDismissKeyboard(false)
+          this.resetTextField(false)
+          this.dismissKeyboard(false)
         } else {
-          this.isResetTextField(true)
+          this.resetTextField(true)
         }
         }
       },
@@ -128,18 +128,18 @@ export default Vue.extend({
   },
 
   methods: {
-    isDismissKeyboard(value: boolean) {
-      this.dismissKeyboard = value
-      console.log(`NewLocationMenu::isDismissKeyboard: ${this.dismissKeyboard}`)
+    dismissKeyboard(value: boolean) {
+      this.isDismissedKeyboard = value
+      console.log(`NewLocationMenu::dismissKeyboard: ${this.isDismissedKeyboard}`)
     },
 
-    isResetTextField(value: boolean) {
-      this.resetTextField = value
-      console.log(`NewLocationMenu::isResetTextField(): ${this.resetTextField}`)
+    resetTextField(value: boolean) {
+      this.isResetTextField = value
+      console.log(`NewLocationMenu::resetTextField(): ${this.isResetTextField}`)
     },
 
-    isEnabledAddButton(value: boolean) {
-      this.enabledAddButton = value
+    enabledAddButton(value: boolean) {
+      this.isEnabledAddButton = value
     },
 
     setIdError(value: number) {
@@ -150,7 +150,7 @@ export default Vue.extend({
       console.log('NewLocationMenu::reset()')
       await this.setId(null)
       await this.setIdError(0)
-      this.isEnabledAddButton(false)
+      this.enabledAddButton(false)
       // this.group = null
     },
 
@@ -158,7 +158,7 @@ export default Vue.extend({
       console.log('NewLocationMenu::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
       await this.reset()
-      this.isDismissKeyboard(true)
+      this.dismissKeyboard(true)
     },
 
     setId(id: string) {
@@ -183,7 +183,7 @@ export default Vue.extend({
     async onReturnPress(textValue: string) {
       await this.setId(textValue)
       await this.hasIdError()
-      this.isEnabledAddButton(true)
+      this.enabledAddButton(true)
     },
 
     async onCancel() {
