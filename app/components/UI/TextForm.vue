@@ -33,7 +33,7 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { getVisibility, setVisibility } from '@/composables/useComponent'
+import { setVisibility } from '@/composables/useComponent'
 
 export default Vue.extend({
   name: "TextForm",
@@ -101,12 +101,12 @@ export default Vue.extend({
 
   watch: {
     dismissKeyboard(newValue: boolean) {
-      newValue ? this.reset() : console.log('The keyboard can be shown')
+      newValue ? this.reset() : console.log('TextForm::"The keyboard can be shown"')
     },
 
     resetTextField(newValue: boolean, oldValue:boolean) {
       console.log(`TextForm::resetTextField: ${this.resetTextField}`)
-      newValue ? this.textFieldValue = null : console.log('The TextField is empty')
+      newValue ? this.textFieldValue = null : console.log('TextForm::"The TextField is empty"')
     }
   },
 
@@ -121,14 +121,13 @@ export default Vue.extend({
     },
 
     onTextChange() {
-      console.log(`value: ${this.textFieldValue}`)
+      console.log(`TextForm::"value: ${this.textFieldValue}"`)
     },
 
     reset() {
-      console.log('TextForm reset()')
+      console.log('TextForm::"TextForm reset()"')
       this.textFieldValue = null
       this.$refs.textField.nativeView.dismissSoftInput()
-
     },
   }
 })
