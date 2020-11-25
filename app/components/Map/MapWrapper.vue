@@ -45,16 +45,16 @@
   import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
 
   import MapComponent from './MapComponent.vue'
-  import NewLocation from './NewLocation.vue'
-  import NewSecurityArea from './NewSecurityArea.vue'
+  import NewLocationMenu from './NewLocationMenu.vue'
+  import NewSecurityAreaMenu from './NewSecurityAreaMenu.vue'
 
   export default Vue.extend({
     name: 'Home',
 
     components: {
       MapComponent,
-      NewLocation,
-      NewSecurityArea
+      NewLocationMenu,
+      NewSecurityAreaMenu
     },
 
     props:{
@@ -69,7 +69,7 @@
         screenHeight: Screen.mainScreen.heightDIPs,
         screenWidth: Screen.mainScreen.widthDIPs,
         backgroundFilter: false,
-        bottomSheetContent: NewLocation,
+        bottomSheetContent: NewLocationMenu,
       }
     },
 
@@ -98,7 +98,7 @@
       isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
         console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
         if(newValue) {
-          this.bottomSheetContent = NewLocation
+          this.bottomSheetContent = NewLocationMenu
           this.showBottomSheet()
         } else {
           this.hideBottomSheet()
@@ -108,7 +108,7 @@
       isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
         console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
         if(newValue) {
-          this.bottomSheetContent = NewSecurityArea
+          this.bottomSheetContent = NewSecurityAreaMenu
           this.showBottomSheet()
         } else {
           this.hideBottomSheet()
