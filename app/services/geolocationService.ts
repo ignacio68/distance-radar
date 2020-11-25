@@ -33,16 +33,14 @@ const isLocationServicesEnabled = async (): Promise<boolean> => {
 
 const fetchCurrentUserLocation = async (): Promise<LngLat> => {
   console.log('fetchCurrentUserLocation()')
-  const location = await geolocation
-    .getCurrentLocation(locationOptions)
-    .then((result) => {
-      const location: LngLat = {
-        lat: result.latitude,
-        lng: result.longitude,
-      }
-      console.log(`fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
-      return location
-    })
+  const location = await geolocation.getCurrentLocation(locationOptions).then((result) => {
+    const location: LngLat = {
+      lat: result.latitude,
+      lng: result.longitude,
+    }
+    console.log(`fetchCurrentUserLocation(): ${JSON.stringify(location)}`)
+    return location
+  })
   return location
 }
 
