@@ -1,6 +1,58 @@
 # Changelog
 
-## [0.1.5] - 2020-11-16
+## [0.2.1] - 2020-11-23
+
+### Added
+
+- Circle of security area points validation & normalization
+- Security new area handler
+
+### Changed
+
+- Renamed conditional props and methods
+- Circle util folder
+
+### Fixed
+
+- Hide the keyboard when press Cancel button
+- Reset Text Form's textfield
+- The enabled of the geolocation service on init
+- Loading Map Wrapper component bug
+- Set security area color
+
+### Removed
+
+- Remove item
+
+
+## [0.2.0] - 2020-11-23
+
+### Added
+
+- New Security Area component
+- Color Selector component
+- Custom Slider component
+- MDSlider installer
+- Location title
+- View and components test (use internal only)
+- User marker onTap method: toggles the new location menu visibility
+- Location onTap method: loads new security area menu
+
+### Changed
+
+- MDButton installer
+
+### Fixed
+
+- New security areas position
+- Bottom sheet's dynamics components lazy loading
+- TextField is not empty
+
+### Removed
+
+- Remove item
+
+## [0.1.5] - 2020-11-18
 
 ### Added
 
@@ -30,9 +82,6 @@
 
 - MapWrappers unused methods
 
-
-# Changelog
-
 ## [0.1.4] - 2020-11-04
 
 ### Added
@@ -58,6 +107,7 @@
 ### Removed
 
 - Remove generic marker methods & API
+
 
 ## [0.1.3] - 2020-11-02
 ### Added
