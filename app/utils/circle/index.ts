@@ -1,1 +1,1 @@
-export { getCirclePointsCoordinates } from './circle'
+export { getCirclePointsCoordinates, calculateDistanceFromLocation } from './circle'
