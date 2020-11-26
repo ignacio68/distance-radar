@@ -60,7 +60,7 @@ export default Vue.extend({
       colorItemRipple() {
         const colorItem = this.$refs.colorItem.nativeView
         const currentColor = colorItem.color
-        const newColor = new Color(10, 0, 122, 122)
+        const newColor = new Color(50, 0, 122, 122)
         colorItem
           .animate({
             curve: Enums.AnimationCurve.linear,
