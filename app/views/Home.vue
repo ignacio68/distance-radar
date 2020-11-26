@@ -4,9 +4,14 @@
     backgroundSpanUnderStatusBar="true"
     androidStatusBarBackground="#00251e"
   >
-    <GridLayout
+    <!-- <GridLayout
       class="home"
       rows="auto, *, 56"
+      columns="*"
+    > -->
+    <GridLayout
+      class="home"
+      rows="auto, *, auto"
       columns="*"
     >
       <CustomActionBar
@@ -20,10 +25,44 @@
         row="1"
         @first-location-alert="onFirstLocationAlert"
       />
-      <BottomAppBar
+      <StackLayout
+        class="Bottom"
+        row="2"
+      >
+        <Label textWrap="true">
+          <FormattedString>
+            <Span text="latitude: "/>
+            <Span :text="getCurrentUserLocation.lat"/>
+          </FormattedString>
+        </Label>
+        <Label textWrap="true">
+          <FormattedString>
+            <Span text="longitude: "/>
+            <Span :text="getCurrentUserLocation.lng"/>
+          </FormattedString>
+        </Label>
+        <Label textWrap="true">
+          <FormattedString>
+            <Span text="distance from location1: "/>
+            <Span :text="getDistanceToCenter"/>
+          </FormattedString>
+        </Label>
+        <Label textWrap="true">
+          <FormattedString>
+            <Span text="distance from location2: "/>
+            <Span :text="getDistanceToCenter"/>
+          </FormattedString>
+        </Label>
+        <StackLayout orientation="horizontal">
+          <Button text="START" @tap="onStart" />
+          <Button text="STOP" @tap="onStop" />
+        </StackLayout>
+      </StackLayout>
+
+      <!-- <BottomAppBar
         class="BottomBar"
         row="2"
-      />
+      /> -->
     </GridLayout>
   </Page>
 </template>
@@ -36,9 +75,14 @@
   import { onBackEvent, clearBackEvent } from '@/utils/backButton'
 
   import { FirstLocationAlert } from '@/components/UI/types'
+  import { LngLat } from '@/types/types'
 
   import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
 
+  import { getSecurityAreaActive, getAllSecurityAreas} from '@/store/securityAreasStore'
+  import { getCurrentUserLocation, getDistanceToCenter, getWatchId as watchId } from '@/store/userLocationStore'
+  import { getIsWatchUserLocationEnabled as isWatchUserLocationEnabled , setIsWatchUserLocationEnabled } from '@/composables/useGeolocation'
+  import { startTrackingUserLocation, stopTrackingUserLocation, isUserInSecurityArea } from '@/api/geolocation'
 
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
@@ -57,7 +101,39 @@
       return {
         // TODO: Refactoring
         isVisibleSecurityArea: false,
+        latitude: getCurrentUserLocation().lat,
+        longitude: getCurrentUserLocation().lng,
+        distance: getDistanceToCenter(),
       }
+    },
+
+    computed: {
+      isWatchUserLocationEnabled(): boolean {
+        return isWatchUserLocationEnabled()
+      },
+      fetchUserLocation(): LngLat {
+        return getCurrentUserLocation()
+      },
+      getCurrentUserLocation,
+      getDistanceToCenter,
+      getAllSecurityAreas,
+    },
+
+    watch: {
+      isWatchUserLocationEnabled(newValue: boolean, oldValue: boolean) {
+        // newValue ? this.distance = getDistanceToCenter() : console.log('Watcher is off!!')
+        newValue ? this.isUserInSecurityArea(1000) : console.log('Watcher is off!!')
+      },
+
+       getAllSecurityAreas(newValue: any, oldValue: any) {
+        console.log('------ THE SECURITY AREAS STORE HAS CHANGED!! -----')
+      },
+
+      // fetchUserLocation(newValue: LngLat, oldValue: LngLat) {
+      //   if(newValue !== oldValue) {
+      //     console.log(`Home::fetchUserLocation(): ${JSON.stringify(getCurrentUserLocation())}`)
+      //   }
+      // }
     },
 
     created() {
@@ -88,11 +164,39 @@
           cancelButtonText: `${this.$t('lang.components.firstLocationAlert.cancelButton')}`
         }
         firstLocationAlert(firstLocationOptions)
+      },
+
+      getSecurityAreaProps() {
+        const securityArea = getSecurityAreaActive()
+        console.log(`Home.vue::getSecurityAreaProps():securityArea:center: ${JSON.stringify(securityArea.center)}`)
+        const securityAreaProps = {
+          initialLocation: securityArea.center,
+          securityDistance: securityArea.radius,
+          mode: 'OUT'
+        }
+        return securityAreaProps
+      },
+
+      isUserInSecurityArea(interval: number) {
+        const securityAreaProps = this.getSecurityAreaProps()
+        const securityDistanceProps = { ...securityAreaProps, interval }
+        isUserInSecurityArea(securityDistanceProps)
+      },
+
+      onStart() {
+        isWatchUserLocationEnabled() ? console.log('The tracking is activated yet!!') : startTrackingUserLocation()
+      },
+
+      onStop() {
+        isWatchUserLocationEnabled() ? stopTrackingUserLocation(watchId()) : console.log('There is not tracking activated!!')
       }
     }
   }
 )
 </script>
 <style lang="scss" scoped>
-// @import '../../app-variables';
+@import '../app-variables';
+.Bottom {
+  font-size: $font-sz-l;
+}
 </style>
