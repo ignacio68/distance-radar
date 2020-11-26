@@ -16,9 +16,9 @@
       height="100%"
       :accessToken="mapToken"
       :mapStyle="mapStyle"
-      :latitude="userLatitude"
-      :longitude="userLongitude"
-      :zoomLevel="zoomLevel"
+      :latitude="initialCoordinates.lat"
+      :longitude="initialCoordinates.lng"
+      :zoomLevel="15"
       :hideCompass="true"
       :disableRotation="true"
       :disableScroll="false"
@@ -91,15 +91,22 @@
 <script lang="ts">
   import Vue from 'nativescript-vue'
 
+  import { mapToken } from '@/setup/map'
+
   import { setCenter, flyTo } from '@/api/map'
+  import { updateUserMarker } from '@/api/userMarker'
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
 
+  import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
   import { setMap, getMap as map } from '@/store/mapStore'
+  import { numberOfLocations} from '@/store/locationsStore'
 
   import { Elevation } from '@/types/enums/elevations'
-  import { Location } from '@/types/types/geocoder'
   import { LngLat } from '@/types/types'
+  import { Location } from '@/types/types/geocoder'
+
+  import { MapStyle } from '@nstudio/nativescript-mapbox'
 
   import '@/plugins/installFAB'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
@@ -109,32 +116,19 @@
     components: {
       Geocoder,
     },
-    props: {
-      mapToken: {
-        type: String,
-        default: ""
-      },
-      zoomLevel: {
-        type: Number,
-        default: 15
-      },
-      userLatitude: {
-        type: String,
-        default: null
-      },
-      userLongitude: {
-        type: String,
-        default: null
-      },
-    },
 
     data() {
       return {
+        mapToken: mapToken,
         customMapStyle: 'mapbox://styles/ignacio68/ckay3bxbr11qt1hquzxx1ohot',
-        satelliteMapStyle: 'satellite_streets',
-        defaultMapStyle: 'traffic_day',
+        satelliteMapStyle: MapStyle.SATELLITE_STREETS,
+        defaultMapStyle: MapStyle.TRAFFIC_DAY,
         isSatelliteMap: false,
         elevationFAB: Elevation.FAB_RESTING,
+        initialCoordinates: {
+          lat: initialLocation().lat,
+          lng: initialLocation().lng
+        }
       }
     },
 
@@ -149,11 +143,38 @@
     },
 
     methods: {
-      onMapReady(args: any) {
-        console.log('MAP READY!')
-        setMap(args.map)
-        this.$emit('on-map-ready', args)
+      async onMapReady(args: any) {
+        console.log('onMapReady()')
+        await this.setMap(args)
+        await this.setOnMapLongClickAction()
+        await this.setCenter()
+        // TODO: Change source name, add options
+        // addSource('main')
+        // this.showMarkers()
       },
+
+      setMap(args: any){
+        setMap(args.map)
+      },
+
+      setOnMapLongClickAction() {
+        map().setOnMapLongClickListener(function (point: LngLat) {
+          updateUserMarker(point)
+          return true
+        })
+      },
+
+      setCenter() {
+        setCenter().then(() => {
+          // if (!numberOfLocations) this.$emit('first-location-alert')
+          if (!numberOfLocations()) this.$emit('first-location-alert')
+        })
+      },
+      // onMapReady(args: any) {
+      //   console.log('MAP READY!')
+      //   setMap(args.map)
+      //   this.$emit('on-map-ready', args)
+      // },
 
       centerCamera() {
         console.log('centerCamera()')
