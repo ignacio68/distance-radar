@@ -123,6 +123,7 @@ export default Vue.extend({
 
   async mounted() {
     console.log('NewSecurityAreaMenu.vue::mounted()')
+    this.setColor('#ff6ea1')
     // await this.reset()
   },
 
@@ -151,9 +152,9 @@ export default Vue.extend({
       this.securityArea.fillOpacity = value
     },
 
-    setColor(color: { name: string, color: string }) {
+    setColor(color: string) {
       // console.log(`NewSecurityAreaMenu.vue::color: ${color.name}`)
-      this.securityArea.fillColor = new Color(color.color)
+      this.securityArea.fillColor = new Color(color)
       console.log(`NewSecurityAreaMenu.vue::color: ${this.securityArea.fillColor}`)
     },
 
