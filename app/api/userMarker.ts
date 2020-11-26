@@ -12,11 +12,7 @@ import { UserMarker, LngLat } from '@/types/types'
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
 const isUserMarker = async (coordinates: LngLat): Promise<void> => {
-  Promise.resolve(
-    !userMarker()
-      ? createUserMarker(coordinates)
-      : console.log('User marker exits!')
-  )
+  Promise.resolve(!userMarker() ? createUserMarker(coordinates) : console.log('User marker exits!'))
 }
 
 export const createUserMarker = (coordinates?: LngLat): void => {

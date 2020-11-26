@@ -12,8 +12,7 @@ const findIndex = (id: string): number =>
 
 // export const hasId = (id: string): boolean =>
 //   (findIndex(id) as unknown) as boolean
-export const hasId = (id: string): boolean =>
-  findIndex(id) >= 0 ? true : false
+export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
 export const numberOfLocations = (): number => state.locations.length
 
@@ -38,23 +37,19 @@ const updateLocation = async (location: Location): Promise<Location> => {
   return updatedLocation
 }
 
-export const updateLocationsStore = async (
-  location: Location
-): Promise<void> => {
+export const updateLocationsStore = async (location: Location): Promise<void> => {
   const resolveLocation = await updateLocation(location)
   state.locations.splice(findIndex(location.id), 1, resolveLocation)
 }
 
-export const deleteLocation = (id: string): Location[] =>
-  state.locations.splice(findIndex(id), 1)
+export const deleteLocation = (id: string): Location[] => state.locations.splice(findIndex(id), 1)
 
 export const setSelectedLocation = (id: string): string => {
   console.log(`locationsStore.ts::setSelectedLocation: ${id}`)
   return (state.selectedLocation = id)
 }
 
-export const getSelectedLocation = (): Location =>
-  getLocation(state.selectedLocation)
+export const getSelectedLocation = (): Location => getLocation(state.selectedLocation)
 
 export const hasSecurityArea = async (id: string): Promise<boolean> => {
   const location = findIndex(id)

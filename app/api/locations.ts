@@ -27,8 +27,7 @@ const onTap = (id: string): void => {
   })
 }
 
-const onCalloutTap = (): void =>
-  console.log(`locations.ts::onCalloutTapLocation()`)
+const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
 
 export const newLocation = (location: Location): void => {
   const opts = {
@@ -41,9 +40,7 @@ export const newLocation = (location: Location): void => {
     onCalloutTap: () => onCalloutTap(),
   }
   const completeLocation: Location = { ...location, ...opts }
-  console.log(
-    `locations.ts::addLocation(): ${JSON.stringify(completeLocation)}`
-  )
+  console.log(`locations.ts::addLocation(): ${JSON.stringify(completeLocation)}`)
   const newLocation: Location[] = []
   newLocation.push(completeLocation)
   map()
@@ -51,17 +48,13 @@ export const newLocation = (location: Location): void => {
     .then(() => {
       addNewLocation(completeLocation).then(() => {
         console.log(`locations.ts::new location:`)
-        console.dir(getLocations())
+        // console.dir(getLocations())
       })
     })
 }
 
 export const fetchSelectedLocation = (): Location => {
-  console.log(
-    `locations.ts::fetchSelectedLocation() ${JSON.stringify(
-      getSelectedLocation()
-    )}`
-  )
+  console.log(`locations.ts::fetchSelectedLocation() ${JSON.stringify(getSelectedLocation())}`)
   return getSelectedLocation()
 }
 

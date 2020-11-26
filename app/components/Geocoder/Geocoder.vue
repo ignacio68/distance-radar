@@ -47,7 +47,8 @@
 <script script lang="ts">
   import Vue from 'nativescript-vue'
 
-  import { setInterval, clearInterval } from '@nativescript/core/timer'
+  // import { setInterval, clearInterval } from '@nativescript/core/timer'
+  import { Utils } from '@nativescript/core'
 
   import { searchLocations } from '@/services/geocodingService'
 
@@ -185,11 +186,11 @@
       loadSearch() {
         console.log('loadsearch()')
         const vm: any = this // TODO: Add true type
-        let search: number = setInterval(() => {
+        const search = Utils.setInterval(() => {
           if(vm.searchedLocation !== vm.oldSearchedLocation) {
             vm.setOldSearchedLocation()
             vm.fetchLocationsList()
-            if (vm.searchedLocation.length < vm.minimumCharactersToSearch) clearInterval(search)
+            if (vm.searchedLocation.length < vm.minimumCharactersToSearch) Utils.clearInterval(search)
           }
         }, vm.interval)
       },
