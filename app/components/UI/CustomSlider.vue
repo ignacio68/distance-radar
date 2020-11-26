@@ -11,38 +11,29 @@
     />
     <GridLayout
       col="1"
-      rows="24, 24"
+      rows="auto, auto"
       columns="100, *, 100"
     >
       <MDSlider
-        v-model="value"
+        :value="value"
         col="0"
         row="0"
         colSpan="3"
         class="customSlider_slider"
         :minValue="minValue"
         :maxValue="maxValue"
-        :value="value"
-        @selectedIndexChanged="$emit('on-index-changed', value)"
+        @valueChange="onValueChanged"
       />
       <Label
         col="0"
         row="1"
         class="customSlider_minValue"
-        backgroundColor="blue"
         :text="minValue"
       />
-      <!-- <Label
-        col="1"
-        row="1"
-        text="solo estoy para rellenar"
-        backgroundColor="red"
-      /> -->
       <Label
         col="2"
         row="1"
         class="customSlider_maxValue"
-        backgroundColor="lime"
         :text="maxValue"
       />
     </GridLayout>
@@ -74,24 +65,41 @@ export default Vue.extend({
       default: 0,
     },
   },
+  data() {
+    return {
+      // value: 0
+    }
+  },
+  methods: {
+    onValueChanged({value}) {
+      this.$emit('on-value-changed', value)
+      console.log(`CustomSlider::onValueChanged():value: ${value}`)
+    }
+  }
 })
 </script>
 
 <style lang="scss" scoped>
+  @import '../../app-variables.scss';
+
   .customSlider_name {
     padding {
       right: 8;
     }
-    font-size: 16;
+    font-size: $font-sz-m;
   }
   .customSlider_minValue {
     padding {
       left: 24;
     }
+    font-size: $font-sz-m;
+    text-align: left;
   }
   .customSlider_maxValue {
     padding {
       right: 24;
     }
+    font-size: $font-sz-m;
+    text-align: right;
   }
 </style>

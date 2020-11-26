@@ -15,19 +15,19 @@
           class="radius-slider"
           row="0"
           :sliderName="$t('lang.components.newArea.distance')"
+          :value="radius"
           :minValue="0"
           :maxValue="100"
-          :value="radius"
-          @on-index-changed="onRadiusChanged"
+          @on-value-changed="onRadiusChanged"
         />
         <CustomSlider
           class="opacity-slider"
           row="1"
           :sliderName="$t('lang.components.newArea.opacity')"
-          :minValue="0"
-          :maxValue="100"
           :value="opacity"
-          @on-index-changed="onOpacityChanged"
+          :minValue="0"
+          :maxValue="1"
+          @on-value-changed="onOpacityChanged"
         />
         <ColorSelector
           row="2"
@@ -86,8 +86,8 @@ export default Vue.extend({
   },
   data(){
     return {
-      radius: 0,
-      opacity: 0,
+      radius: 50,
+      opacity: 0.5,
       securityArea: {
         id: '',
         center: {
@@ -142,11 +142,13 @@ export default Vue.extend({
     },
 
     onRadiusChanged(value) {
-      console.log('NewSecurityAreaMenu.vue::onRadiusChanged()')
+      console.log(`NewSecurityAreaMenu.vue::onRadiusChanged(): ${value}`)
+      this.securityArea.radius = value
     },
 
     onOpacityChanged(value) {
-      console.log('NewSecurityAreaMenu.vue::onOpacityChanged()')
+      console.log(`NewSecurityAreaMenu.vue::onOpacityChanged(): ${value}`)
+      this.securityArea.fillOpacity = value
     },
 
     setColor(color: { name: string, color: string }) {
