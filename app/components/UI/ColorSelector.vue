@@ -53,7 +53,7 @@ export default Vue.extend({
   methods:{
       onTap(color: { name: string, color: string }) {
         this.colorItemRipple
-        this.$emit('on-selected-color', color)
+        this.$emit('on-selected-color', color.color)
         console.log(`color: ${color.name}`)
       },
       // FIXME: fix the color ripple animation, doesn't work
