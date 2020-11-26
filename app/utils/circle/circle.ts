@@ -47,7 +47,6 @@ export const getCirclePointsCoordinates = async (args: Circle): Promise<LngLat[]
 
     return getPointCoordinates(values)
   })
-  console.dir(allPointsCoordinates)
   return allPointsCoordinates
 }
 
@@ -65,7 +64,7 @@ export const getCirclePointsCoordinates = async (args: Circle): Promise<LngLat[]
  * @link https://stackoverflow.com/questions/24680247/check-if-a-latitude-and-longitude-is-within-a-circle-google-maps
  */
 
-export const isLocationInCircle = (args: LocationInCircle): boolean => {
+export const calculateDistanceFromLocation = (args: LocationInCircle): number => {
   const ky = 111.11111111
   const kx = Math.cos((Math.PI * args.circleLat) / 180.0) * ky
   const dx = Math.abs(args.circleLng - args.lng) * kx
@@ -73,8 +72,22 @@ export const isLocationInCircle = (args: LocationInCircle): boolean => {
 
   const distance = Math.sqrt(dx * dx + dy * dy)
 
-  // return (distance < circleRadius / 1000) ? true : false
-  return distance < args.circleRadius / 1000
+  return distance
 }
 
-// export { getCirclePointsCoordinates, isLocationInCircle }
+export const isLocationInCircle = (args: LocationInCircle): boolean => {
+  const distance = calculateDistanceFromLocation(args)
+
+  return distance < args.circleRadius / 1000 ? true : false
+}
+// export const isLocationInCircle = (args: LocationInCircle): boolean => {
+//   const ky = 111.11111111
+//   const kx = Math.cos((Math.PI * args.circleLat) / 180.0) * ky
+//   const dx = Math.abs(args.circleLng - args.lng) * kx
+//   const dy = Math.abs(args.circleLat - args.lat) * ky
+
+//   const distance = Math.sqrt(dx * dx + dy * dy)
+
+//   return distance < args.circleRadius / 1000 ? true : false
+//   // return distance < args.circleRadius / 1000
+// }

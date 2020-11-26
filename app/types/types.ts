@@ -47,7 +47,7 @@ export interface Circle {
 
   radius?: number
   /**
-   * The number of points of the polygon of the security area circle.
+   * The number of edges of security area polycircle.
    */
   numberOfEdges?: number
 }
@@ -70,25 +70,26 @@ export interface Location extends LngLat {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: () => void
-  onCalloutTap?: () => void
+  onTap?: () => unknown
+  onCalloutTap?: () => unknown
   selected?: boolean
-  hasSecurityArea: boolean
+  hasSecurityArea?: boolean
+  securityAreas?: SecurityArea[]
   isFollowed?: boolean
   update?: (newSettings: unknown) => void
   ios?: boolean
   android?: boolean
 }
-
 export interface BasicPolygonOptions {
   id: string
   radius: number
   center: LngLat
+  isActive: boolean
   fillColor?: string | Color
   fillOpacity?: number
   isVisible?: boolean
 }
-export interface PolygonOptions extends BasicPolygonOptions {
+export interface SecurityArea extends BasicPolygonOptions {
   group?: string
   points: LngLat[]
   oldFillOpacity?: number
@@ -97,9 +98,18 @@ export interface PolygonOptions extends BasicPolygonOptions {
   strokeOpacity?: number
 }
 
-export interface LocationInCircle {
-  lng: number
-  lat: number
+export interface InsideSecurityArea {
+  initialLocation: LngLat
+  securityDistance: number
+}
+
+type DistanceMode = 'IN' | 'OUT'
+export interface CalculateSecurityDistance extends InsideSecurityArea {
+  interval: number
+  mode: DistanceMode
+}
+
+export interface LocationInCircle extends LngLat {
   circleLng: number
   circleLat: number
   circleRadius: number

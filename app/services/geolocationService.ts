@@ -4,7 +4,11 @@ import { Enums } from '@nativescript/core/'
 
 import { LngLat } from '@/types/types'
 
-import { setCurrentUserLocation } from '@/store/userLocationStore'
+import {
+  getCurrentUserLocation as userCurrentLocation,
+  setCurrentUserLocation,
+  setWatchId,
+} from '@/store/userLocationStore'
 
 const locationOptions: geolocation.Options = {
   desiredAccuracy: Enums.Accuracy.high,
@@ -13,7 +17,7 @@ const locationOptions: geolocation.Options = {
 }
 
 const enableLocationRequest = (): void => {
-  geolocation.enableLocationRequest(true).then(() => {
+  geolocation.enableLocationRequest(true, true).then(() => {
     console.log('geolocationService::enableLocationRequest()')
     isLocationServicesEnabled()
   })
@@ -51,36 +55,42 @@ export const getCurrentUserLocation = async (): Promise<LngLat> => {
   })
   setCurrentUserLocation(location)
   return location
-  // const location = await fetchCurrentUserLocation()
-  //   .then((location) => {
-  //     console.log(`getUserCurrentLocation(): ${JSON.stringify(location)}`)
-  //     setCurrentUserLocation(location)
-  //     return location
-  //   })
-  //   .catch((error) => {
-  //     console.log(`getCurrentLocation() error: ${JSON.stringify(error)}`)
-  //     throw error
-  //   })
-  // return location
 }
 
 export const watchUserLocation = async (): Promise<void> => {
-  console.log('watchUserLocation()')
+  console.log('geolocationService::watchUserLocation()')
   await isLocationServicesEnabled()
-  geolocation.watchLocation(
+  const watchId = geolocation.watchLocation(
     (position) => {
       const currentLocation: LngLat = {
         lat: position.latitude,
         lng: position.longitude,
       }
+      console.log(
+        `geolocationService::watchUserLocation():currentLocation: ${JSON.stringify(
+          userCurrentLocation()
+        )}`
+      )
       setCurrentUserLocation(currentLocation)
     },
     (error) => {
-      console.log(`failed to get location: ${error}`)
+      console.log(`geolocationService::watchUserLocation():error: ${error}`)
     },
     {
       desiredAccuracy: Enums.Accuracy.high,
       minimumUpdateTime: 500,
+      updateDistance: 5,
     }
   )
+  setWatchId(watchId)
 }
+
+export const stopWatchUserLocation = (watchId: number): void => {
+  console.log('geolocationService::stopWatchUserLocation()')
+  geolocation.clearWatch(watchId)
+}
+
+// export const calculateDistance = (loc1: LngLat, loc2: LngLat): LngLat => {
+//   const distance = geolocation.distance(loc1, loc2)
+//   return distance
+//  }

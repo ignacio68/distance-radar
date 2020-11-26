@@ -2,13 +2,18 @@ import { updateLocation } from './locations'
 
 import { getMap as map } from '@/store/mapStore'
 
-import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store/securityAreasStore'
+import {
+  addNewSecurityArea,
+  getSecurityArea,
+  deleteSecurityArea,
+  getAllSecurityAreas,
+} from '@/store/securityAreasStore'
 
 import { getCirclePointsCoordinates } from '@/utils/circle/index'
 
 import {
   BasicPolygonOptions,
-  PolygonOptions,
+  SecurityArea,
   CircleLayer,
   LngLat,
   Circle,
@@ -40,35 +45,45 @@ const fetchSecurityAreaPoints = async (center: LngLat, radius: number): Promise<
   const args: Circle = {
     center: center,
     radius: radius,
-    numberOfEdges: 32,
+    numberOfEdges: 36,
   }
   // const numberOfEdges = 4
   return (await getCirclePointsCoordinates(args)) as LngLat[]
 }
 
-export const newSecurityArea = async (args: BasicPolygonOptions): Promise<void> => {
-  console.log('securityAreas.ts::newSecurityArea()')
+const setNewSecurityAreaProps = async (args: BasicPolygonOptions): Promise<SecurityArea> => {
   const points = await fetchSecurityAreaPoints(args.center, args.radius)
-  const polygonOptions: PolygonOptions = {
+  const securityAreaProps: SecurityArea = {
     points,
     ...args,
   }
+  return securityAreaProps
+}
+
+export const newSecurityArea = async (args: BasicPolygonOptions): Promise<void> => {
+  const securityAreaProps = await setNewSecurityAreaProps(args)
   map()
-    .addPolygon(polygonOptions)
-    .then(() => addNewSecurityArea(polygonOptions))
-    .then(() => {
-      const newSettings: Location = {
-        id: polygonOptions.id,
-        lat: polygonOptions.center.lat,
-        lng: polygonOptions.center.lng,
+    .addPolygon(securityAreaProps)
+    .then((): void => {
+      console.log(
+        `securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(
+          securityAreaProps.center
+        )}`
+      )
+      addNewSecurityArea(securityAreaProps)
+      const newLocationSettings: Location = {
+        id: securityAreaProps.id,
+        lat: securityAreaProps.center.lat,
+        lng: securityAreaProps.center.lng,
         hasSecurityArea: true,
       }
-      updateLocation(newSettings)
+      updateLocation(newLocationSettings)
+      getAllSecurityAreas()
     })
 }
 
 // TODO: Revisar todos los métodos
-export const updateSecurityArea = (securityArea: PolygonOptions): void => {
+export const updateSecurityArea = (securityArea: SecurityArea): void => {
   console.log('securityAreas.ts::updateSecurityArea()')
   removeSecurityArea(securityArea.id).then(() => {
     newSecurityArea(securityArea)
@@ -90,7 +105,7 @@ export const showSecurityArea = (id: string, value: boolean): void => {
   changeSecurityAreaVisibility(currentSecurityArea, value)
 }
 
-const changeSecurityAreaVisibility = (securityArea: PolygonOptions, value: boolean): void => {
+const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: boolean): void => {
   console.log('securityAreas.ts::changeSecurityAreaVisibility()')
   securityArea.isVisible = value
   console.log(`visibility value: ${value}`)

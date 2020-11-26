@@ -1,4 +1,4 @@
-import Vue from 'Vue'
+import Vue from 'nativescript-vue'
 import { InitialCoordinates, LngLat } from '@/types/types'
 
 const state = Vue.observable({
@@ -7,6 +7,7 @@ const state = Vue.observable({
     lng: 0,
   } as LngLat,
   watchId: 0,
+  distanceToCenter: 0,
 })
 
 export const getInitialLocation = (): InitialCoordinates => {
@@ -27,3 +28,7 @@ export const setCurrentUserLocation = (coordinates: LngLat): void => {
 export const getWatchId = (): number => state.watchId
 
 export const setWatchId = (id: number): number => (state.watchId = id)
+
+export const getDistanceToCenter = (): number => state.distanceToCenter
+
+export const setDistanceToCenter = (distance: number): number => (state.distanceToCenter = distance)

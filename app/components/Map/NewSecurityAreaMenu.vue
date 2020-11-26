@@ -67,6 +67,7 @@ import { setVisibility, getVisibility } from '@/composables/useComponent'
 
 import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
 import { fetchSelectedLocation } from '@/api/locations'
+import { startTrackingUserLocation } from '@/api/geolocation'
 
 import { hasId } from '@/store/securityAreasStore'
 
@@ -93,11 +94,12 @@ export default Vue.extend({
           lat: 0,
           lng: 0,
         },
-        radius: 1,
+        radius: .1,
         fillColor: '',
         fillOpacity: .5,
         group: null,
         isVisible: true,
+        isActive: true,
       },
       idError: 0,
     }
@@ -120,37 +122,37 @@ export default Vue.extend({
   },
 
   async mounted() {
-    console.log('NewSecurityArea.vue::mounted()')
-    await this.reset()
+    console.log('NewSecurityAreaMenu.vue::mounted()')
+    // await this.reset()
   },
 
   methods: {
-    async reset() {
-      console.log('NewSecurityArea.vue::reset()')
-      //  TODO: to deploy
-      this.securityArea.id = ''
-      this.securityArea.center.lat = 0
-      this.securityArea.center.lng = 0
-      await this.setIdError(0)
+    reset() {
+      console.log('NewSecurityAreaMenu.vue::reset()')
+      // this.securityArea.id = ''
+      // this.securityArea.center.lat = 0
+      // this.securityArea.center.lng = 0
+      this.setIdError(0)
     },
 
     hideNewSecurityAreaMenu() {
-      console.log('NewSecurityArea.vue::hideNewSecurityAreaMenu()')
+      // console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
       setVisibility('newSecurityAreaMenu', false)
-      this.reset()
+      // this.reset()
     },
 
     onRadiusChanged(value) {
-      console.log('NewSecurityArea.vue::onRadiusChanged()')
+      console.log('NewSecurityAreaMenu.vue::onRadiusChanged()')
     },
 
     onOpacityChanged(value) {
-      console.log('NewSecurityArea.vue::onOpacityChanged()')
+      console.log('NewSecurityAreaMenu.vue::onOpacityChanged()')
     },
 
     setColor(color: { name: string, color: string }) {
-      console.log(`NewSecurityArea.vue::color: ${color.name}`)
+      // console.log(`NewSecurityAreaMenu.vue::color: ${color.name}`)
       this.securityArea.fillColor = new Color(color.color)
+      console.log(`NewSecurityAreaMenu.vue::color: ${this.securityArea.fillColor}`)
     },
 
     setRadius(value: number) {
@@ -158,7 +160,7 @@ export default Vue.extend({
     },
 
     setOpacity(value: number) {
-      console.log('NewSecurityArea.vue::setRadius()')
+      console.log('NewSecurityAreaMenu.vue::setRadius()')
       this.securityArea.fillOpacity  = value / 10
     },
 
@@ -175,30 +177,30 @@ export default Vue.extend({
     },
 
     async setOptions(): Promise<void> {
-      console.log('NewSecurityArea.vue::setOptions()')
+      // console.log('NewSecurityAreaMenu.vue::setOptions()')
       const options = await fetchSelectedLocation()
-      console.log(`NewSecurityArea.vue::options:  + ${JSON.stringify(options)}`)
+      // console.log(`NewSecurityAreaMenu.vue::options:  + ${JSON.stringify(options)}`)
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
     },
 
     async newSecurityArea(): Promise<void>{
-      console.log('NewSecurityArea.vue::newSecurityArea()')
       await this.setOptions()
-      console.log(`NewSecurityArea.vue::securityArea: ${JSON.stringify(this.securityArea)}`)
       await newSecurityArea(this.securityArea)
+      console.log(`NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(this.securityArea)}`)
       await this.hideNewSecurityAreaMenu()
+      this.reset()
     },
 
     async onCancel() {
-      console.log('NewSecurityArea.vue::onCancel()')
-      await this.reset()
-      this.hideNewSecurityAreaMenu()
+      // console.log('NewSecurityAreaMenu.vue::onCancel()')
+      await this.hideNewSecurityAreaMenu()
+      this.reset()
     },
 
     async onAddNewSecurityArea() {
-      console.log('NewSecurityArea.vue::onAddNewSecurityArea()')
+      // console.log('NewSecurityAreaMenu.vue::onAddNewSecurityArea()')
       !this.idError ? this.newSecurityArea() : console.log(`ID error is: ${this.idError}`)
     },
 

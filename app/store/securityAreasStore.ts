@@ -1,19 +1,18 @@
-import Vue from 'Vue'
+import Vue from 'nativescript-vue'
 
-import { PolygonOptions } from '@/types/types'
+import { SecurityArea } from '@/types/types'
 
 const state = Vue.observable({
-  securityAreas: [],
+  securityAreas: [] as SecurityArea[],
 })
 
-const find = (id: string): PolygonOptions =>
+const find = (id: string): SecurityArea =>
   state.securityAreas.find((securityArea) => securityArea.id === id)
 
 const findIndex = (id: string): number =>
   state.securityAreas.findIndex((securityArea) => securityArea.id === id)
 
-export const hasId = (id: string): boolean =>
-  findIndex(id) >= 0 ? true : false
+export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
 export const isSecurityAreaVisible = (id: string): boolean => {
   const index = findIndex(id)
@@ -21,15 +20,36 @@ export const isSecurityAreaVisible = (id: string): boolean => {
   return isVisible
 }
 
-export const getSecurityArea = (id: string): PolygonOptions => {
+export const getSecurityArea = (id: string): SecurityArea => {
   const securityArea = find(id)
   return securityArea
 }
 
-export const addNewSecurityArea = async (
-  securityArea: PolygonOptions
-): Promise<void> => {
+export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
   state.securityAreas.push(securityArea)
+  console.log(
+    `securityAreasStore::addNewSecurityArea: ${JSON.stringify(
+      state.securityAreas[state.securityAreas.length - 1]
+    )}`
+  )
+}
+
+export const getAllSecurityAreas = (): void => {
+  console.dir(`securityAreasStore::getAllSecurityAreas(): ${JSON.stringify(state.securityAreas)}`)
+}
+
+export const findSecurityAreaActive = (): number =>
+  state.securityAreas.findIndex((securityArea) => securityArea.isActive === true)
+
+export const getSecurityAreaActive = (): SecurityArea => {
+  const index = findSecurityAreaActive()
+  console.dir(state.securityAreas[index])
+  // console.log(
+  //   `securityAreasStore::getSecurityAreaActive:center: ${JSON.stringify(
+  //     state.securityAreas[index].center
+  //   )}`
+  // )
+  return state.securityAreas[index]
 }
 
 // export const isVisible = (id: string, value: boolean): boolean => {
