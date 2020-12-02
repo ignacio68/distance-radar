@@ -205,7 +205,7 @@ export default Vue.extend({
 .menu_title {
  font-weight: 700;
  font-size: 16;
- color: $primary-variant;
+ color: $primary-dark;
  opacity: .8;
  border-bottom: 1, solid, rgba($primary, .1);
 }
