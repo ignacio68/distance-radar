@@ -18,6 +18,7 @@
         :backgroundColor="color.color"
         borderColor="#00251e"
         borderWidth="1"
+        borderRadius="50%"
         @Tap="onTap(color)"
       />
     </StackLayout>
@@ -86,8 +87,8 @@ export default Vue.extend({
 @import '../../app-variables';
 
   .color_list-item {
-    margin-left: 8;
-    width: 24;
-    height: 24;
+    margin-left: 16;
+    width: 32;
+    height: 32;
   }
 </style>>
