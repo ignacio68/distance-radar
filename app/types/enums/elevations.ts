@@ -1,4 +1,4 @@
-export enum Elevation {
+export const enum Elevation {
   SWITCH = 1,
   CARD_RESTING = 2,
   RAISED_BUTTON_RESTING = 2,
