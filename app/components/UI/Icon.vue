@@ -70,6 +70,10 @@ export default Vue.extend ({
     rippleDuration: {
       type: Number,
       default: 300
+    },
+    hasRipple: {
+      type: Boolean,
+      default: true
     }
   },
   methods: {
