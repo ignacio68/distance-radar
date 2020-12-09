@@ -6,8 +6,7 @@ export default {
     title: 'New Location',
     id: 'Name:',
     groupError: 'The location needs a group',
-    idError:
-      "Missing the location's name | You have a location with the same name",
+    idError: "Missing the location's name | You have a location with the same name",
     group: 'Group: ',
     cancelButton: 'Cancel',
     addButton: 'Add',
@@ -28,8 +27,7 @@ export default {
   },
   firstLocationAlert: {
     title: 'Location',
-    message:
-      'You don´t have a location yet. Do you want to setup one in you current position?',
+    message: 'You don´t have a location yet. Do you want to setup one in you current position?',
     okButton: 'Come on!',
     cancelButton: 'Later',
   },

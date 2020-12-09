@@ -6,8 +6,7 @@ export default {
     title: 'Nueva Ubicación',
     id: 'Nombre:',
     groupError: 'La ubicación necesita un grupo',
-    idError:
-      'Hace falta un nombre | Tienes una localización con el mismo nombre',
+    idError: 'Hace falta un nombre | Tienes una localización con el mismo nombre',
     group: 'Grupo: ',
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
@@ -28,8 +27,7 @@ export default {
   },
   firstLocationAlert: {
     title: 'Ubicación',
-    message:
-      'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
+    message: 'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
     okButton: '¡Adelante!',
     cancelButton: 'Luego',
   },

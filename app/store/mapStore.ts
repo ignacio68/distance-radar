@@ -7,4 +7,6 @@ const state = Vue.observable({
 
 export const getMap = (): MapboxApi => state.map
 
-export const setMap = (map: MapboxApi): void => { state.map = map }
+export const setMap = (map: MapboxApi): void => {
+  state.map = map
+}

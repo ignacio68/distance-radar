@@ -1,13 +1,13 @@
 import { LngLat } from '@/types/types'
 
 export interface CirclePolygonProps {
-    id: string
-    fillColor: string,
-    fillOpacity: number,
-    center: {
-        lat: number,
-        lng: number
-    }
+  id: string
+  fillColor: string
+  fillOpacity: number
+  center: {
+    lat: number
+    lng: number
+  }
 }
 
 /*** GEOCODER TYPES ***/
@@ -46,66 +46,65 @@ export interface ShortLocation {
   /**
    * The street address associated with the placemark.
    */
-  thoroughfare?: string;
+  thoroughfare?: string
 
   /**
    * Additional street-level information for the placemark.
    */
-  subThoroughfare?: string;
+  subThoroughfare?: string
 
   /**
    * The city associated with the placemark.
    */
-  locality?: string;
+  locality?: string
 
   /**
    * The postal code associated with the placemark.
    */
-  postalCode?: string;
+  postalCode?: string
 
   /**
    * The name of the country associated with the placemark.
    */
-  country?: string;
+  country?: string
 }
 
-export interface Location extends ShortLocation{
-   /**
+export interface Location extends ShortLocation {
+  /**
    * The name of the placemark.
    *
    */
-  name: string;
-
+  name: string
 
   /**
    * The latitude of the geolocation, in degrees.
    */
-  latitude: number;
+  latitude: number
 
   /**
    * The longitude of the geolocation, in degrees.
    */
-  longitude: number;
+  longitude: number
 
   /**
    * The abbreviated country name.
    */
-  isoCountryCode?: string;
+  isoCountryCode?: string
 
   /**
    * The state or province associated with the placemark.
    */
-  administrativeArea?: string;
+  administrativeArea?: string
 
   /**
    * Additional administrative area information for the placemark.
    */
-  subAdministrativeArea?: string;
+  subAdministrativeArea?: string
 
   /**
    * Additional city-level information for the placemark.
    */
-  subLocality?: string;
+  subLocality?: string
 }
 /**************/
 

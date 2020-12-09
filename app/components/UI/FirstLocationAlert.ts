@@ -2,7 +2,7 @@ import { confirm, ConfirmOptions } from '@nativescript/core'
 import { FirstLocationAlert } from './types'
 import { setVisibility } from '@/composables/useComponent'
 
-export const firstLocationAlert = (options: FirstLocationAlert) => {
+export const firstLocationAlert = (options: FirstLocationAlert): void => {
   const confirmOptions: ConfirmOptions = {
     title: options.title,
     message: options.message,

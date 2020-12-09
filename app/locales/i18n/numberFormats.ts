@@ -3,14 +3,14 @@ export const numberFormats = {
     currency: {
       style: 'currency',
       currency: 'USD',
-      currencyDisplay: 'symbol'
-    }
+      currencyDisplay: 'symbol',
+    },
   },
   esES: {
     currency: {
       style: 'currency',
       currency: 'EUR',
-      currencyDisplay: 'symbol'
-    }
-  }
+      currencyDisplay: 'symbol',
+    },
+  },
 }

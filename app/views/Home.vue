@@ -25,11 +25,11 @@
         row="1"
         @first-location-alert="onFirstLocationAlert"
       />
-      <StackLayout
+      <!-- <StackLayout
         class="Bottom"
         row="2"
-      >
-        <Label textWrap="true">
+      > -->
+        <!-- <Label textWrap="true">
           <FormattedString>
             <Span text="latitude: "/>
             <Span :text="getCurrentUserLocation.lat"/>
@@ -46,23 +46,23 @@
             <Span text="distance from location1: "/>
             <Span :text="getDistanceToCenter"/>
           </FormattedString>
-        </Label>
-        <Label textWrap="true">
+        </Label> -->
+        <!-- <Label textWrap="true">
           <FormattedString>
             <Span text="distance from location2: "/>
             <Span :text="getDistanceToCenter"/>
           </FormattedString>
-        </Label>
-        <StackLayout orientation="horizontal">
+        </Label> -->
+        <!-- <StackLayout orientation="horizontal">
           <Button text="START" @tap="onStart" />
           <Button text="STOP" @tap="onStop" />
         </StackLayout>
-      </StackLayout>
+      </StackLayout> -->
 
-      <!-- <BottomAppBar
+      <BottomAppBar
         class="BottomBar"
         row="2"
-      /> -->
+      />
     </GridLayout>
   </Page>
 </template>

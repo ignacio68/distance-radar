@@ -8,9 +8,7 @@ export const hideSoftKeyboard = (): void => {
     try {
       const activity = Application.android.foregroundActivity
       const Context = Application.android.context
-      const inputManager = Context.getSystemService(
-        android.content.Context.INPUT_METHOD_SERVICE
-      )
+      const inputManager = Context.getSystemService(android.content.Context.INPUT_METHOD_SERVICE)
       inputManager.hideSoftInputFromWindow(
         activity.getCurrentFocus().getWindowToken(),
         android.view.inputmethod.InputMethodManager.HIDE_NOT_ALWAYS
