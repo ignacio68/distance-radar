@@ -260,19 +260,27 @@ module.exports = env => {
             },
             {
                 test: /\.ts$/,
-                loader: 'ts-loader',
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                    allowTsInNodeModules: true,
-                    compilerOptions: {
-                        declaration: false
+                use: [
+                    {
+                       loader: "@jsdevtools/coverage-istanbul-loader"
                     },
-                    getCustomTransformers: (program) => ({
-                        before: [
-                            require("@nativescript/webpack/transformers/ns-transform-native-classes").default
-                        ]
-                    })
-                },
+                    {
+                        loader:'ts-loader',
+                        options: {
+                            appendTsSuffixTo: [/\.vue$/],
+                            allowTsInNodeModules: true,
+                            compilerOptions: {
+                                declaration: false
+                            },
+                            getCustomTransformers: (program) => ({
+                                before: [
+                                    require("@nativescript/webpack/transformers/ns-transform-native-classes").default
+                                ]
+                            })
+                        },
+                    }
+
+                ]
             },
             {
                 test: /\.vue$/,
@@ -296,7 +304,7 @@ module.exports = env => {
                 "process": "global.process"
             }),
             // Remove all files from the out dir.
-            new CleanWebpackPlugin({ 
+            new CleanWebpackPlugin({
               cleanOnceBeforeBuildPatterns: itemsToClean,
               verbose: !!verbose
             }),
