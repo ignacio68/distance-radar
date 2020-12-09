@@ -58,6 +58,11 @@ MDTextField {
   color: $onSurface;
 }
 
+MDSlider {
+  background-color: $surface;
+  color: $onSurface;
+}
+
 .action-bar {
   background-color: $primary-variant;
   color: $onPrimary;
