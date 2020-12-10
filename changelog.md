@@ -1,10 +1,30 @@
 # Changelog
 
-## [0.3.0] - 2020-11-26
+
+## [0.3.1] - 2020-12-10
 
 ### Added
 
-- Locale storage
+- Couchbase
+- Add markers from persistent storage
+### Changed
+
+- Change item
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- Remove item
+
+## [0.3.0] - 2020-12-09
+
+### Added
+
+- Local storage
+- Testing
 - New security area menu: default color
 - New security area menu: radius slider
 - New security area menu: opacity slider
