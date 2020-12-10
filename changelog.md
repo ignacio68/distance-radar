@@ -1,5 +1,29 @@
 # Changelog
 
+## [0.3.0] - 2020-11-26
+
+### Added
+
+- Locale storage
+- New security area menu: default color
+- New security area menu: radius slider
+- New security area menu: opacity slider
+- New security area menu: dividers
+- User in Security Areas: in & out
+
+### Changed
+
+- Color selected prop
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- Remove item
+
+
 ## [0.2.1] - 2020-11-26
 
 ### Added
