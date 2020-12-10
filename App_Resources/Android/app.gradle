@@ -14,6 +14,11 @@ android {
     minSdkVersion 22
     generatedDensities = []
   }
+  // Set minimum JVM level to ensure availability of, for example, lambda expressions
+  compileOptions {
+    targetCompatibility 1.8
+    sourceCompatibility 1.8
+  }
   aaptOptions {
     additionalParameters "--no-version-vectors"
   }
