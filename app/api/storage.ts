@@ -1,56 +1,49 @@
-/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import * as storage from '@/services/storageService'
+import {
+  setDatabase,
+  addDocument,
+  getDocument,
+  updateDocument,
+  queryDocuments,
+  deleteDocument,
+  destroyDatabase,
+} from '@/services/couchbaseService'
+import { Database, QueryDB } from './types'
 
-export const setStorage = (id: string, value: any): Promise<boolean> =>
-  storage.setStorage(id, value).then((success) => success)
+export const createDatabase = (name: string): Database => setDatabase(name)
 
-export const getStorage = (id: string): Promise<any> => storage.getStorage(id)
+export const createSomeDatabases = (names: string[]): void => {
+  names.map((name) => createDatabase(name))
+}
 
-// export const updateStorage = async <T>(id: string, value: T): Promise<void> => {
-//   getStorage(id).then((result) => {
-//     result.push(value)
-//     replaceStorage(id, result)
-//   })
+export const addItem = <T>(database: Database, value: T, itemId: string): void =>
+  addDocument(database, value, itemId)
+
+export const getItem = <T>(database: Database, itemId: string): T => getDocument(database, itemId)
+
+export const getAllItems = <T>(database: Database): Array<T> =>
+  database.query({
+    select: [],
+  })
+
+export const updateItem = <T>(database: Database, itemId: string, value: T): void =>
+  updateDocument(database, itemId, value)
+
+export const deleteItem = (database: Database, itemId: string): void =>
+  deleteDocument(database, itemId)
+
+export const queryItems = <T>(database: Database, query: QueryDB): Array<T> =>
+  queryDocuments(database, query)
+
+// export const initializeDatabase = <T>(nameDB: string, callback: (item: T) => void): Database => {
+//   const database = createDatabase(nameDB)
+//   getAllTheItems<T>(database).forEach((item: T) => callback(item))
+
+//   console.log(`storage::initializeDB: ${JSON.stringify(database)}`)
+
+//   return database
 // }
-const replaceStorage = (id: string, value: any): void => {
-  console.log(`storage::replaceStorage()`)
-  removeStorage(id).then((result) => {
-    if (result) setStorage(id, value)
-    else console.log(`storage::replace: cannot replace ${id}`)
-  })
+
+export const resetDatabase = (database: Database): void => {
+  // FIXME: Clean the db without destroy it.
+  destroyDatabase(database)
 }
-
-const findIndex = (storage: any[], id: string): number =>
-  storage.findIndex((item: any) => item.id === id)
-
-export const addItemToStorage = (id: string, value: any): void => {
-  console.log(`storage::addItemToStorage()`)
-  getStorage(id).then((result) => {
-    console.log(`storage::addItemToStorage():result: ${JSON.stringify(result)}`)
-    if (result) {
-      console.log('result is an array!!')
-      result.push(value)
-      replaceStorage(id, result)
-    } else console.log('result is not an array!!')
-  })
-}
-
-export const updateItemStorage = (id: string, value: any): void => {
-  console.log(`storage::updateItemStorage()`)
-  getStorage(id).then((result) => {
-    removeItemStorage(result, value.id)
-    addItemToStorage(id, value)
-  })
-}
-
-export const removeItemStorage = (id: string, itemId: string): void => {
-  console.log(`storage::removeItemStorage()`)
-  getStorage(id).then((result) => {
-    result.splice(findIndex(result, itemId), 1)
-  })
-}
-
-export const removeStorage = (id: string): Promise<boolean> => storage.removeStorage(id)
-
-export const removeAllStorage = (): Promise<boolean> => storage.removeAllStorage()

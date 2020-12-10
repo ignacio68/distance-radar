@@ -1,10 +1,12 @@
 import Vue from 'nativescript-vue'
 
 import {
-  addItemToStorage,
-  updateItemStorage,
-  removeItemStorage,
-  removeAllStorage,
+  createDatabase,
+  getAllItems,
+  addItem,
+  updateItem,
+  deleteItem,
+  resetDatabase,
 } from '@/api/storage'
 
 import { Location } from '@/types/types'
@@ -13,6 +15,20 @@ const state = Vue.observable({
   locations: ([] as unknown) as Location[],
   selectedLocation: '',
 })
+
+const database = createDatabase('locations')
+
+const addLocationToState = (location: Location): void => {
+  console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
+  state.locations.push(location)
+}
+
+const initializeDatabase = (): void =>
+  getAllItems(database).forEach((location: Location) => addLocationToState(location))
+
+initializeDatabase()
+
+// deleteItem(database, 'casa')
 
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
@@ -29,8 +45,8 @@ export const getLocation = (id: string): Location =>
 export const getLocations = (): Location[] => state.locations
 
 export const addNewLocation = (location: Location): void => {
-  state.locations.push(location)
-  addItemToStorage('locations', location)
+  addLocationToState(location)
+  addItem(database, location, location.id)
 }
 
 const updateLocation = async (location: Location): Promise<Location> => {
@@ -42,17 +58,17 @@ const updateLocation = async (location: Location): Promise<Location> => {
 export const updateLocationsStore = async (location: Location): Promise<void> => {
   const resolveLocation = await updateLocation(location)
   state.locations.splice(findIndex(location.id), 1, resolveLocation)
-  updateItemStorage('locations', resolveLocation)
+  updateItem(database, resolveLocation.id, resolveLocation)
 }
 
 export const deleteLocation = (id: string): void => {
   state.locations.splice(findIndex(id), 1)
-  removeItemStorage('locations', id)
+  deleteItem(database, id)
 }
 
 export const deleteAllLocations = (): void => {
   state.locations.length = 0
-  removeAllStorage()
+  resetDatabase(database)
 }
 
 export const setSelectedLocation = (id: string): string => {

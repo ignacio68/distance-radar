@@ -21,9 +21,6 @@ import { i18n, setLanguage } from '@/locales'
 import Home from './views/Home.vue'
 // import HomeTest from './views/TestViews/HomeTest.vue'
 
-import { initLocationStorage } from '@/api/locationsStorage'
-// import { addNewLocation } from '@/store/locationsStore'
-
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Vue.use(VueDevtools as any)
@@ -36,7 +33,6 @@ new Vue({
   i18n,
   created() {
     setLanguage()
-    initLocationStorage()
   },
   render: (h) => h('frame', [h(Home)]),
   // render: (h) => h('frame', [h(HomeTest)]),

@@ -36,7 +36,7 @@ export const setCenter = async (): Promise<void> => {
 }
 
 export const addMarkers = (): void => {
-  console.log(`map.ts::addMarkers: ${getLocations()}`)
+  console.log(`map.ts::addMarkers: ${JSON.stringify(getLocations())}`)
   map().addMarkers(getLocations())
 }
 

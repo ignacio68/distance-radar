@@ -93,7 +93,7 @@
 
   import { mapToken } from '@/setup/map'
 
-  import { setCenter, flyTo } from '@/api/map'
+  import { setCenter, addMarkers, flyTo } from '@/api/map'
   import { updateUserMarker } from '@/api/userMarker'
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
@@ -146,6 +146,7 @@
       async onMapReady(args: any) {
         console.log('onMapReady()')
         await this.setMap(args)
+        addMarkers()
         await this.setOnMapLongClickAction()
         await this.setCenter()
         // TODO: Change source name, add options
