@@ -4,6 +4,7 @@ import { getCurrentUserLocation } from '@/services/geolocationService'
 
 import { getMap as map } from '@/store/mapStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
+import { getLocations } from '@/store/locationsStore'
 
 import { LngLat } from '@/types/types'
 
@@ -32,6 +33,11 @@ export const setCenter = async (): Promise<void> => {
           })
       })
   })
+}
+
+export const addMarkers = (): void => {
+  console.log(`map.ts::addMarkers: ${getLocations()}`)
+  map().addMarkers(getLocations())
 }
 
 export const flyTo = (location: LngLat): void => {

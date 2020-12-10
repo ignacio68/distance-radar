@@ -1,5 +1,12 @@
 import Vue from 'nativescript-vue'
 
+import {
+  addItemToStorage,
+  updateItemStorage,
+  removeItemStorage,
+  removeAllStorage,
+} from '@/api/storage'
+
 import { Location } from '@/types/types'
 
 const state = Vue.observable({
@@ -21,15 +28,10 @@ export const getLocation = (id: string): Location =>
 
 export const getLocations = (): Location[] => state.locations
 
-export const addNewLocation = async (location: Location): Promise<number> =>
+export const addNewLocation = (location: Location): void => {
   state.locations.push(location)
-
-// setStorage(location.id, location).then(success => {
-//   console.log(`setStorage? ${success}`)
-//   if(success){
-//     addMarker(this.map, location)
-//   }
-// })
+  addItemToStorage('locations', location)
+}
 
 const updateLocation = async (location: Location): Promise<Location> => {
   const currentLocation = getLocation(location.id)
@@ -40,9 +42,18 @@ const updateLocation = async (location: Location): Promise<Location> => {
 export const updateLocationsStore = async (location: Location): Promise<void> => {
   const resolveLocation = await updateLocation(location)
   state.locations.splice(findIndex(location.id), 1, resolveLocation)
+  updateItemStorage('locations', resolveLocation)
 }
 
-export const deleteLocation = (id: string): Location[] => state.locations.splice(findIndex(id), 1)
+export const deleteLocation = (id: string): void => {
+  state.locations.splice(findIndex(id), 1)
+  removeItemStorage('locations', id)
+}
+
+export const deleteAllLocations = (): void => {
+  state.locations.length = 0
+  removeAllStorage()
+}
 
 export const setSelectedLocation = (id: string): string => {
   console.log(`locationsStore.ts::setSelectedLocation: ${id}`)

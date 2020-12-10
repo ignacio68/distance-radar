@@ -6,6 +6,7 @@ import {
   updateLocationsStore,
   getLocations,
   deleteLocation,
+  deleteAllLocations,
   setSelectedLocation,
   getSelectedLocation,
   hasSecurityArea,
@@ -46,12 +47,13 @@ export const newLocation = (location: Location): void => {
   map()
     .addMarkers(newLocation)
     .then(() => {
-      addNewLocation(completeLocation).then(() => {
-        console.log(`locations.ts::new location:`)
-        // console.dir(getLocations())
-      })
+      addNewLocation(completeLocation)
     })
 }
+
+// export const fetchLocations = (): Locations[] => {
+//   map().addMarkers(location)
+// }
 
 export const fetchSelectedLocation = (): Location => {
   console.log(`locations.ts::fetchSelectedLocation() ${JSON.stringify(getSelectedLocation())}`)
@@ -59,9 +61,18 @@ export const fetchSelectedLocation = (): Location => {
 }
 
 export const updateLocation = async (location: Location): Promise<void> => {
-  await updateLocationsStore(location)
-  console.log(`locations.ts::new location:`)
-  console.dir(getLocations())
+  await updateLocationsStore(location).then(() => {
+    console.log(`locations.ts::updateLocation:`)
+    console.dir(getLocations())
+  })
 }
 
-export const removeLocation = (id: string): Location[] => deleteLocation(id)
+export const removeLocation = (id: string): void => {
+  deleteLocation(id)
+  console.log(`locations.ts::removeLocation:`)
+}
+
+export const removeAllLocations = (): void => {
+  deleteAllLocations()
+  console.log(`locations.ts::removeAllLocation:`)
+}
