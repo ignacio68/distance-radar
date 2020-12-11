@@ -7,7 +7,7 @@ export const closeDatabase = (database: CouchBase): void => database.close()
 export const destroyDatabase = (database: CouchBase): void => database.destroyDatabase()
 
 export const addDocument = <T>(database: CouchBase, value: T, documentId: string): void =>
-  database.createDocument(value, documentId)
+  database.createDocument(JSON.parse(JSON.stringify(value)), documentId)
 
 export const getDocument = <T>(database: CouchBase, documentId: string): T =>
   database.getDocument(documentId)
