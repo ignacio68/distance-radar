@@ -20,10 +20,7 @@ export const addItem = <T>(database: Database, value: T, itemId: string): void =
 
 export const getItem = <T>(database: Database, itemId: string): T => getDocument(database, itemId)
 
-export const getAllItems = <T>(database: Database): Array<T> =>
-  database.query({
-    select: [],
-  })
+export const getAllItems = <T>(database: Database): Array<T> => queryItems(database, { select: [] })
 
 export const updateItem = <T>(database: Database, itemId: string, value: T): void =>
   updateDocument(database, itemId, value)
@@ -45,5 +42,7 @@ export const queryItems = <T>(database: Database, query: QueryDB): Array<T> =>
 
 export const resetDatabase = (database: Database): void => {
   // FIXME: Clean the db without destroy it.
-  destroyDatabase(database)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getAllItems(database).forEach((item: any) => deleteItem(database, item))
+  // destroyDatabase(database)
 }
