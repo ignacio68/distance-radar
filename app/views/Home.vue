@@ -18,12 +18,19 @@
         class="action-bar"
         row="0"
         width="100%"
-        @tap-visibility="onTapVisibility"
       />
       <MapWrapper
         id="MapWrapper"
         row="1"
         @first-location-alert="onFirstLocationAlert"
+      />
+      <LocationsList
+        v-if="isVisibleLocationsList"
+        id="LocationsList"
+        class="pull-right p-r-8 m-t-0"
+        row="1"
+        width="100"
+        labelHeight="64"
       />
       <!-- <StackLayout
         class="Bottom"
@@ -77,16 +84,18 @@
   import { FirstLocationAlert } from '@/components/UI/types'
   import { LngLat } from '@/types/types'
 
-  import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
+  import { getVisibility } from '@/composables/useComponent'
 
   import { getSecurityAreaActive, getAllSecurityAreas} from '@/store/securityAreasStore'
   import { getCurrentUserLocation, getDistanceToCenter, getWatchId as watchId } from '@/store/userLocationStore'
   import { getIsWatchUserLocationEnabled as isWatchUserLocationEnabled , setIsWatchUserLocationEnabled } from '@/composables/useGeolocation'
   import { startTrackingUserLocation, stopTrackingUserLocation, isUserInSecurityArea } from '@/api/geolocation'
 
+  import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
+  import LocationsList from '@/components/Locations/LocationsList.vue'
 
   export default Vue.extend({
     name: 'Home',
@@ -95,12 +104,11 @@
       CustomActionBar,
       MapWrapper,
       BottomAppBar,
+      LocationsList,
     },
 
     data() {
       return {
-        // TODO: Refactoring
-        isVisibleSecurityArea: false,
         latitude: getCurrentUserLocation().lat,
         longitude: getCurrentUserLocation().lng,
         distance: getDistanceToCenter(),
@@ -108,6 +116,10 @@
     },
 
     computed: {
+      isVisibleLocationsList(): boolean {
+        return getVisibility('locationsList')
+      },
+
       isWatchUserLocationEnabled(): boolean {
         return isWatchUserLocationEnabled()
       },
@@ -148,12 +160,6 @@
       backEvent() {
         console.log('Has presionado el botón de volver de Android!!')
         application.android.foregroundActivity.finish();
-      },
-
-      // TODO: Refactoring
-      onTapVisibility(): void {
-        console.log('onTapVisibility()')
-        this.isVisibleSecurityArea = !this.isVisibleSecurityArea
       },
 
       onFirstLocationAlert() {

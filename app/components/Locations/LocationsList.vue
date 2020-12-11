@@ -1,0 +1,97 @@
+<template>
+  <StackLayout orientation="vertical"
+    :width="width"
+    :height="listHeight"
+  >
+      <ScrollView
+        height="100%"
+      >
+        <ListView
+          for="location in locations"
+          >
+          <v-template>
+            <Label
+              :height="labelHeight"
+              :text="location.id"
+              @tap="onItemTap(location)"
+            />
+          </v-template>
+        </ListView>
+      </ScrollView>
+  </StackLayout>
+</template>
+<script lang="ts">
+import Vue from 'nativescript-vue'
+import LocationCard from '@/components/Locations/LocationCard.vue'
+import '@/plugins/installMDButton'
+
+import { setVisibility, getVisibility } from '@/composables/useComponent'
+
+import { flyTo } from '@/api/map'
+
+import { getLocations } from '@/store/locationsStore'
+
+import { LngLat, Location } from '@/types/types'
+
+export default Vue.extend({
+  name: 'LocationsAdjust',
+
+  props: {
+    width: {
+      type: [String, Number],
+      default: 100
+    },
+    labelHeight: {
+      type: [String, Number],
+      default: 64
+    },
+
+  },
+
+  data() {
+    return {
+      // locations: getLocations()
+    }
+  },
+
+  computed: {
+    isVisibleLocationsList(): boolean {
+        console.log(`LocationsList::computed:isVisibleLocationsList() ${getVisibility('locationsList')}`)
+        return getVisibility('locationsList')
+    },
+
+    locations(): Location[] {
+      return getLocations()
+    },
+
+    listHeight(): number {
+      const items: number = this.locations.length
+      return items < 5 ? this.labelHeight * items : this.labelHeight * 5
+    }
+  },
+
+  methods: {
+    hideLocationsListMenu(): void {
+      console.log('LocationsListMenu::hideNewLocationMenu()')
+      setVisibility('locationsList', false)
+    },
+
+    onItemTap(args: Location): void {
+      const coordinates: LngLat = {
+        lat: args.lat,
+        lng: args.lng
+      }
+      flyTo(coordinates)
+      this.hideLocationsListMenu()
+    }
+  }
+
+})
+</script>
+<style lang="scss" scoped>
+  @import '../../app-variables';
+
+  Label {
+    font-size: $font-sz-m;
+  }
+</style>
