@@ -59,10 +59,6 @@
 <script lang="ts">
   import Vue from 'nativescript-vue'
 
-  import { Application as application } from '@nativescript/core'
-
-  import { onBackEvent, clearBackEvent } from '@/utils/backButton'
-
   import { FirstLocationAlert } from '@/components/UI/types'
   import { LngLat } from '@/types/types'
 
@@ -125,20 +121,7 @@
       // }
     },
 
-    created() {
-      onBackEvent(this.backEvent)
-    },
-
-    beforeDestroy() {
-      clearBackEvent(this.backEvent)
-    },
-
     methods: {
-      backEvent() {
-        console.log('Has presionado el botón de volver de Android!!')
-        application.android.foregroundActivity.finish();
-      },
-
       onFirstLocationAlert() {
         const firstLocationOptions: FirstLocationAlert  = {
           title: `${this.$t('lang.components.firstLocationAlert.title')}`,
