@@ -34,41 +34,35 @@
       col="1"
     >
     <!-- TODO: Add animation -->
-        <LocationsList
-          v-if="isVisibleLocationsList"
-          id="LocationsList"
-          class="pull-right m-r-16"
-          width="100"
-          labelHeight="64"
-          verticalAlignment="top"
-          row="0"
-        />
-    <!------------------------->
-      <StackLayout
-        id="geocoder-wrapper"
+      <LocationsList
+        v-if="isVisibleLocationsList"
+        id="LocationsList"
+        class="pull-right m-r-16"
+        width="100"
+        labelHeight="64"
+        verticalAlignment="top"
         row="0"
-        backgroundColor="transparent"
-      >
-        <Geocoder
-          v-if="isVisibleGeocoder"
-          class="geocoder m-16"
-          verticalAlignment="top"
-          row="0"
-          :width="300"
-          :borderRadius="16"
-          :borderWidth="1"
-          borderColor="#fc726c"
-          searchBarFontColor="black"
-          searchBarBackgroundColor="green"
-          textFieldHintColor="gray"
-          listViewBackgroundColor="white"
-          textFieldBackgroundColor="ghostwhite"
-          :itemFontSize="16"
-          :maxLengthText="360"
-          :hint="$t('lang.components.geocoder.hint')"
-          @on-location-selected="onLocationSelected"
-        />
-      </StackLayout>
+      />
+    <!------------------------->
+      <Geocoder
+        v-if="isVisibleGeocoder"
+        class="geocoder m-16"
+        verticalAlignment="top"
+        row="0"
+        :width="300"
+        :borderRadius="16"
+        :borderWidth="1"
+        borderColor="#fc726c"
+        searchBarFontColor="black"
+        searchBarBackgroundColor="green"
+        textFieldHintColor="gray"
+        listViewBackgroundColor="white"
+        textFieldBackgroundColor="ghostwhite"
+        :itemFontSize="16"
+        :maxLengthText="360"
+        :hint="$t('lang.components.geocoder.hint')"
+        @on-location-selected="onLocationSelected"
+      />
       <GridLayout
         id="buttons-wrapper"
         horizontalAlignment="right"
