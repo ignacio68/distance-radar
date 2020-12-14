@@ -1,23 +1,26 @@
 # Changelog
 
 
-## [0.3.1] - 2020-12-10
+## [0.3.1] - 2020-12-14
 
 ### Added
 
+- Redesign Custom Slider user interface
+- Redesign Security Area Menu interface
+- Custom Slider component to New Security Area Menu
+- LocationList component elevation
 - Couchbase
-- Add markers from persistent storage
+- Add markers from persistent storage at init
+- Added Locations list component to select a Location anf fly to
+
 ### Changed
 
-- Change item
+- Home page name -> Main
+- Locations List component location
 
-### Fixed
+### Security
 
-- Fixed item
-
-### Removed
-
-- Remove item
+- Resolved "ini" security issue
 
 ## [0.3.0] - 2020-12-09
 
