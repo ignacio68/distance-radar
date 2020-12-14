@@ -90,7 +90,7 @@
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
 
   export default Vue.extend({
-    name: 'Home',
+    name: 'Main',
 
     components: {
       CustomActionBar,
@@ -189,7 +189,7 @@
 )
 </script>
 <style lang="scss" scoped>
-@import '../app-variables';
+@import '../../app-variables';
 .Bottom {
   font-size: $font-sz-l;
 }
