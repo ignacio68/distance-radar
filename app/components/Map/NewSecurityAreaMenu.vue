@@ -8,34 +8,42 @@
       />
       <GridLayout
         class="new-area-menu"
-        rows="auto, auto, 48, 64"
+        rows="auto, auto, auto, auto, 56, 64"
         columns="*"
       >
         <CustomSlider
           class="radius-slider"
           row="0"
+          iconName="res://ic_visibility_white_24dp"
+          iconColor="#004842"
           :sliderName="$t('lang.components.newArea.distance')"
           :value="radius"
           :minValue="0"
           :maxValue="100"
+          rippleColor="#007a70"
           @on-value-changed="onRadiusChanged"
         />
+        <StackLayout row="1" class="hr"/>
         <CustomSlider
           class="opacity-slider"
-          row="1"
+          row="2"
+          iconName="res://ic_visibility_white_24dp"
+          iconColor="#004842"
           :sliderName="$t('lang.components.newArea.opacity')"
           :value="opacity"
           :minValue="0"
           :maxValue="1"
+          rippleColor="#007a70"
           @on-value-changed="onOpacityChanged"
         />
+        <StackLayout row="3" class="hr"/>
         <ColorSelector
-          row="2"
+          row="4"
           :labelWidth="64"
           @on-selected-color="setColor"
         />
         <StackLayout
-          row="3"
+          row="5"
           class="new-marker-menu_buttons"
           width="100%"
           orientation="horizontal"
@@ -220,7 +228,7 @@ export default Vue.extend({
 .menu_title {
  font-weight: 700;
  font-size: 16;
- color: $primary-variant;
+ color: $primary-dark;
  opacity: .8;
  border-bottom: 1, solid, rgba($primary, .1);
 }
