@@ -63,6 +63,13 @@ export interface UserMarker extends LngLat {
   update?: (newSettings: UserMarker) => void
 }
 
+interface OnTap {
+  (id: string): void
+}
+
+interface OnCalloutTap {
+  (id: string): void
+}
 export interface Location extends LngLat {
   id: string
   group?: string
@@ -70,8 +77,8 @@ export interface Location extends LngLat {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: () => unknown
-  onCalloutTap?: () => unknown
+  onTap?: OnTap
+  onCalloutTap?: OnCalloutTap
   selected?: boolean
   hasSecurityArea?: boolean
   securityAreas?: SecurityArea[]
