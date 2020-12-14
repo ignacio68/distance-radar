@@ -39,7 +39,7 @@
         id="LocationsList"
         class="pull-right m-r-16"
         width="100"
-        labelHeight="64"
+        labelHeight="48"
         verticalAlignment="top"
         row="0"
       />
@@ -107,7 +107,7 @@
 
   import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
   import { setMap, getMap as map } from '@/store/mapStore'
-  import { numberOfLocations} from '@/store/locationsStore'
+  import { numberOfLocations } from '@/store/locationsStore'
 
   import { Elevation } from '@/types/enums/elevations'
   import { LngLat } from '@/types/types'
@@ -137,7 +137,7 @@
         initialCoordinates: {
           lat: initialLocation().lat,
           lng: initialLocation().lng
-        }
+        },
       }
     },
 
