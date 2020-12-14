@@ -115,6 +115,7 @@
 
   import { MapStyle } from '@nstudio/nativescript-mapbox'
 
+  import '@/plugins/installMapbox'
   import '@/plugins/installFAB'
   import LocationsList from '@/components/Locations/LocationsList.vue'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
