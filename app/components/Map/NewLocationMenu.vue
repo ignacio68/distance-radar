@@ -193,7 +193,6 @@ export default Vue.extend({
 
     async onAddNewLocation() {
       !this.idError ? await this.newLocation() : console.log(`ID error is: ${this.idError}`)
-
     },
   },
 })
