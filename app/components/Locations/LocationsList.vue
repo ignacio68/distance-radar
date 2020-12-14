@@ -2,22 +2,19 @@
   <StackLayout orientation="vertical"
     :width="width"
     :height="listHeight"
+    :androidElevation="listElevation"
   >
-      <ScrollView
-        backgroundColor="red"
-      >
-        <ListView
-          for="location in locations"
-          >
-          <v-template>
-            <Label
-              :height="labelHeight"
-              :text="location.id"
-              @tap="onItemTap(location)"
-            />
-          </v-template>
-        </ListView>
-      </ScrollView>
+    <ListView
+      for="location in locations"
+    >
+      <v-template>
+        <Label
+          :height="labelHeight"
+          :text="location.id"
+          @tap="onItemTap(location)"
+        />
+      </v-template>
+    </ListView>
   </StackLayout>
 </template>
 <script lang="ts">
@@ -32,6 +29,7 @@ import { flyTo } from '@/api/map'
 import { getLocations } from '@/store/locationsStore'
 
 import { LngLat, Location } from '@/types/types'
+import { Elevation } from '@/types/enums/elevations'
 
 export default Vue.extend({
   name: 'LocationsAdjust',
@@ -43,14 +41,13 @@ export default Vue.extend({
     },
     labelHeight: {
       type: [String, Number],
-      default: 64
+      default: 48
     },
-
   },
 
   data() {
     return {
-      // locations: getLocations()
+      listElevation: Elevation.MENU,
     }
   },
 
@@ -66,8 +63,8 @@ export default Vue.extend({
 
     listHeight(): number {
       const items: number = this.locations.length
-      return items < 5 ? this.labelHeight * items : this.labelHeight * 5
-    }
+      return items <= 3 ? this.labelHeight * items : this.labelHeight * 3
+    },
   },
 
   methods: {
