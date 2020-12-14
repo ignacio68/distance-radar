@@ -1,5 +1,5 @@
 import { android, AndroidApplication } from '@nativescript/core/application'
-import { isAndroid } from '@nativescript/core/platform'
+import { isAndroid } from '@nativescript/core'
 
 export const onBackEvent = (customEvent: () => void): void => {
   if (!isAndroid) return
