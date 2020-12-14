@@ -12,19 +12,13 @@
       verticalAlignment="middle"
       :text="$t('lang.components.actionBar.title')"
     />
-    <!-- <Icon
-      col="1"
-      class="action-bar_visibility-button m-r-0"
-      :name="visibilityIcon"
-      @on-tap="onTap('tap-visibility')"
-    /> -->
     <Icon
       col="1"
       class="action-bar_visibility-button m-r-0"
-      :name="securityAreasVisibilityIcon"
+      :name="locationsListIcon"
       :rippleDuration="300"
       :rippleOpacity="0.2"
-      @on-tap="onTapSecurityAreasVisibility"
+      @on-tap="onLocationsList"
     />
     <Icon
       col="2"
@@ -32,14 +26,14 @@
       :name="geocoderIcon"
       :rippleDuration="300"
       :rippleOpacity="0.2"
-      @on-tap="onTapSearchLocations"
+      @on-tap="onSearchLocations"
     />
   </GridLayout>
 </template>
 
 <script lang="ts">
   import Vue from 'nativescript-vue'
-  import { getVisibility, toggleVisibility } from '@/composables/useComponent'
+  import { getVisibility, setVisibility, toggleVisibility } from '@/composables/useComponent'
 
   import Icon from '@/components/UI/Icon.vue'
 
@@ -51,26 +45,26 @@
 
     data() {
       return {
-        // TODO: Refactoring
-        isVisibleSecurityArea: false,
-
-        securityAreaVisibilityOnIcon: 'res://ic_visibility_white_24dp',
-        securityAreaVisibilityOffIcon: 'res://ic_visibility_off_white_24dp',
+        locationsListEnabledIcon: 'res://ic_visibility_white_24dp',
+        locationsListDisabledIcon: 'res://ic_visibility_off_white_24dp',
         geocoderEnabledIcon: 'res://ic_location_searching_white_24dp',
         geocoderDisabledIcon: 'res://ic_location_disabled_white_24dp'
       }
     },
 
     computed: {
-      // TODO: Refactoring
       isVisibleGeocoder() {
         return getVisibility('geocoder')
       },
 
-      securityAreasVisibilityIcon(): string {
-        return this.isVisibleSecurityArea
-          ? this.securityAreaVisibilityOffIcon
-          : this.securityAreaVisibilityOnIcon
+      isVisibleLocationsList() {
+        return getVisibility('locationsList')
+      },
+
+      locationsListIcon(): string {
+        return this.isVisibleLocationsList
+          ? this.locationsListDisabledIcon
+          : this.locationsListEnabledIcon
       },
 
       geocoderIcon(): string {
@@ -81,16 +75,16 @@
     },
 
     methods: {
-      // TODO: Refactoring
-      onTapSecurityAreasVisibility() {
-        console.log('onTapSecurityAreasVisibility()')
-        this.isVisibleSecurityArea = !this.isVisibleSecurityArea
-        this.$emit('on-tap-visibility', this.isVisibleSecurityArea)
+      onLocationsList() {
+        toggleVisibility('locationsList')
+        setVisibility('geocoder', false)
+        console.log(`is visible LocationsList? ${this.isVisibleLocationsList}`)
       },
 
-      onTapSearchLocations() {
+      onSearchLocations() {
         toggleVisibility('geocoder')
-        console.log(`isVisibleGeocoder? ${this.isVisibleGeocoder}`)
+        setVisibility('locationsList', false)
+        console.log(`is visible geocoder? ${this.isVisibleGeocoder}`)
       },
     },
   })

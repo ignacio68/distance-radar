@@ -2,6 +2,12 @@ export default {
   actionBar: {
     title: 'Radar de Distancias',
   },
+  firstLocationAlert: {
+    title: 'Ubicación',
+    message: 'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
+    okButton: '¡Adelante!',
+    cancelButton: 'Luego',
+  },
   newLocation: {
     title: 'Nueva Ubicación',
     id: 'Nombre:',
@@ -18,17 +24,14 @@ export default {
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
   },
+  LocationsAdjusts: {
+    title: 'Ubicaciones',
+  },
   colorSelector: {
     text: 'Color:',
   },
   geocoder: {
     hint: 'Buscar...',
     noResultsText: 'No se han encontrado resultados',
-  },
-  firstLocationAlert: {
-    title: 'Ubicación',
-    message: 'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
-    okButton: '¡Adelante!',
-    cancelButton: 'Luego',
   },
 }

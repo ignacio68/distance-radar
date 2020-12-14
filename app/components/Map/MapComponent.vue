@@ -33,6 +33,17 @@
       row="0"
       col="1"
     >
+    <!-- TODO: Add animation -->
+        <LocationsList
+          v-if="isVisibleLocationsList"
+          id="LocationsList"
+          class="pull-right m-r-16"
+          width="100"
+          labelHeight="64"
+          verticalAlignment="top"
+          row="0"
+        />
+    <!------------------------->
       <StackLayout
         id="geocoder-wrapper"
         row="0"
@@ -41,6 +52,8 @@
         <Geocoder
           v-if="isVisibleGeocoder"
           class="geocoder m-16"
+          verticalAlignment="top"
+          row="0"
           :width="300"
           :borderRadius="16"
           :borderWidth="1"
@@ -109,11 +122,13 @@
   import { MapStyle } from '@nstudio/nativescript-mapbox'
 
   import '@/plugins/installFAB'
+  import LocationsList from '@/components/Locations/LocationsList.vue'
   import Geocoder from '@/components/Geocoder/Geocoder.vue'
 
   export default Vue.extend({
     name: 'MapComponent',
     components: {
+      LocationsList,
       Geocoder,
     },
 
@@ -135,6 +150,10 @@
     computed:{
       mapStyle(): Promise<string> {
         return this.customMapStyle ? this.customMapStyle : this.defaultMapStyle
+      },
+
+      isVisibleLocationsList(): boolean {
+        return getVisibility('locationsList')
       },
 
       isVisibleGeocoder(): boolean {

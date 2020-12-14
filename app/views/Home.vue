@@ -24,14 +24,7 @@
         row="1"
         @first-location-alert="onFirstLocationAlert"
       />
-      <LocationsList
-        v-if="isVisibleLocationsList"
-        id="LocationsList"
-        class="pull-right p-r-8 m-t-0"
-        row="1"
-        width="100"
-        labelHeight="64"
-      />
+
       <!-- <StackLayout
         class="Bottom"
         row="2"
@@ -95,7 +88,6 @@
   import CustomActionBar from '@/components/UI/CustomActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
-  import LocationsList from '@/components/Locations/LocationsList.vue'
 
   export default Vue.extend({
     name: 'Home',
@@ -104,7 +96,6 @@
       CustomActionBar,
       MapWrapper,
       BottomAppBar,
-      LocationsList,
     },
 
     data() {
@@ -116,9 +107,6 @@
     },
 
     computed: {
-      isVisibleLocationsList(): boolean {
-        return getVisibility('locationsList')
-      },
 
       isWatchUserLocationEnabled(): boolean {
         return isWatchUserLocationEnabled()

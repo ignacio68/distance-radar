@@ -4,6 +4,7 @@ const isVisible = Vue.observable({
   geocoder: false,
   newLocationMenu: false,
   newSecurityAreaMenu: false,
+  locationsList: false,
   securityArea: false,
   textFieldSoftKeyboard: true,
 })

@@ -4,7 +4,7 @@
     :height="listHeight"
   >
       <ScrollView
-        height="100%"
+        backgroundColor="red"
       >
         <ListView
           for="location in locations"
