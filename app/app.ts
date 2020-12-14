@@ -18,7 +18,8 @@ import '@/plugins/installMapbox'
 import { i18n, setLanguage } from '@/locales'
 
 //Components
-import Main from './views/Main/Main.vue'
+// import Main from './views/Main/Main.vue'
+import MainNavigation from './views/Navigation/MainNavigation.vue'
 // import HomeTest from './views/TestViews/HomeTest.vue'
 
 if (TNS_ENV !== 'production') {
@@ -34,6 +35,6 @@ new Vue({
   created() {
     setLanguage()
   },
-  render: (h) => h('frame', [h(Main)]),
+  render: (h) => h('frame', [h(MainNavigation)]),
   // render: (h) => h('frame', [h(HomeTest)]),
 }).$start()

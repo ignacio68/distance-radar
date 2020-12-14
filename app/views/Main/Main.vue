@@ -1,17 +1,7 @@
 <template>
-  <Page
-    actionBarHidden="true"
-    backgroundSpanUnderStatusBar="true"
-    androidStatusBarBackground="#00251e"
-  >
-    <!-- <GridLayout
-      class="home"
-      rows="auto, *, 56"
-      columns="*"
-    > -->
     <GridLayout
       class="home"
-      rows="auto, *, auto"
+      rows="auto, *, 56"
       columns="*"
     >
       <CustomActionBar
@@ -64,7 +54,6 @@
         row="2"
       />
     </GridLayout>
-  </Page>
 </template>
 
 <script lang="ts">
