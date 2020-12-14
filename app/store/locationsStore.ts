@@ -1,5 +1,7 @@
 import Vue from 'nativescript-vue'
 
+import { updateLocationAtInit } from '@/api/locations'
+
 import {
   createDatabase,
   getAllItems,
@@ -16,6 +18,7 @@ const state = Vue.observable({
   selectedLocation: '',
 })
 
+// Create persist locations database
 const database = createDatabase('locations')
 
 const addLocationToState = (location: Location): void => {
@@ -24,17 +27,15 @@ const addLocationToState = (location: Location): void => {
 }
 
 const initializeDatabase = (): void =>
+  // getAllItems(database).forEach((location: Location) => updateLocationAtInit(location))
   getAllItems(database).forEach((location: Location) => addLocationToState(location))
 
+// Init persist locations database
 initializeDatabase()
-
-// deleteItem(database, 'casa')
 
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
 
-// export const hasId = (id: string): boolean =>
-//   (findIndex(id) as unknown) as boolean
 export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
 export const numberOfLocations = (): number => state.locations.length
