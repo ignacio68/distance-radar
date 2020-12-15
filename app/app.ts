@@ -19,12 +19,14 @@ import { i18n, setLanguage } from '@/locales'
 
 //Components
 // import Main from './views/Main/Main.vue'
-import MainNavigation from './views/Navigation/MainNavigation.vue'
+import MainNavigation from '@/views/Navigation/MainNavigation.vue'
+import Main from '@/views/Main/Main.vue'
+import DrawerContent from '@/views/Navigation/DrawerContent.vue'
 // import HomeTest from './views/TestViews/HomeTest.vue'
 
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Vue.use(VueDevtools as any)
+  Vue.use(VueDevtools as any, { host: '192.168.1.25' })
 }
 
 // Prints Vue logs when --env.production is *NOT* set while building
@@ -35,6 +37,11 @@ new Vue({
   created() {
     setLanguage()
   },
-  render: (h) => h('frame', [h(MainNavigation)]),
+  render: (h) =>
+    h(MainNavigation, [
+      h(DrawerContent, { slot: 'drawerContent' }),
+      h(Main, { slot: 'mainContent' }),
+    ]),
+  // render: (h) => h('frame', [h(MainNavigation)]),
   // render: (h) => h('frame', [h(HomeTest)]),
 }).$start()

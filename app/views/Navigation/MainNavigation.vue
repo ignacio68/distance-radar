@@ -1,54 +1,62 @@
 <template>
-  <Page
-    actionBarHidden="true"
-    backgroundSpanUnderStatusBar="true"
-    androidStatusBarBackground="#00251e"
+  <RadSideDrawer
+    ref="drawer"
+    drawerLocation="left"
+    gesturesEnabled="true"
+    :drawerTransition="transition"
+    @drawerClosed="onDrawerClosed"
   >
-    <RadSideDrawer
-      ref="drawer"
-      @drawerClosed="onDrawerClosed"
-    >
-      <DrawerContent ~drawerContent />
-      <MainContent
-        ~mainContent
-      />
-      <!-- <MainContent
-        ~mainContent
-        @on-tap-drawer-menu="$refs.drawer.nativeView.showDrawer()"
-      /> -->
-    </RadSideDrawer>
-   </Page>
+    <StackLayout ~drawerContent backgroundColor="#ffffff">
+      <slot name="drawerContent" />
+    </StackLayout>
+    <Frame ~mainContent ref="drawerMainContent">
+      <slot name="mainContent"/>
+    </Frame>
+  </RadSideDrawer>
 </template>
 
 <script lang="ts">
 import Vue from 'vue'
 
 import { Application as application } from '@nativescript/core'
-import { getVisibility, setVisibility } from '@/composables/useComponent'
 import { onBackEvent, clearBackEvent } from '@/utils/backButton'
 
-import '@/plugins/installRadSideDrawer'
+import {SlideInOnTopTransition} from 'nativescript-ui-sidedrawer'
 
-import MainContent from './MainContent.vue'
-import DrawerContent from './DrawerContent.vue'
+import { getVisibility, setVisibility } from '@/composables/useComponent'
+
+import '@/plugins/installRadSideDrawer'
+// import MainContent from './MainContent.vue'
+// import DrawerContent from './DrawerContent.vue'
 
 export default Vue.extend({
   name: 'MainNavigation',
 
-  components: {
-    DrawerContent,
-    MainContent
+  // components: {
+  //   DrawerContent,
+  //   MainContent
+  // },
+
+  data() {
+    return {
+      transition: new SlideInOnTopTransition()
+    }
   },
 
   computed: {
     isVisibleDrawer(): boolean {
-        return getVisibility('drawer')
-      },
+      console.log(`MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`)
+      return getVisibility('drawer')
+    },
+
+    // drawer(): any {
+    //   return this.$refs.drawer.nativeView
+    // }
   },
 
   watch: {
-    isVisibleDrawer(newVal) {
-      newVal ? this.$refs.drawer.showDrawer() : this.$refs.drawer.closeDrawer()
+    isVisibleDrawer(newVal: boolean, oldVal: boolean) {
+      newVal ? this.$refs.drawer.nativeView.showDrawer() : this.$refs.drawer.nativeView.closeDrawer()
     }
   },
 

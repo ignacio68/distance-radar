@@ -1,30 +1,60 @@
 <template>
-  <StackLayout class="drawer">
-    <Label
+  <StackLayout class="Drawer">
+    <DrawerHeader
       class="drawer-header"
-      text="USUARIO"
+      :text="userName"
     />
-    <Label
+    <DrawerItem
       class="drawer-item"
-      text="Item 1"
+      :text="$t('lang.components.drawerItem.locations')"
+      @on-tap="onItemTap(Locations)"
     />
-    <Label
+    <DrawerItem
       class="drawer-item"
-      text="Item 2"
+      :text="$t('lang.components.drawerItem.following')"
     />
-    <Label
+    <DrawerItem
       class="drawer-item"
-      text="Item 3"
+      :text="$t('lang.components.drawerItem.followers')"
     />
   </StackLayout>
 </template>
 
-<script>
-import Vue from 'nativescript-vue'
+<script lang="ts">
+  import Vue from 'nativescript-vue'
 
-export default Vue.extend({
-  name: 'DrawerContent'
-})
+  import { setVisibility } from '@/composables/useComponent'
+  import { setViewName } from '@/composables/useNavigation'
+
+  import DrawerHeader from '@/components/Drawer/DrawerHeader.vue'
+  import DrawerItem from '@/components/Drawer/DrawerItem.vue'
+
+  import Locations from '@/views/Main/Locations.vue'
+
+  export default Vue.extend({
+    name: 'DrawerContent',
+
+    components: {
+      DrawerHeader,
+      DrawerItem,
+      Locations
+    },
+
+    data() {
+      return {
+        userName: 'User_Name',
+        Locations: Locations
+      }
+    },
+
+    methods: {
+      onItemTap(component): void {
+        console.log(`DrawerItem::methods:onTap(): ${component}`)
+        this.$navigateTo(component, {'ClearHistory': true})
+        setVisibility('drawer', false)
+      }
+    }
+  })
 </script>
 
 <style lang="scss" scoped>

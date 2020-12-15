@@ -4,7 +4,7 @@
     verticalAlignment="middle"
     height="56"
     width="100%"
-    columns="*, 48, 48"
+    columns="48, *, 48, 48"
   >
     <Icon
       col="0"
@@ -12,16 +12,16 @@
       name="res://ic_menu_white_24dp"
       :rippleDuration="300"
       :rippleOpacity="0.2"
-      @onTap="onShowDrawer"
+      @on-tap="onShowDrawer"
     />
     <Label
-      col="0"
-      class="action-bar_title"
+      col="1"
+      class="action-bar_title text-left"
       verticalAlignment="middle"
       :text="$t('lang.components.actionBar.title')"
     />
     <Icon
-      col="1"
+      col="2"
       class="action-bar_visibility-button m-r-0"
       :name="locationsListIcon"
       :rippleDuration="300"
@@ -29,7 +29,7 @@
       @on-tap="onLocationsList"
     />
     <Icon
-      col="2"
+      col="3"
       class="action-bar_search-button m-r-0"
       :name="geocoderIcon"
       :rippleDuration="300"
@@ -83,20 +83,18 @@
     },
 
     methods: {
-      onShowDrawer() {
+      onShowDrawer(): void {
         toggleVisibility('drawer')
       },
 
-      onLocationsList() {
+      onLocationsList(): void {
         toggleVisibility('locationsList')
         setVisibility('geocoder', false)
-        console.log(`is visible LocationsList? ${this.isVisibleLocationsList}`)
       },
 
-      onSearchLocations() {
+      onSearchLocations(): void {
         toggleVisibility('geocoder')
         setVisibility('locationsList', false)
-        console.log(`is visible geocoder? ${this.isVisibleGeocoder}`)
       },
     },
   })

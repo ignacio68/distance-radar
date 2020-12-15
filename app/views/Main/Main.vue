@@ -1,4 +1,9 @@
 <template>
+    <Page
+    actionBarHidden="true"
+    backgroundSpanUnderStatusBar="true"
+    androidStatusBarBackground="#00251e"
+  >
     <GridLayout
       class="home"
       rows="auto, *, 56"
@@ -54,6 +59,7 @@
         row="2"
       />
     </GridLayout>
+    </Page>
 </template>
 
 <script lang="ts">
@@ -63,6 +69,7 @@
   import { LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
+  import { getViewName, setViewName } from  '@/composables/useNavigation'
 
   import { getSecurityAreaActive, getAllSecurityAreas} from '@/store/securityAreasStore'
   import { getCurrentUserLocation, getDistanceToCenter, getWatchId as watchId } from '@/store/userLocationStore'
@@ -92,7 +99,6 @@
     },
 
     computed: {
-
       isWatchUserLocationEnabled(): boolean {
         return isWatchUserLocationEnabled()
       },
@@ -119,6 +125,10 @@
       //     console.log(`Home::fetchUserLocation(): ${JSON.stringify(getCurrentUserLocation())}`)
       //   }
       // }
+    },
+
+    mounted() {
+      setViewName('Main')
     },
 
     methods: {
