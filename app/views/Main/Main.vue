@@ -9,7 +9,7 @@
       rows="auto, *, 56"
       columns="*"
     >
-      <CustomActionBar
+      <MainActionBar
         class="action-bar"
         row="0"
         width="100%"
@@ -77,7 +77,7 @@
   import { startTrackingUserLocation, stopTrackingUserLocation, isUserInSecurityArea } from '@/api/geolocation'
 
   import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
-  import CustomActionBar from '@/components/UI/CustomActionBar.vue'
+  import MainActionBar from '@/components/UI/MainActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
 
@@ -85,7 +85,7 @@
     name: 'Main',
 
     components: {
-      CustomActionBar,
+      MainActionBar,
       MapWrapper,
       BottomAppBar,
     },

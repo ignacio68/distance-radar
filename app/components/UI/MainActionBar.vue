@@ -46,7 +46,7 @@
   import Icon from '@/components/UI/Icon.vue'
 
   export default Vue.extend({
-    name: 'CustomActionBar',
+    name: 'MainActionBar',
     components: {
       Icon,
     },
