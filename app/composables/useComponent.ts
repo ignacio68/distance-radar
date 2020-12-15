@@ -1,6 +1,7 @@
 import Vue from 'nativescript-vue'
 
 const isVisible = Vue.observable({
+  drawer: false,
   geocoder: false,
   newLocationMenu: false,
   newSecurityAreaMenu: false,

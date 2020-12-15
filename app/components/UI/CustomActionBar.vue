@@ -6,6 +6,14 @@
     width="100%"
     columns="*, 48, 48"
   >
+    <Icon
+      col="0"
+      class="action-bar_menu-button"
+      name="res://ic_menu_white_24dp"
+      :rippleDuration="300"
+      :rippleOpacity="0.2"
+      @onTap="onShowDrawer"
+    />
     <Label
       col="0"
       class="action-bar_title"
@@ -75,6 +83,10 @@
     },
 
     methods: {
+      onShowDrawer() {
+        toggleVisibility('drawer')
+      },
+
       onLocationsList() {
         toggleVisibility('locationsList')
         setVisibility('geocoder', false)

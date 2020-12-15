@@ -4,7 +4,10 @@
     backgroundSpanUnderStatusBar="true"
     androidStatusBarBackground="#00251e"
   >
-    <RadSideDrawer ref="drawer">
+    <RadSideDrawer
+      ref="drawer"
+      @drawerClosed="onDrawerClosed"
+    >
       <DrawerContent ~drawerContent />
       <MainContent
         ~mainContent
@@ -21,6 +24,7 @@
 import Vue from 'vue'
 
 import { Application as application } from '@nativescript/core'
+import { getVisibility, setVisibility } from '@/composables/useComponent'
 import { onBackEvent, clearBackEvent } from '@/utils/backButton'
 
 import '@/plugins/installRadSideDrawer'
@@ -36,6 +40,18 @@ export default Vue.extend({
     MainContent
   },
 
+  computed: {
+    isVisibleDrawer(): boolean {
+        return getVisibility('drawer')
+      },
+  },
+
+  watch: {
+    isVisibleDrawer(newVal) {
+      newVal ? this.$refs.drawer.showDrawer() : this.$refs.drawer.closeDrawer()
+    }
+  },
+
   created() {
     onBackEvent(this.backEvent)
   },
@@ -49,6 +65,10 @@ export default Vue.extend({
         console.log('Has presionado el botón de volver de Android!!')
         application.android.foregroundActivity.finish();
       },
+
+      onDrawerClosed() {
+        setVisibility('drawer', false)
+      }
   }
 })
 </script>
