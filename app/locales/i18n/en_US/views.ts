@@ -1,4 +1,7 @@
 export default {
+  Locations: {
+    title: 'Locations',
+  },
   welcome: {
     title: 'WELCOME!',
     subtitle: 'Load your security areas ',

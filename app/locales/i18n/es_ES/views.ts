@@ -1,4 +1,7 @@
 export default {
+  Locations: {
+    title: 'Ubicaciones',
+  },
   welcome: {
     title: '¡BIENVENIDO!',
     subtitle: 'Activa tus zonas de seguridad',

@@ -24,14 +24,16 @@ export default {
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
   },
-  LocationsAdjusts: {
-    title: 'Ubicaciones',
-  },
   colorSelector: {
     text: 'Color:',
   },
   geocoder: {
     hint: 'Buscar...',
     noResultsText: 'No se han encontrado resultados',
+  },
+  drawerItem: {
+    locations: 'Ubicaciones',
+    following: 'Siguiendo',
+    followers: 'Seguidores',
   },
 }
