@@ -73,6 +73,28 @@ MDSlider {
   color: $onPrimary;
 }
 
+.Drawer {
+  background-color: $surface;
+}
+
+.DrawerHeader {
+  background-color: $primary-variant;
+
+  Label {
+    background-color: transparent;
+    color: $onPrimary;
+  }
+}
+
+.DrawerItem {
+  background-color: $surface;
+
+  Label{
+    background-color: transparent;
+    color: $primary-dark;
+  }
+}
+
 
 // // Place any CSS rules you want to apply on both iOS and Android here.
 // // This is where the vast majority of your CSS code goes.
