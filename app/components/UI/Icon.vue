@@ -41,7 +41,7 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-// const AnimationCurve = require('tns-core-modules/ui/enums').AnimationCurve
+import { EventData } from "@nativescript/core"
 import { AnimationCurve } from '@nativescript/core/ui/enums'
 
 export default Vue.extend ({
@@ -77,11 +77,7 @@ export default Vue.extend ({
     }
   },
   methods: {
-    onTap(e) {
-      this.$emit('on-tap', e)
-      this.radioRipple()
-    },
-    radioRipple() {
+    radioRipple(e: EventData): void {
       const iconRipple = this.$refs.iconRipple.nativeView
       iconRipple
         .animate({
@@ -90,15 +86,18 @@ export default Vue.extend ({
           opacity: this.rippleOpacity
         })
         .then(() => {
+          this.$emit('on-tap', e)
           iconRipple
             .animate({
-              curve: AnimationCurve.easeIn,
+              curve: AnimationCurve.easeOut,
               duration: this.rippleDuration,
               opacity: 0.0
             })
-            .then(() => {})
         })
-        .catch(() => {})
+    },
+
+    onTap(e: EventData): void {
+      this.radioRipple(e)
     },
   },
 })
