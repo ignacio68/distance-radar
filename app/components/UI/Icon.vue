@@ -30,7 +30,7 @@
         row="0"
         width="24"
         height="24"
-        color="iconColor"
+        :color="iconColor"
         :src="name"
         :tintColor="iconColor"
         @tap="onTap"
