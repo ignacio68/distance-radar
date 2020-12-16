@@ -1,19 +1,27 @@
 <template>
-  <Page>
-  <StackLayout
-    class="Locations"
-    orientation="vertical"
+  <Page
+    actionBarHidden="true"
+    backgroundSpanUnderStatusBar="true"
+    androidStatusBarBackground="#00251e"
   >
-    <Label
-        class="menu_title"
-        :text="$t('lang.views.Locations.title')"
-        height="32"
-        borderColor="#00251e"
+   <GridLayout
+      class="Locations"
+      rows="auto, *"
+    >
+      <CommonActionBar
+        row="0"
+        :title="$t('lang.views.Locations.title')"
+        @on-tap="onBackNavigation"
       />
-      <ScrollView>
+      <ScrollView
+        row="1"
+      >
         <ListView for="location in locations" @itemTap="onItemTap">
           <v-template>
-            <LocationCard :item="location" />
+            <LocationCard
+              :item="location"
+              @on-tap="onConfirmDeleteLocation(location.id)"
+            />
           </v-template>
         </ListView>
       </ScrollView>
@@ -40,16 +48,20 @@
             @tap="onClose"
           />
         </StackLayout> -->
-  </StackLayout>
+    </GridLayout>
   </Page>
 </template>
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
+import { confirmDeleteLocation } from '@/components/Dialogs/ConfirmDeleteLocation'
+import { ConfirmOptions } from '@nativescript/core'
+
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
 import { getLocations, updateLocationsStore } from '@/store/locationsStore'
 
+import CommonActionBar from '@/components/UI/CommonActionBar.vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
 import '@/plugins/installMDButton'
 
@@ -58,7 +70,11 @@ import Main from './Main.vue'
 export default Vue.extend({
   name: 'Locations',
 
-  components: { LocationCard },
+  components: {
+    LocationCard,
+    CommonActionBar,
+    Main
+    },
 
   props: {
     isCanceled: {
@@ -69,11 +85,27 @@ export default Vue.extend({
 
   data() {
     return {
-      locations: getLocations()
+      locations: getLocations(),
+      Main: Main,
     }
   },
 
   methods: {
+    onBackNavigation() {
+      console.log('Locations::onBackNavigation()')
+      this.$navigateTo(Main, {'ClearHistory': true})
+    },
+
+    onConfirmDeleteLocation(id: string): void {
+      const options: ConfirmOptions = {
+        title: `${this.$t('lang.dialogs.deleteLocation.title')}`,
+        message: `${this.$t('lang.dialogs.deleteLocation.message')}`,
+        okButtonText: `${this.$t('lang.dialogs.deleteLocation.okButton')}`,
+        cancelButtonText: `${this.$t('lang.dialogs.deleteLocation.cancelButton')}`
+      }
+      confirmDeleteLocation(options, id)
+    },
+
     onItemTap() {
       console.log('Locations::onItemTap()')
     },
