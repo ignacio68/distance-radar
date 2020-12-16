@@ -16,7 +16,7 @@
     />
     <Label
       col="1"
-      class="action-bar_title text-left"
+      class="action-bar_title"
       verticalAlignment="middle"
       :text="$t('lang.components.actionBar.title')"
     />
@@ -108,9 +108,9 @@
   }
 
   .action-bar_title {
-    margin-left: 68;
+    margin-left: 20;
     font-weight: 700;
-    font-size: 20;
+    font-size: $font-sz-l;
     background-color: $primary-variant;
     color: $onPrimary;
   }
