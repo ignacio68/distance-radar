@@ -1,5 +1,31 @@
 # Changelog
 
+## [0.3.2] - 2020-12-14
+
+### Added
+
+- Location card component
+- Locations handler component
+- Locations navigation component
+- Delete locations method
+- Dialogs locales
+- Side Drawer Header component
+- Side Drawer menu
+- Side Drawer button and navigation
+
+### Changed
+
+- Moved Mapbox plugin installation to Map component
+- Moved back button handler to MainNavigator page
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- Remove item
+
 
 ## [0.3.1] - 2020-12-14
 
@@ -21,6 +47,7 @@
 ### Security
 
 - Resolved "ini" security issue
+
 
 ## [0.3.0] - 2020-12-09
 
