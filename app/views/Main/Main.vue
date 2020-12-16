@@ -17,7 +17,7 @@
       <MapWrapper
         id="MapWrapper"
         row="1"
-        @first-location-alert="onFirstLocationAlert"
+        @first-location-alert="onConfirmFirstLocation"
       />
 
       <!-- <StackLayout
@@ -65,7 +65,7 @@
 <script lang="ts">
   import Vue from 'nativescript-vue'
 
-  import { FirstLocationAlert } from '@/components/UI/types'
+  import { ConfirmOptions } from '@nativescript/core'
   import { LngLat } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
@@ -76,7 +76,7 @@
   import { getIsWatchUserLocationEnabled as isWatchUserLocationEnabled , setIsWatchUserLocationEnabled } from '@/composables/useGeolocation'
   import { startTrackingUserLocation, stopTrackingUserLocation, isUserInSecurityArea } from '@/api/geolocation'
 
-  import { firstLocationAlert } from '@/components/UI/FirstLocationAlert'
+  import { confirmFirstLocation } from '@/components/Dialogs/ConfirmFirstLocation'
   import MainActionBar from '@/components/UI/MainActionBar.vue'
   import MapWrapper from '@/components/Map/MapWrapper.vue'
   import BottomAppBar from '@/components/UI/BottomAppBar.vue'
@@ -132,17 +132,17 @@
     },
 
     methods: {
-      onFirstLocationAlert() {
-        const firstLocationOptions: FirstLocationAlert  = {
-          title: `${this.$t('lang.components.firstLocationAlert.title')}`,
-          message: `${this.$t('lang.components.firstLocationAlert.message')}`,
-          okButtonText: `${this.$t('lang.components.firstLocationAlert.okButton')}`,
-          cancelButtonText: `${this.$t('lang.components.firstLocationAlert.cancelButton')}`
+      onConfirmFirstLocation(): void {
+        const options: ConfirmOptions = {
+          title: `${this.$t('lang.dialogs.firstLocation.title')}`,
+          message: `${this.$t('lang.dialogs.firstLocation.message')}`,
+          okButtonText: `${this.$t('lang.dialogs.firstLocation.okButton')}`,
+          cancelButtonText: `${this.$t('lang.dialogs.firstLocation.cancelButton')}`
         }
-        firstLocationAlert(firstLocationOptions)
+        confirmFirstLocation(options)
       },
 
-      getSecurityAreaProps() {
+      getSecurityAreaProps(): Record<string, unknown> {
         const securityArea = getSecurityAreaActive()
         console.log(`Home.vue::getSecurityAreaProps():securityArea:center: ${JSON.stringify(securityArea.center)}`)
         const securityAreaProps = {
@@ -153,17 +153,17 @@
         return securityAreaProps
       },
 
-      isUserInSecurityArea(interval: number) {
+      isUserInSecurityArea(interval: number): void {
         const securityAreaProps = this.getSecurityAreaProps()
         const securityDistanceProps = { ...securityAreaProps, interval }
         isUserInSecurityArea(securityDistanceProps)
       },
 
-      onStart() {
+      onStart(): void {
         isWatchUserLocationEnabled() ? console.log('The tracking is activated yet!!') : startTrackingUserLocation()
       },
 
-      onStop() {
+      onStop(): void {
         isWatchUserLocationEnabled() ? stopTrackingUserLocation(watchId()) : console.log('There is not tracking activated!!')
       }
     }
