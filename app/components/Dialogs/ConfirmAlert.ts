@@ -1,8 +1,7 @@
 import { confirm, ConfirmOptions } from '@nativescript/core'
-import { FirstLocationAlert } from './types'
-import { setVisibility } from '@/composables/useComponent'
+import { ConfirmDialog } from './types'
 
-export const firstLocationAlert = (options: FirstLocationAlert): void => {
+const confirmAlert = (options: ConfirmDialog, callback: unknown): void => {
   const confirmOptions: ConfirmOptions = {
     title: options.title,
     message: options.message,
@@ -10,6 +9,8 @@ export const firstLocationAlert = (options: FirstLocationAlert): void => {
     cancelButtonText: options.cancelButtonText,
   }
   confirm(confirmOptions).then((result) => {
-    if (result) setVisibility('newLocationMenu', true)
+    if (result) callback
   })
 }
+
+export default confirmAlert

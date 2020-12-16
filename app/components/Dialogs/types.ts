@@ -1,4 +1,4 @@
-export interface FirstLocationAlert {
+export interface ConfirmDialog {
   title?: string
   message: string
   okButtonText: string
