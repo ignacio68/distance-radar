@@ -2,12 +2,6 @@ export default {
   actionBar: {
     title: 'Radar de Distancias',
   },
-  firstLocationAlert: {
-    title: 'Ubicación',
-    message: 'No tienes todavía ningúna ubicación ¿Quieres colocar una en tu posición actual?',
-    okButton: '¡Adelante!',
-    cancelButton: 'Luego',
-  },
   newLocation: {
     title: 'Nueva Ubicación',
     id: 'Nombre:',
