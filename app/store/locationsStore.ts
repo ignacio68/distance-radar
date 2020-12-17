@@ -1,7 +1,5 @@
 import Vue from 'nativescript-vue'
 
-import { updateLocationAtInit } from '@/api/locations'
-
 import {
   createDatabase,
   getAllItems,
@@ -26,15 +24,23 @@ const addLocationToState = (location: Location): void => {
   state.locations.push(location)
 }
 
+/***************Load persist locations database at init*******************************/
+
 const initializeDatabase = (): void =>
-  // getAllItems(database).forEach((location: Location) => updateLocationAtInit(location))
   getAllItems(database).forEach((location: Location) => addLocationToState(location))
 
-// Init persist locations database
 initializeDatabase()
+
+/************************************************************************************/
 
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
+
+const updateLocation = async (location: Location): Promise<Location> => {
+  const currentLocation = getLocation(location.id)
+  const updatedLocation = { ...currentLocation, ...location }
+  return updatedLocation
+}
 
 export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
@@ -48,12 +54,6 @@ export const getLocations = (): Location[] => state.locations
 export const addNewLocation = (location: Location): void => {
   addLocationToState(location)
   addItem(database, location, location.id)
-}
-
-const updateLocation = async (location: Location): Promise<Location> => {
-  const currentLocation = getLocation(location.id)
-  const updatedLocation = { ...currentLocation, ...location }
-  return updatedLocation
 }
 
 export const updateLocationsStore = async (location: Location): Promise<void> => {
@@ -80,6 +80,7 @@ export const setSelectedLocation = (id: string): string => {
 export const getSelectedLocation = (): Location => getLocation(state.selectedLocation)
 
 export const hasSecurityArea = async (id: string): Promise<boolean> => {
+  console.log(`locationsStore.ts::hasSecurityArea: ${id}`)
   const location = findIndex(id)
-  return state.locations[location].hasSecurityArea
+  return state.locations[location].securityAreas.length ? true : false
 }

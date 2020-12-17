@@ -9,7 +9,7 @@ export interface GeocoderDefaultOptions {
    * If `true`, animating the map will use the default animation parameters.
    * If an object, it will be passed as `options` to the map `flyTo` method providing control over the animation of the transition.
    */
-  flyTo: boolean | object
+  flyTo: boolean | Record<string, unknown>
 
   /**
    * Minimum number of characters to enter before results are shown.
@@ -26,7 +26,7 @@ export interface GeocoderDefaultOptions {
    * If the value is an object, the marker will be constructed using these options.
    * If `false`, no marker will be added to the map. Requires that `options.mapboxgl` also be set.
    */
-  marker: boolean | object
+  marker: boolean | Record<string, unknown>
 }
 
 export interface ShortLocation {

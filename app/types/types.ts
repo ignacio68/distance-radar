@@ -77,10 +77,9 @@ export interface Location extends LngLat {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: OnTap
+  onTap?: (id: string) => void
   onCalloutTap?: OnCalloutTap
   selected?: boolean
-  hasSecurityArea?: boolean
   securityAreas?: SecurityArea[]
   isFollowed?: boolean
   update?: (newSettings: unknown) => void
