@@ -1,4 +1,6 @@
-import { getMap as map } from '@/store/mapStore'
+import * as map from '@/services/mapboxService'
+
+import { getMap } from '@/store/mapStore'
 import {
   setUserMarker,
   getUserMarker as userMarker,
@@ -24,9 +26,7 @@ export const createUserMarker = (coordinates?: LngLat): void => {
     onTap: () => onTap(),
   }
   const newUserMarker = [initialValues]
-  map()
-    .addMarkers(newUserMarker)
-    .then(() => setUserMarker(initialValues))
+  map.addMarkers(getMap(), newUserMarker).then(() => setUserMarker(initialValues))
 }
 
 export const updateUserMarker = async (coordinates: LngLat): Promise<void> => {

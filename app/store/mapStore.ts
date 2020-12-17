@@ -1,12 +1,12 @@
 import Vue from 'nativescript-vue'
-import { MapboxApi } from '@nativescript-community/ui-mapbox'
+import { Map } from '@/services/types'
 
 const state = Vue.observable({
-  map: null as MapboxApi,
+  map: null as Map,
 })
 
-export const getMap = (): MapboxApi => state.map
+export const getMap = (): Map => state.map
 
-export const setMap = (map: MapboxApi): void => {
+export const setMap = (map: Map): void => {
   state.map = map
 }

@@ -100,22 +100,22 @@
 <script lang="ts">
   import Vue from 'nativescript-vue'
 
-  import { mapToken } from '@/setup/map'
+  import { mapToken, customMapStyle } from '@/setup/map'
 
-  import { setCenter, addMarkers, flyTo } from '@/api/map'
+  import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
   import { updateUserMarker } from '@/api/userMarker'
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
 
   import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
-  import { setMap, getMap as map } from '@/store/mapStore'
+  import { setMap } from '@/store/mapStore'
   import { numberOfLocations } from '@/store/locationsStore'
 
   import { Elevation } from '@/types/enums/elevations'
+  import { MapStyle } from '@/types/enums/mapStyle'
   import { LngLat } from '@/types/types'
   import { Location } from '@/types/types/geocoder'
 
-  import { MapStyle } from '@nstudio/nativescript-mapbox'
 
   import '@/plugins/installMapbox'
   import '@/plugins/installFAB'
@@ -132,7 +132,7 @@
     data() {
       return {
         mapToken: mapToken,
-        customMapStyle: 'mapbox://styles/ignacio68/ckay3bxbr11qt1hquzxx1ohot',
+        customMapStyle: customMapStyle,
         satelliteMapStyle: MapStyle.SATELLITE_STREETS,
         defaultMapStyle: MapStyle.TRAFFIC_DAY,
         isSatelliteMap: false,
@@ -183,7 +183,7 @@
       },
 
       setOnMapLongClickAction() {
-        map().setOnMapLongClickListener(function (point: LngLat) {
+        setOnMapLongClickListener((point: LngLat) => {
           updateUserMarker(point)
           return true
         })
@@ -229,7 +229,7 @@
 
       changeMapStyle() {
         this.isSatelliteMap = !this.isSatelliteMap
-        this.isSatelliteMap ? map().setMapStyle(this.satelliteMapStyle) : map().setMapStyle(this.mapStyle)
+        this.isSatelliteMap ? setMapStyle(this.satelliteMapStyle) : setMapStyle(this.mapStyle)
       },
     }
   })
