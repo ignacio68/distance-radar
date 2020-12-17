@@ -2,4 +2,4 @@
 // MapBox
 import Vue from 'nativescript-vue'
 
-Vue.registerElement('Mapbox', () => require('@nstudio/nativescript-mapbox').MapboxView)
+Vue.registerElement('Mapbox', () => require('@nativescript-community/ui-mapbox').MapboxView)
