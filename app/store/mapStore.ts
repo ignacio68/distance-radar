@@ -1,5 +1,5 @@
 import Vue from 'nativescript-vue'
-import { MapboxApi } from '@nstudio/nativescript-mapbox'
+import { MapboxApi } from '@nativescript-community/ui-mapbox'
 
 const state = Vue.observable({
   map: null as MapboxApi,
