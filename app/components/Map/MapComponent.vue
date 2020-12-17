@@ -15,6 +15,8 @@
       width="100%"
       height="100%"
       :accessToken="mapToken"
+      :locationPermissionGranted="onLocationPermissionGranted"
+      :locationPermissionDenied="onLocationPermissionDenied"
       :mapStyle="mapStyle"
       :latitude="initialCoordinates.lat"
       :longitude="initialCoordinates.lng"
@@ -157,6 +159,14 @@
     },
 
     methods: {
+      onLocationPermissionGranted() {
+        console.log('MapComponent::onLocationPermissionGranted()')
+      },
+
+      onLocationPermissionDenied() {
+        console.log('MapComponent::onLocationPermissionDenied()')
+      },
+
       async onMapReady(args: any) {
         console.log('onMapReady()')
         await this.setMap(args)
