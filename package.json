@@ -40,6 +40,7 @@
     }
   },
   "dependencies": {
+    "@nativescript-community/ui-mapbox": "^6.0.7",
     "@nativescript-community/ui-material-button": "^5.0.25",
     "@nativescript-community/ui-material-floatingactionbutton": "^5.0.14",
     "@nativescript-community/ui-material-slider": "^5.1.4",
@@ -48,7 +49,6 @@
     "@nativescript/secure-storage": "^3.0.0",
     "@nativescript/theme": "^2.5.0",
     "@nativescript/unit-test-runner": "^1.0.2",
-    "@nstudio/nativescript-mapbox": "^6.0.0-rc.0",
     "@triniwiz/nativescript-couchbase": "^1.0.0",
     "@types/mapbox-gl": "^1.12.2",
     "@types/webpack-env": "^1.15.3",
