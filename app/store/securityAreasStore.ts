@@ -34,6 +34,7 @@ export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<vo
   )
 }
 
+// Only for development
 export const getAllSecurityAreas = (): void => {
   console.dir(`securityAreasStore::getAllSecurityAreas(): ${JSON.stringify(state.securityAreas)}`)
 }
