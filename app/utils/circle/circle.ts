@@ -2,7 +2,7 @@ import { validateArgs } from './validations'
 import { normalizeArgs } from './normalizations'
 import { range, toRadians, toDegrees } from '../maths'
 
-import { LngLat, Circle, Azimuth, LocationInCircle } from '@/types/types'
+import { LatLng, Circle, Azimuth, LocationInCircle } from '@/types/types'
 
 const PI = Math.PI
 const EARTH_RADIUS = 6378.137 // km
@@ -11,19 +11,19 @@ const setDy = (theta: number, radius: number): number => Math.sin(toRadians(thet
 
 const setDx = (theta: number, radius: number): number => Math.cos(toRadians(theta)) * radius
 
-const setLatitude = (center: LngLat, dy: number): number =>
+const setLatitude = (center: LatLng, dy: number): number =>
   center.lat + toDegrees(dy / EARTH_RADIUS)
 
-const setLongitude = (center: LngLat, dx: number): number =>
+const setLongitude = (center: LatLng, dx: number): number =>
   center.lng + toDegrees(dx / EARTH_RADIUS) / Math.cos(toRadians((center.lat * PI) / 180))
 
-const getPointCoordinates = (args: Azimuth): LngLat => {
+const getPointCoordinates = (args: Azimuth): LatLng => {
   const dy = setDy(args.theta, args.radius)
   const dx = setDx(args.theta, args.radius)
   const newLatitude = setLatitude(args.center, dy)
   const newLongitude = setLongitude(args.center, dx)
 
-  const coordinates: LngLat = { lat: newLatitude, lng: newLongitude }
+  const coordinates: LatLng = { lat: newLatitude, lng: newLongitude }
 
   return coordinates
 }
@@ -31,14 +31,14 @@ const getPointCoordinates = (args: Azimuth): LngLat => {
 const getThetas = async (numberOfEdges: number): Promise<number[]> =>
   range(0, 360, 360 / numberOfEdges)
 
-export const getCirclePointsCoordinates = async (args: Circle): Promise<LngLat[]> => {
+export const getCirclePointsCoordinates = async (args: Circle): Promise<LatLng[]> => {
   console.log('getCirclePointsCoordinates()')
   await validateArgs(args).catch((error: string) => console.log(error))
   await normalizeArgs(args)
 
   const thetasList = await getThetas(args.numberOfEdges)
 
-  const allPointsCoordinates: LngLat[] = thetasList.map((theta) => {
+  const allPointsCoordinates: LatLng[] = thetasList.map((theta) => {
     const values: Azimuth = {
       theta,
       radius: args.radius,

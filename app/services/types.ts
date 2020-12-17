@@ -1,4 +1,4 @@
-import { LngLat } from '@/types/types'
+import { LatLng } from '@/types/types'
 
 export { MapboxApi as Map } from '@nativescript-community/ui-mapbox'
 export { CouchBase as Database, Query } from '@triniwiz/nativescript-couchbase'
@@ -111,4 +111,4 @@ export interface Location extends ShortLocation {
 }
 /**************/
 
-export { LngLat }
+export { LatLng }

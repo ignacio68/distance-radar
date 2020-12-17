@@ -9,15 +9,15 @@ import {
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
 import { setVisibility } from '@/composables/useComponent'
 
-import { UserMarker, LngLat } from '@/types/types'
+import { UserMarker, LatLng } from '@/types/types'
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
-const isUserMarker = async (coordinates: LngLat): Promise<void> => {
+const isUserMarker = async (coordinates: LatLng): Promise<void> => {
   Promise.resolve(!userMarker() ? createUserMarker(coordinates) : console.log('User marker exits!'))
 }
 
-export const createUserMarker = (coordinates?: LngLat): void => {
+export const createUserMarker = (coordinates?: LatLng): void => {
   console.log('addMarker()')
   const initialValues: UserMarker = {
     id: '_user',
@@ -29,7 +29,7 @@ export const createUserMarker = (coordinates?: LngLat): void => {
   map.addMarkers(getMap(), newUserMarker).then(() => setUserMarker(initialValues))
 }
 
-export const updateUserMarker = async (coordinates: LngLat): Promise<void> => {
+export const updateUserMarker = async (coordinates: LatLng): Promise<void> => {
   console.log('updateUserMarker()')
   await isUserMarker(coordinates).then(() => {
     const values = {

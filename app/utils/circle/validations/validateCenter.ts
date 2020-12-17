@@ -1,4 +1,4 @@
-import { LngLat } from '@/types/types'
+import { LatLng } from '@/types/types'
 
 const validateLongitude = (longitude: number): void => {
   if (longitude < -180 || longitude > 180)
@@ -10,7 +10,7 @@ const validateLatitude = (latitude: number): void => {
     throw new Error('VALIDATION ERROR: Latitude must be between -90 and 90 degrees')
 }
 
-export const validateCenter = (center: LngLat): void => {
+export const validateCenter = (center: LatLng): void => {
   validateLongitude(center.lng)
   validateLatitude(center.lat)
 }

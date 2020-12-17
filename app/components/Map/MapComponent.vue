@@ -113,7 +113,7 @@
 
   import { Elevation } from '@/types/enums/elevations'
   import { MapStyle } from '@/types/enums/mapStyle'
-  import { LngLat } from '@/types/types'
+  import { LatLng } from '@/types/types'
   import { Location } from '@/types/types/geocoder'
 
 
@@ -183,7 +183,7 @@
       },
 
       setOnMapLongClickAction() {
-        setOnMapLongClickListener((point: LngLat) => {
+        setOnMapLongClickListener((point: LatLng) => {
           updateUserMarker(point)
           return true
         })
@@ -206,14 +206,14 @@
         setCenter()
       },
 
-      flyTo(location: LngLat) {
+      flyTo(location: LatLng) {
         console.log('flyTo()')
         flyTo(location)
       },
 
-      updateCoordinates(location: Location): LngLat {
+      updateCoordinates(location: Location): LatLng {
         const { latitude: lat, longitude: lng } = location
-        const newCoordinates: LngLat = {
+        const newCoordinates: LatLng = {
           lat: lat,
           lng: lng
         }
@@ -223,7 +223,7 @@
       onLocationSelected(location: [Location]){
         console.log(`onLocationSelected: ${JSON.stringify(location)}`)
         setVisibility('geocoder', false)
-        const newCoordinates: LngLat = this.updateCoordinates(location)
+        const newCoordinates: LatLng = this.updateCoordinates(location)
         this.flyTo(newCoordinates)
       },
 

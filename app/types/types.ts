@@ -13,7 +13,7 @@ export interface InitialCoordinates {
   lng: string
 }
 
-export interface LngLat {
+export interface LatLng {
   /**
    * The latitude of the geolocation, in degrees.
    */
@@ -39,7 +39,7 @@ export interface Circle {
   /**
    * The point of the center of the security area circle, lat & lng in degrees
    */
-  center: LngLat
+  center: LatLng
 
   /**
    * The radius of the security area circle.
@@ -55,9 +55,9 @@ export interface Circle {
 export interface Azimuth {
   theta: number
   radius: number
-  center: LngLat
+  center: LatLng
 }
-export interface UserMarker extends LngLat {
+export interface UserMarker extends LatLng {
   id: string
   onTap?: () => unknown
   update?: (newSettings: UserMarker) => void
@@ -70,7 +70,7 @@ interface OnTap {
 interface OnCalloutTap {
   (id: string): void
 }
-export interface Location extends LngLat {
+export interface Location extends LatLng {
   id: string
   group?: string
   title?: string
@@ -89,7 +89,7 @@ export interface Location extends LngLat {
 export interface BasicPolygonOptions {
   id: string
   radius: number
-  center: LngLat
+  center: LatLng
   isActive: boolean
   fillColor?: string | Color
   fillOpacity?: number
@@ -97,7 +97,7 @@ export interface BasicPolygonOptions {
 }
 export interface SecurityArea extends BasicPolygonOptions {
   group?: string
-  points: LngLat[]
+  points: LatLng[]
   oldFillOpacity?: number
   strokeColor?: string | Color
   strokeWidth?: number
@@ -105,7 +105,7 @@ export interface SecurityArea extends BasicPolygonOptions {
 }
 
 export interface InsideSecurityArea {
-  initialLocation: LngLat
+  initialLocation: LatLng
   securityDistance: number
 }
 
@@ -115,7 +115,7 @@ export interface CalculateSecurityDistance extends InsideSecurityArea {
   mode: DistanceMode
 }
 
-export interface LocationInCircle extends LngLat {
+export interface LocationInCircle extends LatLng {
   circleLng: number
   circleLat: number
   circleRadius: number
@@ -138,6 +138,6 @@ export interface CircleLayer extends Layer {
 
 export interface User {
   id: string
-  location?: LngLat
+  location?: LatLng
   phoneNumber: string
 }

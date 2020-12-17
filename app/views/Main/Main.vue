@@ -66,7 +66,7 @@
   import Vue from 'nativescript-vue'
 
   import { ConfirmOptions } from '@nativescript/core'
-  import { LngLat } from '@/types/types'
+  import { LatLng } from '@/types/types'
 
   import { getVisibility } from '@/composables/useComponent'
   import { getViewName, setViewName } from  '@/composables/useNavigation'
@@ -102,7 +102,7 @@
       isWatchUserLocationEnabled(): boolean {
         return isWatchUserLocationEnabled()
       },
-      fetchUserLocation(): LngLat {
+      fetchUserLocation(): LatLng {
         return getCurrentUserLocation()
       },
       getCurrentUserLocation,
@@ -120,7 +120,7 @@
         console.log('------ THE SECURITY AREAS STORE HAS CHANGED!! -----')
       },
 
-      // fetchUserLocation(newValue: LngLat, oldValue: LngLat) {
+      // fetchUserLocation(newValue: LatLng, oldValue: LatLng) {
       //   if(newValue !== oldValue) {
       //     console.log(`Home::fetchUserLocation(): ${JSON.stringify(getCurrentUserLocation())}`)
       //   }

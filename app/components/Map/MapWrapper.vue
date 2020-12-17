@@ -42,7 +42,7 @@
 
   import { getVisibility, setVisibility } from '@/composables/useComponent'
   import { Color, Screen, Enums } from '@nativescript/core'
-  import { Location, BasicPolygonOptions, LngLat } from '@/types/types'
+  import { Location, BasicPolygonOptions, LatLng } from '@/types/types'
 
   import MapComponent from './MapComponent.vue'
   import NewLocationMenu from './NewLocationMenu.vue'

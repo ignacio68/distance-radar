@@ -28,7 +28,7 @@ import { flyTo } from '@/api/map'
 
 import { getLocations } from '@/store/locationsStore'
 
-import { LngLat, Location } from '@/types/types'
+import { LatLng, Location } from '@/types/types'
 import { Elevation } from '@/types/enums/elevations'
 
 export default Vue.extend({
@@ -74,7 +74,7 @@ export default Vue.extend({
     },
 
     onItemTap(args: Location): void {
-      const coordinates: LngLat = {
+      const coordinates: LatLng = {
         lat: args.lat,
         lng: args.lng
       }

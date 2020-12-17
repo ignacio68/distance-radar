@@ -7,11 +7,11 @@ import { getMap } from '@/store/mapStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 import { getLocations } from '@/store/locationsStore'
 
-import { LngLat } from '@/types/types'
+import { LatLng } from '@/types/types'
 
 export const setCenter = async (): Promise<void> => {
   console.log('setCenter()')
-  await getCurrentUserLocation().then((coordinates: LngLat) => {
+  await getCurrentUserLocation().then((coordinates: LatLng) => {
     console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
     map
       .setZoomLevel(getMap(), {
@@ -41,7 +41,7 @@ export const addMarkers = (): void => {
   map.addMarkers(getMap(), getLocations())
 }
 
-export const flyTo = (location: LngLat): void => {
+export const flyTo = (location: LatLng): void => {
   map
     .animateCamera(getMap(), {
       target: location,
@@ -62,7 +62,7 @@ export const setMapStyle = (style: string): Promise<unknown> => map.setMapStyle(
 
 // export const setCenter = async (): Promise<void> => {
 //   console.log('setCenter()')
-//   await getCurrentUserLocation().then((coordinates: LngLat) => {
+//   await getCurrentUserLocation().then((coordinates: LatLng) => {
 //     console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
 //     map()
 //       .setZoomLevel({
@@ -92,7 +92,7 @@ export const setMapStyle = (style: string): Promise<unknown> => map.setMapStyle(
 //   map().addMarkers(getLocations())
 // }
 
-// export const flyTo = (location: LngLat): void => {
+// export const flyTo = (location: LatLng): void => {
 //   map()
 //     .animateCamera({
 //       target: location,

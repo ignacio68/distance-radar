@@ -2,7 +2,7 @@ import * as geolocation from '@nativescript/geolocation'
 
 import { Enums } from '@nativescript/core/'
 
-import { LngLat } from '@/types/types'
+import { LatLng } from '@/types/types'
 
 import {
   getCurrentUserLocation as userCurrentLocation,
@@ -33,10 +33,10 @@ const isLocationServicesEnabled = async (): Promise<void> => {
   })
 }
 
-const fetchCurrentUserLocation = async (): Promise<LngLat> => {
+const fetchCurrentUserLocation = async (): Promise<LatLng> => {
   console.log('geolocationService::fetchCurrentUserLocation()')
   const fetchLocation = await geolocation.getCurrentLocation(locationOptions).then((result) => {
-    const location: LngLat = {
+    const location: LatLng = {
       lat: result.latitude,
       lng: result.longitude,
     }
@@ -46,7 +46,7 @@ const fetchCurrentUserLocation = async (): Promise<LngLat> => {
   return fetchLocation
 }
 
-export const getCurrentUserLocation = async (): Promise<LngLat> => {
+export const getCurrentUserLocation = async (): Promise<LatLng> => {
   console.log('geolocationService::getUserCurrentLocation()')
   await isLocationServicesEnabled()
   const location = await fetchCurrentUserLocation().catch((error) => {
@@ -62,7 +62,7 @@ export const watchUserLocation = async (): Promise<void> => {
   await isLocationServicesEnabled()
   const watchId = geolocation.watchLocation(
     (position) => {
-      const currentLocation: LngLat = {
+      const currentLocation: LatLng = {
         lat: position.latitude,
         lng: position.longitude,
       }
@@ -90,7 +90,7 @@ export const stopWatchUserLocation = (watchId: number): void => {
   geolocation.clearWatch(watchId)
 }
 
-// export const calculateDistance = (loc1: LngLat, loc2: LngLat): LngLat => {
+// export const calculateDistance = (loc1: LatLng, loc2: LatLng): LatLng => {
 //   const distance = geolocation.distance(loc1, loc2)
 //   return distance
 //  }

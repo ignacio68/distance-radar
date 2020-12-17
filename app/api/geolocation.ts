@@ -15,7 +15,7 @@ import {
   setIsWatchUserLocationEnabled,
 } from '@/composables/useGeolocation'
 
-import { LngLat, InsideSecurityArea, CalculateSecurityDistance } from '@/types/types'
+import { LatLng, InsideSecurityArea, CalculateSecurityDistance } from '@/types/types'
 
 // TODO: Create a enum for constants
 const EARTH_RADIUS = 6378.137
@@ -31,7 +31,7 @@ export const stopTrackingUserLocation = (watchId: number): void => {
 }
 
 //  TODO: Rename the variables and refactore to functional programming
-const calculateDistance = (initialLocation: LngLat, currentLocation: LngLat): number => {
+const calculateDistance = (initialLocation: LatLng, currentLocation: LatLng): number => {
   console.log(
     `geolocation::calculateDistance():initialLocation: ${JSON.stringify(initialLocation)}`
   )

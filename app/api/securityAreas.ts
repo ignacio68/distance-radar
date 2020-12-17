@@ -17,7 +17,7 @@ import {
   BasicPolygonOptions,
   SecurityArea,
   CircleLayer,
-  LngLat,
+  LatLng,
   Circle,
   Location,
 } from '@/types/types'
@@ -42,7 +42,7 @@ import {
 //   })
 // }
 
-const fetchSecurityAreaPoints = async (center: LngLat, radius: number): Promise<LngLat[]> => {
+const fetchSecurityAreaPoints = async (center: LatLng, radius: number): Promise<LatLng[]> => {
   console.log('securityAreas.ts::fetchSecurityAreaPoints()')
   const args: Circle = {
     center: center,
@@ -50,7 +50,7 @@ const fetchSecurityAreaPoints = async (center: LngLat, radius: number): Promise<
     numberOfEdges: 36,
   }
   // const numberOfEdges = 4
-  return (await getCirclePointsCoordinates(args)) as LngLat[]
+  return (await getCirclePointsCoordinates(args)) as LatLng[]
 }
 
 const setNewSecurityAreaProps = async (args: BasicPolygonOptions): Promise<SecurityArea> => {
