@@ -10,45 +10,76 @@ import {
   AddSourceOptions,
 } from '@nativescript-community/ui-mapbox'
 
+import { getMap } from '@/store/mapStore'
+
 export interface SetOnMapLongClickListener {
   (data: LatLng): boolean
 }
 
-export const setCenter = (map: MapboxViewApi, options: SetCenterOptions): Promise<unknown> =>
+export const mbSetCenter = (map: MapboxViewApi, options: SetCenterOptions): Promise<unknown> =>
   map.setCenter(options)
 
-export const setZoomLevel = (map: MapboxViewApi, options: SetZoomLevelOptions): Promise<unknown> =>
-  map.setZoomLevel(options)
+export const mbSetZoomLevel = (
+  map: MapboxViewApi,
+  options: SetZoomLevelOptions
+): Promise<unknown> => map.setZoomLevel(options)
 
-export const animateCamera = (
+export const mbAnimateCamera = (
   map: MapboxViewApi,
   options: AnimateCameraOptions
 ): Promise<unknown> => map.animateCamera(options)
 
-export const setOnMapLongClickListener = (
+export const mbSetOnMapLongClickListener = (
   map: MapboxViewApi,
   listener: SetOnMapLongClickListener
 ): Promise<boolean> => map.setOnMapLongClickListener(listener)
 
-export const setMapStyle = (map: MapboxViewApi, style: string | MapStyle): Promise<unknown> =>
+export const mbSetMapStyle = (map: MapboxViewApi, style: string | MapStyle): Promise<unknown> =>
   map.setMapStyle(style)
 
-export const addMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promise<unknown> =>
+export const mbAddMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promise<unknown> =>
   map.addMarkers(markers)
 
-export const removeMarkers = (map: MapboxViewApi, markers?: string[]): Promise<unknown> =>
+export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<unknown> =>
   map.removeMarkers(markers)
 
-export const addSource = (
+export const mbAddSource = (
   map: MapboxViewApi,
   id: string,
   options: AddSourceOptions
-): Promise<unknown> => map.addSource(id, options)
+): Promise<unknown> =>
+  map
+    .addSource(id, options)
+    .then(() => console.log('mapboxService::addSource: ADD SOURCE!!'))
+    .catch((error) => console.log(`mapboxService::addSource: ERROR!!: ${error.message | error}`))
 
-export const removeSource = (map: MapboxViewApi, id: string): Promise<unknown> =>
+export const addFakeSource = (): void => {
+  const id = 'Fake'
+  const options = {
+    type: 'geojson',
+    url: '',
+    data: {
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [40.456135, -3.6805851],
+      },
+    },
+  }
+
+  getMap()
+    .addSource(id, options)
+    .then(() => console.log('mapboxService::addFakeSource: ADD SOURCE!!'))
+    .catch((error) =>
+      console.log(`mapboxService::addFakeSource: ERROR!!: ${error.message | error}`)
+    )
+}
+
+export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<unknown> =>
   map.removeSource(id)
 
-export const addLayer = (map: MapboxViewApi, style: AddLayerOptions): Promise<unknown> =>
+export const mbAddLayer = (map: MapboxViewApi, style: AddLayerOptions): Promise<unknown> =>
   map.addLayer(style)
 
-export const removeLayer = (map: MapboxViewApi, id: string): Promise<unknown> => map.removeLayer(id)
+export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<unknown> =>
+  map.removeLayer(id)

@@ -1,4 +1,4 @@
-import * as map from '@/services/mapboxService'
+import { mbAddSource, mbAddLayer } from '@/services/mapboxService'
 
 import { addSecurityAreaToLocation } from './locations'
 
@@ -22,16 +22,16 @@ import {
   Location,
 } from '@/types/types'
 
-// TODO: using layers
-// TODO: move to maps. API
+// // TODO: using layers
+// // TODO: move to maps. API
 // export const addSource = (id: string): void => {
 //   console.log('addSource()')
 //   // TODO: Add AddSourceOptions{url: string, type: string, data?: any }
-//   // map().addSource(id)
+//   mbAddSource(id)
 // }
 
 // export const addCircleLayer = (options: CircleLayer): void => {
-//   map.addLayer(getMap(), {
+//   mbAddLayer(getMap(), {
 //     id: options.id,
 //     source: options.source,
 //     type: 'circle',

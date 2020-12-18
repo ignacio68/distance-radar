@@ -1,4 +1,4 @@
-import * as map from '@/services/mapboxService'
+import { mbAddMarkers, mbAddSource } from '@/services/mapboxService'
 
 import { setVisibility } from '@/composables/useComponent'
 
@@ -16,9 +16,34 @@ import {
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
-import { Location, SecurityArea } from '@/types/types'
+import { Location, SourceOptions, SecurityArea } from '@/types/types'
+// import { AddSourceOptions } from '@nativescript-community/ui-mapbox'
+
+const map = getMap()
 
 export const showLocations = getLocations()
+
+const setSourceOptions = (location: Location): SourceOptions => {
+  const { lat, lng } = location
+  const sourceOptions: SourceOptions = {
+    type: 'geojson',
+    url: '',
+    data: {
+      type: 'Feature',
+      properties: {},
+      geometry: {
+        type: 'Point',
+        coordinates: [lat, lng],
+      },
+    },
+  }
+  console.log(`locations::setSourceOptions: ${JSON.stringify(sourceOptions)}`)
+  return JSON.parse(JSON.stringify(sourceOptions))
+}
+
+const setLayerOptions = () => {
+  console.log('locations::setLayerOptions')
+}
 
 const setLocationOpts = (location: Location): Location => {
   const opts: Location = {
@@ -54,13 +79,20 @@ export const newLocation = (location: Location): void => {
   console.log(`locations.ts::addLocation(): ${JSON.stringify(completeLocation)}`)
   const newLocation: Location[] = []
   newLocation.push(completeLocation)
-  map.addMarkers(getMap(), newLocation).then(() => {
+  const sourceOptions = setSourceOptions(completeLocation)
+  mbAddMarkers(map, newLocation).then(() => {
     addNewLocation(completeLocation)
+    // map
+    //   .addSource(completeLocation.id, sourceOptions)
+    // map.addFakeSource()
+    mbAddSource(map, completeLocation.id, sourceOptions)
+    // .then(() => console.log('locations::addSource()'))
+    // .catch((error) => console.log(`locations::addSource:Error: ${error.message | error}`))
   })
 }
 
 // export const fetchLocations = (): Locations[] => {
-//   map.addMarkers(getMap(), location)
+//   map.addMarkers(map, location)
 // }
 
 export const fetchSelectedLocation = (): Location => {

@@ -1,4 +1,5 @@
 import { Color } from '@nativescript/core/color'
+import { Feature } from 'geojson'
 // import { AddPolygonOptions } from '@nstudio/nativescript-mapbox'
 
 export interface InitialCoordinates {
@@ -62,14 +63,6 @@ export interface UserMarker extends LatLng {
   onTap?: () => unknown
   update?: (newSettings: UserMarker) => void
 }
-
-interface OnTap {
-  (id: string): void
-}
-
-interface OnCalloutTap {
-  (id: string): void
-}
 export interface Location extends LatLng {
   id: string
   group?: string
@@ -77,9 +70,10 @@ export interface Location extends LatLng {
   subtitle?: string
   icon?: string
   iconPath?: string
-  onTap?: (id: string) => void
-  onCalloutTap?: OnCalloutTap
+  onTap?: (id?: string) => void
+  onCalloutTap?: (id?: string) => void
   selected?: boolean
+  source?: SourceOptions
   securityAreas?: SecurityArea[]
   isFollowed?: boolean
   update?: (newSettings: unknown) => void
@@ -121,9 +115,15 @@ export interface LocationInCircle extends LatLng {
   circleRadius: number
 }
 
+export interface SourceOptions {
+  type: string
+  url: string
+  data?: Feature
+}
+
 export interface Layer {
   id: string
-  source?: string
+  source: SourceOptions
   sourceLayer?: string
   type?: string
 }

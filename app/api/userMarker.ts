@@ -1,4 +1,5 @@
-import * as map from '@/services/mapboxService'
+// import * as map from '@/services/mapboxService'
+import { mbAddMarkers } from '@/services/mapboxService'
 
 import { getMap } from '@/store/mapStore'
 import {
@@ -10,6 +11,8 @@ import { getCurrentUserLocation as userLocation } from '@/store/userLocationStor
 import { setVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LatLng } from '@/types/types'
+
+const map = getMap()
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
@@ -26,7 +29,7 @@ export const createUserMarker = (coordinates?: LatLng): void => {
     onTap: () => onTap(),
   }
   const newUserMarker = [initialValues]
-  map.addMarkers(getMap(), newUserMarker).then(() => setUserMarker(initialValues))
+  mbAddMarkers(map, newUserMarker).then(() => setUserMarker(initialValues))
 }
 
 export const updateUserMarker = async (coordinates: LatLng): Promise<void> => {
