@@ -90,7 +90,7 @@ module.exports = env => {
     const areCoreModulesExternal = Array.isArray(env.externals) && env.externals.some(e => e.indexOf("@nativescript") > -1);
     if (platform === "ios" && !areCoreModulesExternal && !testing) {
         entries["tns_modules/@nativescript/core/inspector_modules"] = "inspector_modules";
-    };
+    }
     console.log(`Bundling application for entryPath ${entryPath}...`);
 
     let sourceMapFilename = nsWebpack.getSourceMapFilename(hiddenSourceMap, __dirname, dist);
@@ -260,19 +260,27 @@ module.exports = env => {
             },
             {
                 test: /\.ts$/,
-                loader: 'ts-loader',
-                options: {
-                    appendTsSuffixTo: [/\.vue$/],
-                    allowTsInNodeModules: true,
-                    compilerOptions: {
-                        declaration: false
+                use: [
+                    {
+                       loader: "@jsdevtools/coverage-istanbul-loader"
                     },
-                    getCustomTransformers: (program) => ({
-                        before: [
-                            require("@nativescript/webpack/transformers/ns-transform-native-classes").default
-                        ]
-                    })
-                },
+                    {
+                        loader:'ts-loader',
+                        options: {
+                            appendTsSuffixTo: [/\.vue$/],
+                            allowTsInNodeModules: true,
+                            compilerOptions: {
+                                declaration: false
+                            },
+                            getCustomTransformers: (program) => ({
+                                before: [
+                                    require("@nativescript/webpack/transformers/ns-transform-native-classes").default
+                                ]
+                            })
+                        },
+                    }
+
+                ]
             },
             {
                 test: /\.vue$/,
@@ -293,10 +301,11 @@ module.exports = env => {
                 "global.isAndroid": platform === 'android',
                 "global.isIOS": platform === 'ios',
                 "TNS_ENV": JSON.stringify(mode),
-                "process": "global.process"
+                "process": "global.process",
+                "HTMLElement": function(){return false},
             }),
             // Remove all files from the out dir.
-            new CleanWebpackPlugin({ 
+            new CleanWebpackPlugin({
               cleanOnceBeforeBuildPatterns: itemsToClean,
               verbose: !!verbose
             }),
