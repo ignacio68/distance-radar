@@ -35,7 +35,7 @@
     "test-jasmine": "ns test android --watch --env.uglify --env.sourceMap"
   },
   "dependencies": {
-    "@nativescript-community/ui-mapbox": "^6.0.7",
+    "@nativescript-community/ui-mapbox": "^6.1.0",
     "@nativescript-community/ui-material-button": "^5.0.25",
     "@nativescript-community/ui-material-floatingactionbutton": "^5.0.14",
     "@nativescript-community/ui-material-slider": "^5.1.4",
@@ -61,7 +61,7 @@
     "@babel/preset-env": "^7.11.5",
     "@babel/preset-typescript": "^7.12.7",
     "@jsdevtools/coverage-istanbul-loader": "^3.0.5",
-    "@nativescript/android": "^7.0.1",
+    "@nativescript/android": "7.0.1",
     "@nativescript/ios": "^7.0.6",
     "@nativescript/types": "^7.0.4",
     "@nativescript/webpack": "^3.0.5",
