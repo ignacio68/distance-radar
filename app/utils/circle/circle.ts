@@ -7,21 +7,22 @@ import { LatLng, Circle, Azimuth, LocationInCircle } from '@/types/types'
 const PI = Math.PI
 const EARTH_RADIUS = 6378.137 // km
 
-const setDy = (theta: number, radius: number): number => Math.sin(toRadians(theta)) * radius
+const getDistanceY = (theta: number, radius: number): number => Math.sin(toRadians(theta)) * radius
 
-const setDx = (theta: number, radius: number): number => Math.cos(toRadians(theta)) * radius
+const getDistanceX = (theta: number, radius: number): number => Math.cos(toRadians(theta)) * radius
 
-const setLatitude = (center: LatLng, dy: number): number =>
-  center.lat + toDegrees(dy / EARTH_RADIUS)
+const getLatitude = (center: LatLng, distanceY: number): number =>
+  center.lat + toDegrees(distanceY / EARTH_RADIUS)
 
-const setLongitude = (center: LatLng, dx: number): number =>
-  center.lng + toDegrees(dx / EARTH_RADIUS) / Math.cos(toRadians((center.lat * PI) / 180))
+const getLongitude = (center: LatLng, distanceX: number): number =>
+  center.lng + toDegrees(distanceX / EARTH_RADIUS) / Math.cos(toRadians(center.lat))
 
 const getPointCoordinates = (args: Azimuth): LatLng => {
-  const dy = setDy(args.theta, args.radius)
-  const dx = setDx(args.theta, args.radius)
-  const newLatitude = setLatitude(args.center, dy)
-  const newLongitude = setLongitude(args.center, dx)
+  const { theta, radius, center } = args
+  const distanceY = getDistanceY(theta, radius)
+  const distanceX = getDistanceX(theta, radius)
+  const newLatitude = getLatitude(center, distanceY)
+  const newLongitude = getLongitude(center, distanceX)
 
   const coordinates: LatLng = { lat: newLatitude, lng: newLongitude }
 
@@ -33,21 +34,23 @@ const getThetas = async (numberOfEdges: number): Promise<number[]> =>
 
 export const getCirclePointsCoordinates = async (args: Circle): Promise<LatLng[]> => {
   console.log('getCirclePointsCoordinates()')
-  await validateArgs(args).catch((error: string) => console.log(error))
+  await validateArgs(args).catch((error) => console.log(error))
   await normalizeArgs(args)
 
-  const thetasList = await getThetas(args.numberOfEdges)
+  const { center, radius, numberOfEdges } = args
 
-  const allPointsCoordinates: LatLng[] = thetasList.map((theta) => {
+  const thetasList = await getThetas(numberOfEdges)
+
+  const pointsCoordinatesList: LatLng[] = thetasList.map((theta) => {
     const values: Azimuth = {
       theta,
-      radius: args.radius,
-      center: args.center,
+      radius: radius,
+      center: center,
     }
 
     return getPointCoordinates(values)
   })
-  return allPointsCoordinates
+  return pointsCoordinatesList
 }
 
 /**
@@ -66,11 +69,11 @@ export const getCirclePointsCoordinates = async (args: Circle): Promise<LatLng[]
 
 export const calculateDistanceFromLocation = (args: LocationInCircle): number => {
   const ky = 111.11111111
-  const kx = Math.cos((Math.PI * args.circleLat) / 180.0) * ky
-  const dx = Math.abs(args.circleLng - args.lng) * kx
-  const dy = Math.abs(args.circleLat - args.lat) * ky
+  const kx = Math.cos((PI * args.circleLat) / 180.0) * ky
+  const distanceX = Math.abs(args.circleLng - args.lng) * kx
+  const distanceY = Math.abs(args.circleLat - args.lat) * ky
 
-  const distance = Math.sqrt(dx * dx + dy * dy)
+  const distance = Math.sqrt(distanceX * distanceX + distanceY * distanceY)
 
   return distance
 }
@@ -80,14 +83,3 @@ export const isLocationInCircle = (args: LocationInCircle): boolean => {
 
   return distance < args.circleRadius / 1000 ? true : false
 }
-// export const isLocationInCircle = (args: LocationInCircle): boolean => {
-//   const ky = 111.11111111
-//   const kx = Math.cos((Math.PI * args.circleLat) / 180.0) * ky
-//   const dx = Math.abs(args.circleLng - args.lng) * kx
-//   const dy = Math.abs(args.circleLat - args.lat) * ky
-
-//   const distance = Math.sqrt(dx * dx + dy * dy)
-
-//   return distance < args.circleRadius / 1000 ? true : false
-//   // return distance < args.circleRadius / 1000
-// }
