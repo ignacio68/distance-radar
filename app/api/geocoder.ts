@@ -1,10 +1,10 @@
-import { pipeJS } from '@/utils/functional'
+import { pipe } from '@/utils/functional'
 import { formattedText } from '@/utils/text'
 
 import { ShortLocation, Location } from '@/services/types'
 
 const getShortLocation = (location: Location): ShortLocation => {
-  const shortLocation: ShortLocation = new Object()
+  const shortLocation: ShortLocation = {}
 
   shortLocation.thoroughfare = location.thoroughfare
   shortLocation.subThoroughfare = location.subThoroughfare
@@ -17,4 +17,4 @@ const getShortLocation = (location: Location): ShortLocation => {
   return shortLocation
 }
 
-export const formattedLocation = pipeJS(getShortLocation, formattedText)
+export const formattedLocation = pipe(getShortLocation, formattedText)
