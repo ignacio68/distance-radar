@@ -7,12 +7,8 @@
  * @version 0.4.0
  */
 
-import Vue from 'nativescript-vue'
-
 import VueDevtools from 'nativescript-vue-devtools'
-
-// Plugins
-import '@/plugins/installMapbox'
+import Vue from 'nativescript-vue'
 
 // Internationalization
 import { i18n, setLanguage } from '@/locales'
@@ -26,7 +22,7 @@ import DrawerContent from '@/views/Navigation/DrawerContent.vue'
 
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Vue.use(VueDevtools as any, { host: '192.168.1.25' })
+  Vue.use(VueDevtools as any, { host: '192.168.1.22' })
 }
 
 // Prints Vue logs when --env.production is *NOT* set while building
