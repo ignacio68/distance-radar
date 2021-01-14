@@ -11,7 +11,7 @@ import {
   getAllSecurityAreas,
 } from '@/store/securityAreasStore'
 
-import { getCirclePointsCoordinates } from '@/utils/circle/index'
+import { getGeoJSONPolygon } from '@/utils/circle/index'
 
 import {
   BasicPolygonOptions,
@@ -42,47 +42,39 @@ import {
 //   })
 // }
 
-const fetchSecurityAreaPoints = async (center: LatLng, radius: number): Promise<LatLng[]> => {
-  console.log('securityAreas.ts::fetchSecurityAreaPoints()')
-  const args: Circle = {
-    center: center,
-    radius: radius,
-    numberOfEdges: 36,
-  }
-  // const numberOfEdges = 4
-  return (await getCirclePointsCoordinates(args)) as LatLng[]
+// TODO: change to layer method
+export const newSecurityArea = async (args: BasicPolygonOptions): Promise<void> => {
+  const securityAreaArgs = await getNewSecurityAreaArgs(args)
+  getMap()
+    .addPolygon(securityAreaArgs)
+    .then((): void => {
+      console.log(
+        `securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(securityAreaArgs.center)}`
+      )
+      addNewSecurityArea(securityAreaArgs).then(() => {
+        addSecurityAreaToLocation(securityAreaArgs.id, securityAreaArgs)
+        getAllSecurityAreas()
+      })
+    })
 }
 
-const setNewSecurityAreaProps = async (args: BasicPolygonOptions): Promise<SecurityArea> => {
-  const points = await fetchSecurityAreaPoints(args.center, args.radius)
-  const securityAreaProps: SecurityArea = {
+const getNewSecurityAreaArgs = async (args: BasicPolygonOptions): Promise<SecurityArea> => {
+  const points = await getSecurityAreaVertex(args.center, args.radius)
+  const securityAreaArgs: SecurityArea = {
     points,
     ...args,
   }
-  return securityAreaProps
+  return securityAreaArgs
 }
 
-// TODO: to remove
-export const newSecurityArea = async (args: BasicPolygonOptions): Promise<void> => {
-  const securityAreaProps = await setNewSecurityAreaProps(args)
-  getMap()
-    .addPolygon(securityAreaProps)
-    .then((): void => {
-      console.log(
-        `securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(
-          securityAreaProps.center
-        )}`
-      )
-      addNewSecurityArea(securityAreaProps)
-      // const newLocationSettings: Location = {
-      //   id: securityAreaProps.id,
-      //   lat: securityAreaProps.center.lat,
-      //   lng: securityAreaProps.center.lng,
-      //   hasSecurityArea: true,
-      // }
-      addSecurityAreaToLocation(securityAreaProps.id, securityAreaProps)
-      getAllSecurityAreas()
-    })
+const getSecurityAreaVertex = async (center: LatLng, radius: number): Promise<LatLng[]> => {
+  console.log('securityAreas.ts::getSecurityAreaVertex()')
+  const args: Circle = {
+    center,
+    radius,
+    numberOfEdges: 64,
+  }
+  return getGeoJSONPolygon(args)
 }
 
 // TODO: Revisar todos los métodos
@@ -96,17 +88,27 @@ export const updateSecurityArea = (securityArea: SecurityArea): void => {
 
 export const showSecurityArea = (id: string, value: boolean): void => {
   console.log('securityAreas.ts::showSecurityArea()')
-  const currentSecurityArea = getSecurityArea(id)
-  if (!currentSecurityArea) {
+  const securityArea = getSecurityArea(id)
+  validateSecurityArea(securityArea, value)
+  changeSecurityAreaVisibility(securityArea, value)
+}
+
+const validateSecurityArea = (securityArea: SecurityArea, value: boolean): void => {
+  if (!isSecurityArea(securityArea)) {
     console.log('The security area not exist')
     return
   }
-  if (currentSecurityArea.isVisible === value) {
+  // TODO: review this function use
+  if (isSecurityAreaVisible(securityArea, value)) {
     console.log('The security visibility is the same!')
     return
   }
-  changeSecurityAreaVisibility(currentSecurityArea, value)
 }
+
+const isSecurityArea = (securityArea: SecurityArea): boolean => securityArea !== undefined || null
+
+const isSecurityAreaVisible = (securityArea: SecurityArea, value: boolean): boolean =>
+  securityArea.isVisible === value
 
 const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: boolean): void => {
   console.log('securityAreas.ts::changeSecurityAreaVisibility()')
