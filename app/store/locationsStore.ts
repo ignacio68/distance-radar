@@ -19,19 +19,15 @@ const state = Vue.observable({
 // Create persist locations database
 const database: Database = createDatabase('locations')
 
+const initializeDatabase = (): void =>
+  getAllItems(database).forEach((location: Location) => addLocationToState(location))
+
 const addLocationToState = (location: Location): void => {
   console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
   state.locations.push(location)
 }
 
-/***************Load persist locations database at init*******************************/
-
-const initializeDatabase = (): void =>
-  getAllItems(database).forEach((location: Location) => addLocationToState(location))
-
 initializeDatabase()
-
-/************************************************************************************/
 
 const findIndex = (id: string): number =>
   state.locations.findIndex((location) => location.id === id)
