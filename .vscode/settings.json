@@ -40,9 +40,11 @@
     "javascript",
     "Babel Javascript",
     "typescript",
+    "vue",
   ],
   "eslint.alwaysShowStatus": true,
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
+  "vetur.validation.template": false,
 }

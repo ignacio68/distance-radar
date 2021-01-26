@@ -9,9 +9,13 @@
     ],
     "sourceMap": true,
     "allowJs": true,
+    "noEmit": false,
     "baseUrl": ".",
     "paths": {
       "@/*": [
+        "app/*"
+      ],
+      "~/*": [
         "app/*"
       ]
      },
@@ -33,9 +37,7 @@
     "skipLibCheck": true,
     "resolveJsonModule": true
   },
-  "outDir": [
-    "$$ts-jest$$",
-  ],
+  "outDir": "$$ts-jest$$",
   "include": [
     "app/**/*",
     "app",
@@ -45,6 +47,10 @@
   "exclude": [
     "node_modules",
     "platforms",
-    "App_Resources"
+    "App_Resources",
+    "hooks",
+    "layout",
+    "coverage",
+    "**/*.test.ts"
   ]
 }
