@@ -1,4 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  MapboxView,
+  ShowOptions,
   MapboxViewApi,
   MapboxMarker,
   LatLng,
@@ -10,10 +13,14 @@ import {
   AddSourceOptions,
 } from '@nativescript-community/ui-mapbox'
 
-import { getMap } from '@/store/mapStore'
-
 export interface SetOnMapLongClickListener {
   (data: LatLng): boolean
+}
+
+export const mbSetMap = (settings: ShowOptions): MapboxView => {
+  const mapView = new MapboxView()
+  mapView.setConfig(settings)
+  return mapView
 }
 
 export const mbSetCenter = (map: MapboxViewApi, options: SetCenterOptions): Promise<unknown> =>
@@ -37,49 +44,36 @@ export const mbSetOnMapLongClickListener = (
 export const mbSetMapStyle = (map: MapboxViewApi, style: string | MapStyle): Promise<unknown> =>
   map.setMapStyle(style)
 
-export const mbAddMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promise<unknown> =>
-  map.addMarkers(markers)
-
+export const mbAddMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promise<unknown> => {
+  console.log('mapboxService::addMarkers()')
+  return map.addMarkers(markers)
+}
 export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<unknown> =>
   map.removeMarkers(markers)
 
+// CURRENT IT'S NOT USED
 export const mbAddSource = (
   map: MapboxViewApi,
   id: string,
-  options: AddSourceOptions
+  // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
+  options: any
+  // options: AddSourceOptions
 ): Promise<unknown> =>
   map
     .addSource(id, options)
     .then(() => console.log('mapboxService::addSource: ADD SOURCE!!'))
     .catch((error) => console.log(`mapboxService::addSource: ERROR!!: ${error.message | error}`))
 
-export const addFakeSource = (): void => {
-  const id = 'Fake'
-  const options = {
-    type: 'geojson',
-    url: '',
-    data: {
-      type: 'Feature',
-      geometry: {
-        type: 'Point',
-        coordinates: [40.456135, -3.6805851],
-      },
-    },
-  }
-
-  getMap()
-    .addSource(id, options)
-    .then(() => console.log('mapboxService::addFakeSource: ADD SOURCE!!'))
-    .catch((error) =>
-      console.log(`mapboxService::addFakeSource: ERROR!!: ${error.message | error}`)
-    )
-}
-
-export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<unknown> =>
+// CURRENT IT'S NOT USED
+export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<void> =>
   map.removeSource(id)
 
-export const mbAddLayer = (map: MapboxViewApi, style: AddLayerOptions): Promise<unknown> =>
-  map.addLayer(style)
+export const mbAddLayer = async (map: MapboxViewApi, style: unknown): Promise<unknown> => {
+  console.log('mapboxService::addLayer()')
+  return map
+    .addLayer(style)
+    .then(() => console.log('mapboxService::addLayer(): ADD LAYER!!'))
+    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message | error}`))
+}
 
-export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<unknown> =>
-  map.removeLayer(id)
+export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<void> => map.removeLayer(id)

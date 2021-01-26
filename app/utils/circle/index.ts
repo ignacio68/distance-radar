@@ -1,1 +1,1 @@
-export { getCirclePointsCoordinates, calculateDistanceFromLocation } from './circle'
+export { getGeoJSONPolygonCoordinates, calculateDistanceFromLocation } from './circle'

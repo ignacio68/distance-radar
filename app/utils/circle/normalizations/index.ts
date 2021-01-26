@@ -1,4 +1,4 @@
-import { Circle } from '@/types/types'
+import { Circle } from '../../types'
 const normalizeArg = (arg: number): number => Math.abs(Math.round(arg))
 
 export const normalizeArgs = async (args: Circle): Promise<Circle> => {

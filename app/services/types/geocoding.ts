@@ -1,19 +1,3 @@
-import { LatLng } from '@/types/types'
-
-export { MapboxApi as Map } from '@nativescript-community/ui-mapbox'
-export { CouchBase as Database, Query } from '@triniwiz/nativescript-couchbase'
-
-export interface CirclePolygonProps {
-  id: string
-  fillColor: string
-  fillOpacity: number
-  center: {
-    lat: number
-    lng: number
-  }
-}
-
-/*** GEOCODER TYPES ***/
 export interface GeocoderDefaultOptions {
   /**
    * On geocoded result what zoom level should the map animate
@@ -45,7 +29,7 @@ export interface GeocoderDefaultOptions {
   marker: boolean | Record<string, unknown>
 }
 
-export interface ShortLocation {
+export interface GeocoderShortLocation {
   /**
    * The street address associated with the placemark.
    */
@@ -72,7 +56,7 @@ export interface ShortLocation {
   country?: string
 }
 
-export interface Location extends ShortLocation {
+export interface GeocoderLocation extends GeocoderShortLocation {
   /**
    * The name of the placemark.
    *
@@ -110,5 +94,3 @@ export interface Location extends ShortLocation {
   subLocality?: string
 }
 /**************/
-
-export { LatLng }

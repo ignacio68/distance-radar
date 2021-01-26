@@ -1,8 +1,8 @@
 import * as geocoding from 'nativescript-geocoding'
 
-import { Location } from '@/types/types/geocoder'
+import { GeocoderLocation } from './types/geocoding'
 
-type SearchLocationsResult = void | Location[]
+type SearchLocationsResult = void | GeocoderLocation[]
 
 export const searchLocations = async (query: string): Promise<SearchLocationsResult> => {
   const fetchLocations = await geocoding.getLocationListFromName(query, 5).then(

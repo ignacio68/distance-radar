@@ -3,7 +3,7 @@
  *
  * https://github.com/gabzim/circle-to-polygon/tree/master/input-validation
  */
-import { Circle } from '@/types/types'
+import { Circle } from '../../types'
 
 import { validateCenter } from './validateCenter'
 import { validateRadius } from './validateRadius'

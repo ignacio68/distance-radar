@@ -1,4 +1,4 @@
-import { pipeJS } from './functional'
+import { pipe } from './functional'
 interface ObjectToString {
   [key: string]: string
 }
@@ -17,4 +17,4 @@ export const objectToArray = (object: ObjectToString): string[] => {
 
 export const reduceToString = (array: string[]): string => `${array.join(', ')}`
 
-export const formattedText = pipeJS(removeEmptyKeys, objectToArray, reduceToString)
+export const formattedText = pipe(removeEmptyKeys, objectToArray, reduceToString)
