@@ -24,7 +24,6 @@
   import Vue from 'nativescript-vue'
 
   import { setVisibility } from '@/composables/useComponent'
-  import { setViewName } from '@/composables/useNavigation'
 
   import DrawerHeader from '@/components/Drawer/DrawerHeader.vue'
   import DrawerItem from '@/components/Drawer/DrawerItem.vue'
@@ -48,7 +47,7 @@
     },
 
     methods: {
-      onItemTap(component): void {
+      onItemTap(component: unknown): void {
         console.log(`DrawerItem::methods:onTap(): ${component}`)
         this.$navigateTo(component, {'ClearHistory': true})
         setVisibility('drawer', false)

@@ -69,7 +69,6 @@
   import { LatLng } from '@/types/commons'
 
   import { getVisibility } from '@/composables/useComponent'
-  import { getViewName, setViewName } from  '@/composables/useNavigation'
 
   import { getSecurityAreaActive, getAllSecurityAreas} from '@/store/securityAreasStore'
   import { getCurrentUserLocation, getDistanceToCenter, getWatchId as watchId } from '@/store/userLocationStore'
@@ -125,10 +124,6 @@
       //     console.log(`Home::fetchUserLocation(): ${JSON.stringify(getCurrentUserLocation())}`)
       //   }
       // }
-    },
-
-    mounted() {
-      setViewName('Main')
     },
 
     methods: {
