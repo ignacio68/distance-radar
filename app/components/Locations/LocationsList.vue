@@ -28,7 +28,7 @@ import { flyTo } from '@/api/map'
 
 import { getLocations } from '@/store/locationsStore'
 
-import { LatLng, Location } from '@/types/types'
+import { LatLng, Location } from '@/types/commons'
 import { Elevation } from '@/types/enums/elevations'
 
 export default Vue.extend({

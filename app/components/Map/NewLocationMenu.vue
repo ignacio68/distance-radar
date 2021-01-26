@@ -67,7 +67,7 @@ import { newLocation } from '@/api/locations'
 
 import { hasId } from '@/store/locationsStore'
 
-import { Location } from '@/types/types'
+import { Location } from '@/types/commons'
 
 import TextForm from '@/components/UI/TextForm.vue'
 

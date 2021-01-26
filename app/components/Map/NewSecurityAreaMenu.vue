@@ -80,8 +80,7 @@ import { startTrackingUserLocation } from '@/api/geolocation'
 import { hasId } from '@/store/securityAreasStore'
 
 import { Color } from '@nativescript/core'
-
-import { BasicPolygonOptions } from '@/types/types'
+import { SecurityAreaOptions } from '@/api/types'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
@@ -187,8 +186,8 @@ export default Vue.extend({
             : this.setIdError(0)
     },
 
-    async setOptions(): Promise<void> {
-      // console.log('NewSecurityAreaMenu.vue::setOptions()')
+    async setIdAndCenter(): Promise<void> {
+      // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
       const options = await fetchSelectedLocation()
       // console.log(`NewSecurityAreaMenu.vue::options:  + ${JSON.stringify(options)}`)
       this.securityArea.id = options.id
@@ -197,7 +196,7 @@ export default Vue.extend({
     },
 
     async newSecurityArea(): Promise<void>{
-      await this.setOptions()
+      await this.setIdAndCenter()
       await newSecurityArea(this.securityArea)
       console.log(`NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(this.securityArea)}`)
       await this.hideNewSecurityAreaMenu()

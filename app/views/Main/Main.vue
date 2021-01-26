@@ -66,7 +66,7 @@
   import Vue from 'nativescript-vue'
 
   import { ConfirmOptions } from '@nativescript/core'
-  import { LatLng } from '@/types/types'
+  import { LatLng } from '@/types/commons'
 
   import { getVisibility } from '@/composables/useComponent'
   import { getViewName, setViewName } from  '@/composables/useNavigation'
