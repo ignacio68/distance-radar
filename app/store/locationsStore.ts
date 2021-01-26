@@ -53,7 +53,7 @@ export const getLocations = (): Location[] => state.locations
 
 export const addNewLocation = (location: Location): void => {
   addLocationToState(location)
-  addItem(database, location, location.id)
+  addItem<Location>(database, location, location.id)
 }
 
 export const updateLocationsStore = async (location: Location): Promise<void> => {
