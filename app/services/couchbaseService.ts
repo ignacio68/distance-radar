@@ -12,11 +12,13 @@ export const addDocument = <T>(database: CouchBase, value: T, documentId: string
 export const getDocument = <T>(database: CouchBase, documentId: string): T =>
   database.getDocument(documentId)
 
-export const updateDocument = <T>(database: CouchBase, documentId: string, value: T): void =>
+export const updateDocument = <T>(database: CouchBase, documentId: string, value: T): void => {
   database.updateDocument(documentId, value)
+}
 
-export const deleteDocument = (database: CouchBase, documentId: string): void =>
+export const deleteDocument = (database: CouchBase, documentId: string): void => {
   database.deleteDocument(documentId)
+}
 
 export const queryDocuments = <T>(database: CouchBase, query: Query): Array<T> =>
   database.query(query)
