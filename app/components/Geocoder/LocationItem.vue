@@ -64,10 +64,10 @@
     },
 
     methods: {
-      itemTitle(item): string {
+      itemTitle(item: any): string {
         return item.subThoroughfare ? item.thoroughfare : item.name
       },
-      resultText(item): string {
+      resultText(item: any): string {
         return formattedLocation(item)
       }
     }

@@ -93,4 +93,5 @@ export interface GeocoderLocation extends GeocoderShortLocation {
    */
   subLocality?: string
 }
-/**************/
+
+export type SearchLocationsResult = void | GeocoderLocation[]

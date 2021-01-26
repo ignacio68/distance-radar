@@ -50,7 +50,7 @@
   // import { setInterval, clearInterval } from '@nativescript/core/timer'
   import { Utils } from '@nativescript/core'
 
-  import { searchLocations } from '@/services/geocodingService'
+  import { getLocations } from '@/api/geocoder'
 
   import CustomSearchBar from './CustomSearchBar.vue'
   import LocationItem from './LocationItem.vue'
@@ -170,8 +170,7 @@
 
       async fetchLocationsList() {
         console.log('fetchLocationsList()')
-        let searchLocationsResult // TODO: Add type
-        searchLocationsResult = await searchLocations(this.searchedLocation)
+        const searchLocationsResult: any = await getLocations(this.searchedLocation)
         if(searchLocationsResult.length > 0) this.locationsList = searchLocationsResult
       },
 

@@ -17,4 +17,4 @@ export const objectToArray = (object: ObjectToString): string[] => {
 
 export const reduceToString = (array: string[]): string => `${array.join(', ')}`
 
-export const formattedText = pipe(removeEmptyKeys, objectToArray, reduceToString)
+export const formattedText: string = pipe(removeEmptyKeys, objectToArray, reduceToString) as unknown as string
