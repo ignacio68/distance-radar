@@ -13,6 +13,6 @@
 //   return (...args: T) => piped(fn1(...args))
 // }
 
-export const pipeJS = (...fns) => (x) => fns.reduce((y, f) => f(y), x)
+export const pipe = (...fns) => (x) => fns.reduce((y, f) => f(y), x)
 
-export const composeJS = (...fns) => (x) => fns.reduceRight((y, fn) => fn(y), x)
+export const compose = (...fns) => (x) => fns.reduceRight((y, fn) => fn(y), x)
