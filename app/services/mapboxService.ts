@@ -48,7 +48,7 @@ export const mbAddMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promi
   console.log('mapboxService::addMarkers()')
   return map.addMarkers(markers)
 }
-export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<unknown> =>
+export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<void> =>
   map.removeMarkers(markers)
 
 // CURRENT IT'S NOT USED
@@ -58,7 +58,7 @@ export const mbAddSource = (
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
   options: any
   // options: AddSourceOptions
-): Promise<unknown> =>
+): Promise<void> =>
   map
     .addSource(id, options)
     .then(() => console.log('mapboxService::addSource: ADD SOURCE!!'))
@@ -68,12 +68,12 @@ export const mbAddSource = (
 export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<void> =>
   map.removeSource(id)
 
-export const mbAddLayer = async (map: MapboxViewApi, style: unknown): Promise<unknown> => {
+export const mbAddLayer = async (map: MapboxViewApi, style: unknown): Promise<void> => {
   console.log('mapboxService::addLayer()')
-  return map
+  map
     .addLayer(style)
     .then(() => console.log('mapboxService::addLayer(): ADD LAYER!!'))
-    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message | error}`))
+    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message || error}`))
 }
 
 export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<void> => map.removeLayer(id)
