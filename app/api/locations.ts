@@ -1,4 +1,5 @@
-import { mbAddMarkers, mbAddSource } from '@/services/mapboxService'
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { mbAddMarkers } from '@/services/mapboxService'
 
 import { setVisibility } from '@/composables/useComponent'
 
@@ -16,55 +17,41 @@ import {
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
-import { Location, SourceOptions, SecurityArea } from '@/types/types'
-// import { AddSourceOptions } from '@nativescript-community/ui-mapbox'
-
-const map = getMap()
+import { Location } from './types'
 
 export const showLocations = getLocations()
 
-const setSourceOptions = (location: Location): SourceOptions => {
-  const { lat, lng } = location
-  const sourceOptions: SourceOptions = {
-    type: 'geojson',
-    url: '',
-    data: {
-      type: 'Feature',
-      properties: {},
-      geometry: {
-        type: 'Point',
-        coordinates: [lat, lng],
-      },
-    },
-  }
-  console.log(`locations::setSourceOptions: ${JSON.stringify(sourceOptions)}`)
-  return JSON.parse(JSON.stringify(sourceOptions))
+export const newLocation = (locationProps: Location): void => {
+  const location: Location = setLocationOpts(locationProps)
+  console.log(`locations.ts::addLocation(): ${JSON.stringify(location)}`)
+  const newLocation: Location[] = []
+  newLocation.push(location)
+  mbAddMarkers(getMap(), newLocation).then(() => {
+    addNewLocation(location)
+  })
 }
 
-const setLayerOptions = () => {
-  console.log('locations::setLayerOptions')
-}
-
-const setLocationOpts = (location: Location): Location => {
-  const opts: Location = {
-    id: location.id,
+const setLocationOpts = (locationProps: Location): Location => {
+  const { id } = locationProps
+  const options: Location = {
+    id,
     lat: userMarker().lat,
     lng: userMarker().lng,
-    title: location.id,
+    title: id,
     selected: true,
     securityAreas: [],
-    onTap: () => onTap(opts.title),
+    onTap: () => onTap(options.title),
     onCalloutTap: () => onCalloutTap(),
   }
-  const completeLocation: Location = { ...location, ...opts }
-  return completeLocation
+  const location: Location = { ...locationProps, ...options }
+  return location
 }
 
 const onTap = (id: string): void => {
   console.log(`locations::onTap(): ${id}`)
   hasSecurityArea(id).then((result) => {
     if (result) {
-      console.log('The location has a security area')
+      console.log('The locationProps has a security area')
     } else {
       setVisibility('newSecurityAreaMenu', true)
       setSelectedLocation(id)
@@ -73,26 +60,8 @@ const onTap = (id: string): void => {
 }
 
 const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
-
-export const newLocation = (location: Location): void => {
-  const completeLocation: Location = setLocationOpts(location)
-  console.log(`locations.ts::addLocation(): ${JSON.stringify(completeLocation)}`)
-  const newLocation: Location[] = []
-  newLocation.push(completeLocation)
-  const sourceOptions = setSourceOptions(completeLocation)
-  mbAddMarkers(map, newLocation).then(() => {
-    addNewLocation(completeLocation)
-    // map
-    //   .addSource(completeLocation.id, sourceOptions)
-    // map.addFakeSource()
-    mbAddSource(map, completeLocation.id, sourceOptions)
-    // .then(() => console.log('locations::addSource()'))
-    // .catch((error) => console.log(`locations::addSource:Error: ${error.message | error}`))
-  })
-}
-
 // export const fetchLocations = (): Locations[] => {
-//   map.addMarkers(map, location)
+//   map.addMarkers(getMap(), locationProps)
 // }
 
 export const fetchSelectedLocation = (): Location => {
@@ -106,9 +75,9 @@ export const updateLocation = async (location: Location): Promise<void> => {
   })
 }
 
-export const addSecurityAreaToLocation = (id: string, securityArea: SecurityArea): void => {
+export const addSecurityAreaToLocation = (id: string): void => {
   const location: Location = getLocation(id)
-  location.securityAreas.push(securityArea)
+  location.securityAreas.push(id)
   updateLocationsStore(location)
 }
 
@@ -121,8 +90,6 @@ export const removeAllLocations = (): void => {
   deleteAllLocations()
   console.log(`locations.ts::removeAllLocation:`)
 }
-
-/**************************************/
 
 export const updateLocationAtInit = async (location: Location): Promise<void> => {
   const options: Record<string, unknown> = {
