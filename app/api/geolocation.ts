@@ -15,7 +15,8 @@ import {
   setIsWatchUserLocationEnabled,
 } from '@/composables/useGeolocation'
 
-import { LatLng, InsideSecurityArea, CalculateSecurityDistance } from '@/types/types'
+import { LatLng } from '@/types/commons'
+import { InsideSecurityArea, CalculateSecurityDistance } from './types'
 
 // TODO: Create a enum for constants
 const EARTH_RADIUS = 6378.137

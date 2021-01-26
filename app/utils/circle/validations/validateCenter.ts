@@ -1,4 +1,4 @@
-import { LatLng } from '@/types/types'
+import { LatLng } from '../../types'
 
 const validateLongitude = (longitude: number): void => {
   if (longitude < -180 || longitude > 180)

@@ -1,10 +1,10 @@
 import { pipe } from '@/utils/functional'
 import { formattedText } from '@/utils/text'
 
-import { ShortLocation, Location } from '@/services/types'
+import { GeocoderShortLocation, GeocoderLocation } from '@/services/types'
 
-const getShortLocation = (location: Location): ShortLocation => {
-  const shortLocation: ShortLocation = {}
+const getShortLocation = (location: GeocoderLocation): GeocoderShortLocation => {
+  const shortLocation: GeocoderShortLocation = {}
 
   shortLocation.thoroughfare = location.thoroughfare
   shortLocation.subThoroughfare = location.subThoroughfare

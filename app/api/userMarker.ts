@@ -10,7 +10,7 @@ import {
 import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
 import { setVisibility } from '@/composables/useComponent'
 
-import { UserMarker, LatLng } from '@/types/types'
+import { UserMarker, LatLng } from '@/types/commons'
 
 const map = getMap()
 

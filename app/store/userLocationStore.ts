@@ -1,5 +1,5 @@
 import Vue from 'nativescript-vue'
-import { InitialCoordinates, LatLng } from '@/types/types'
+import { InitialCoordinates, LatLng } from '@/types/commons'
 
 const state = Vue.observable({
   currentUserLocation: {

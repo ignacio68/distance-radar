@@ -3,7 +3,7 @@ import Vue from 'nativescript-vue'
 import { createDatabase, getItem, addItem, updateItem, resetDatabase } from '@/api/storage'
 
 import { Database } from '@/api/types'
-import { Map } from '@/services/types'
+import { Map } from '@/api/types'
 
 const state = Vue.observable({
   map: null as Map,

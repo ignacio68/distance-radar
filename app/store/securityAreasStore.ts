@@ -1,6 +1,8 @@
 import Vue from 'nativescript-vue'
 
-import { SecurityArea } from '@/types/types'
+import { removeSecurityAreaFromLocation } from './locationsStore'
+
+import { SecurityArea } from '@/api/types'
 
 const state = Vue.observable({
   securityAreas: [] as SecurityArea[],
@@ -16,7 +18,7 @@ export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false
 
 export const isSecurityAreaVisible = (id: string): boolean => {
   const index = findIndex(id)
-  const isVisible: boolean = state.securityAreas[index].isVisible
+  const isVisible: boolean = state.securityAreas[index].layer.visibility
   return isVisible
 }
 
@@ -55,16 +57,18 @@ export const getSecurityAreaActive = (): SecurityArea => {
 
 // export const isVisible = (id: string, value: boolean): boolean => {
 //   const index = findIndex(id)
-//   const isVisible: boolean = state.securityAreas[index].isVisible
+//   const isVisible: boolean = state.securityAreas[index].layer.visibility
 //   if (isVisible === value) {
 //     console.log('The visibility is the same')
 //     return
-//   }s
+//   }
 //   return isVisible
 // }
 
-export const deleteSecurityArea = (id: string): void => {
-  const index: number = findIndex(id)
+export const deleteSecurityArea = (securityAreaId: string): void => {
+  const index = findIndex(securityAreaId)
+  const owner = state.securityAreas[index].owner
   state.securityAreas.splice(index, 1)
+  removeSecurityAreaFromLocation(owner, securityAreaId)
   console.log('removed element!!')
 }
