@@ -9,7 +9,7 @@ import {
   resetDatabase,
 } from '@/api/storage'
 
-import { Location } from '@/types/types'
+import { Location, Database } from '@/api/types'
 
 const state = Vue.observable({
   locations: ([] as unknown) as Location[],
@@ -17,7 +17,7 @@ const state = Vue.observable({
 })
 
 // Create persist locations database
-const database = createDatabase('locations')
+const database: Database = createDatabase('locations')
 
 const addLocationToState = (location: Location): void => {
   console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
@@ -84,3 +84,17 @@ export const hasSecurityArea = async (id: string): Promise<boolean> => {
   const location = findIndex(id)
   return state.locations[location].securityAreas.length ? true : false
 }
+
+export const removeSecurityAreaFromLocation = (
+  locationId: string,
+  securityAreaId: string
+): void => {
+  const locationIndex = findIndex(locationId)
+  const securityAreaIndex = getSecurityAreaIndex(locationIndex, securityAreaId)
+  state.locations[locationIndex].securityAreas.splice(securityAreaIndex, 1)
+}
+
+const getSecurityAreaIndex = (locationIndex: number, securityAreaId: string): number =>
+  state.locations[locationIndex].securityAreas.findIndex(
+    (securityArea) => securityArea === securityAreaId
+  )
