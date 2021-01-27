@@ -98,7 +98,8 @@ export default Vue.extend({
 
     onConfirmDeleteLocation(id: string): void {
       const options: ConfirmOptions = {
-        title: `${this.$t('lang.dialogs.deleteLocation.title')}`,
+        // title: `${this.$t('lang.dialogs.deleteLocation.title')}`,
+        title: id,
         message: `${this.$t('lang.dialogs.deleteLocation.message')}`,
         okButtonText: `${this.$t('lang.dialogs.deleteLocation.okButton')}`,
         cancelButtonText: `${this.$t('lang.dialogs.deleteLocation.cancelButton')}`
