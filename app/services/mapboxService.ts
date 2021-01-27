@@ -4,7 +4,6 @@ import {
   ShowOptions,
   MapboxViewApi,
   MapboxMarker,
-  LatLng,
   MapStyle,
   SetCenterOptions,
   SetZoomLevelOptions,
@@ -13,9 +12,7 @@ import {
   AddSourceOptions,
 } from '@nativescript-community/ui-mapbox'
 
-export interface SetOnMapLongClickListener {
-  (data: LatLng): boolean
-}
+import { SetOnMapLongClickListener } from './types'
 
 export const mbSetMap = (settings: ShowOptions): MapboxView => {
   const mapView = new MapboxView()
