@@ -1,35 +1,35 @@
 import {
-  setDatabase,
-  addDocument,
-  getDocument,
-  updateDocument,
-  queryDocuments,
-  deleteDocument,
-  destroyDatabase,
+  cbSetDatabase,
+  cbAddDocument,
+  cbGetDocument,
+  cbUpdateDocument,
+  cbQueryDocuments,
+  cbDeleteDocument,
+  cbDestroyDatabase,
 } from '@/services/couchbaseService'
 import { Database, QueryDB } from './types'
 
-export const createDatabase = (name: string): Database => setDatabase(name)
+export const createDatabase = (name: string): Database => cbSetDatabase(name)
 
 export const createSomeDatabases = (names: string[]): void => {
   names.map((name) => createDatabase(name))
 }
 
 export const addItem = <T>(database: Database, value: T, itemId: string): void =>
-  addDocument(database, value, itemId)
+  cbAddDocument(database, value, itemId)
 
-export const getItem = <T>(database: Database, itemId: string): T => getDocument(database, itemId)
+export const getItem = <T>(database: Database, itemId: string): T => cbGetDocument(database, itemId)
 
 export const getAllItems = <T>(database: Database): Array<T> => queryItems(database, { select: [] })
 
 export const updateItem = <T>(database: Database, itemId: string, value: T): void =>
-  updateDocument(database, itemId, value)
+  cbUpdateDocument(database, itemId, value)
 
 export const deleteItem = (database: Database, itemId: string): void =>
-  deleteDocument(database, itemId)
+  cbDeleteDocument(database, itemId)
 
 export const queryItems = <T>(database: Database, query: QueryDB): Array<T> =>
-  queryDocuments(database, query)
+  cbQueryDocuments(database, query)
 
 // export const initializeDatabase = <T>(nameDB: string, callback: (item: T) => void): Database => {
 //   const database = createDatabase(nameDB)
@@ -44,5 +44,5 @@ export const resetDatabase = (database: Database): void => {
   // FIXME: Clean the db without destroy it.
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   getAllItems(database).forEach((item: any) => deleteItem(database, item))
-  // destroyDatabase(database)
+  // cbDestroyDatabase(database)
 }
