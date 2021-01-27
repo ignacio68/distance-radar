@@ -3,7 +3,7 @@ import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
 import { ShowOptions } from '@nativescript-community/ui-mapbox'
 import { GeoJSON } from 'geojson'
 import { LatLng, Id, Location } from '@/types/commons'
-export { Map } from '@/services/types'
+export { Map, GeocoderLocation } from '@/services/types'
 
 export type Database = CouchBase
 
