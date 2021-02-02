@@ -144,6 +144,7 @@ module.exports = env => {
         },
         node: {
             // Disable node shims that conflict with NativeScript
+            "global": true,
             "http": false,
             "timers": false,
             "setImmediate": false,
@@ -296,7 +297,7 @@ module.exports = env => {
                 "process": "global.process"
             }),
             // Remove all files from the out dir.
-            new CleanWebpackPlugin({ 
+            new CleanWebpackPlugin({
               cleanOnceBeforeBuildPatterns: itemsToClean,
               verbose: !!verbose
             }),

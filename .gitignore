@@ -3,6 +3,7 @@ hooks/
 !hooks/after-createProject/*.js
 node_modules/
 platforms/
+reports/
 
 # NativeScript Template
 *.js.map
@@ -40,3 +41,4 @@ layout
 
 # Tests
 coverage/
+ts-dir/

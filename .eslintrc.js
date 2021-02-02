@@ -5,17 +5,8 @@ module.exports = {
     browser: true,
     commonjs: true,
     es2020: true,
-    jest: true,
+    mocha: true,
   },
-  // parser: '@typescript-eslint/parser',
-  // parserOptions: {
-  //   ecmaVersion: 2020,
-  //   parser: '@babel/eslint-parser',
-  //   ecmaFeatures: {
-  //     legacyDecorators: true,
-  //   },
-  //   sourceType: 'module',
-  // },
   parser: 'vue-eslint-parser',
   parserOptions: {
     parser: '@typescript-eslint/parser',
@@ -25,21 +16,24 @@ module.exports = {
     project: ['./tsconfig.eslint.json'],
     extraFileExtensions: ['.vue'],
   },
-  plugins: ['@typescript-eslint', 'prettier', 'vue'],
+  plugins: ['@typescript-eslint', 'prettier', 'vue', 'mocha'],
   extends: [
     'eslint:recommended',
+    'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
     'prettier/@typescript-eslint',
+    'prettier',
     'prettier/vue',
     'plugin:prettier-vue/recommended',
     'plugin:vue/recommended',
+    'plugin:mocha/recommended',
   ],
 
-  settings: {
-    'prettier-vue': {},
-    usePrettierrc: true,
-  },
+  // settings: {
+  //   'prettier-vue': {},
+  //   usePrettierrc: true,
+  // },
   rules: {
     'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
@@ -58,9 +52,16 @@ module.exports = {
         trailingComma: 'es5',
       },
     ],
+    'no-unused-vars': [
+      'error',
+      {
+        varsIgnorePattern: 'should|expect',
+      },
+    ],
   },
 
-  // globals: {
-  //   $nuxt: true,
-  // },
+  globals: {
+    describe: true,
+    it: true,
+  },
 }
