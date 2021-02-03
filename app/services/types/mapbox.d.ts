@@ -1,4 +1,4 @@
-import { LatLng } from "./"
+import { LatLng } from '.'
 export interface SetOnMapLongClickListener {
   (data: LatLng): boolean
 }

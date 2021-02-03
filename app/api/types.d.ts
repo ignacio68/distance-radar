@@ -54,13 +54,12 @@ export interface SourceOptions {
   data: GeoJSON
 }
 
-export interface Source extends Id {
-  data: SourceOptions
-}
+export interface Source extends Partial<Id> {}
 
-export interface PolygonLayer extends Id, PolygonLayerStyleOptions {
-  sourceLayer: Source | string
+export interface PolygonLayer extends Id {
+  source: Source | string
   type?: string
+  paint: PolygonLayerStyleOptions
 }
 
 export interface PolygonLayerStyleOptions {
@@ -69,7 +68,7 @@ export interface PolygonLayerStyleOptions {
   fillOpacity: number
   fillOutlineColor?: string | Color
   fillSortKey?: number
-  visibility: boolean
+  visibility?: boolean
 }
 
 // export interface CircleLayer extends Layer {
