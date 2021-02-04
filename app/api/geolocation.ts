@@ -1,6 +1,9 @@
 import { Utils } from '@nativescript/core'
 import * as dialogs from '@nativescript/core/ui/dialogs'
+import { latLngToPosition } from '@/utils/commons'
 import { watchUserLocation, stopWatchUserLocation } from '@/services/geolocationService'
+import distance from '@turf/distance'
+import { point } from '@turf/helpers'
 
 import {
   getCurrentUserLocation as currentUserLocation,
@@ -12,7 +15,7 @@ import {
   setIsWatchUserLocationEnabled,
 } from '@/composables/useGeolocation'
 
-import { LatLng } from '@/types/commons'
+import { LatLng, Position } from '@/types/commons'
 import { InsideSecurityArea, CalculateSecurityDistance } from './types'
 
 // TODO: Create a enum for constants
@@ -31,57 +34,54 @@ export const stopTrackingUserLocation = (watchId: number): void => {
   stopWatchUserLocation(watchId)
 }
 
-//  TODO: Rename the variables and refactore to functional programming
-const calculateDistance = (initialLocation: LatLng, currentLocation: LatLng): number => {
-  console.log(
-    `geolocation::calculateDistance():initialLocation: ${JSON.stringify(initialLocation)}`,
-  )
-  const difLatitude = toRadians(currentLocation.lat - initialLocation.lat)
-  const difLongitude = toRadians(currentLocation.lng - initialLocation.lng)
+const calculateCurrentDistance = (initialLocation: LatLng, currentLocation: LatLng): number => {
+  const from = point(latLngToPosition(initialLocation))
+  const to = point(latLngToPosition(currentLocation))
+  const options = { units: 'kilometers' as const }
 
-  const a =
-    Math.sin(difLatitude / 2) ** 2 +
-    Math.cos(toRadians(initialLocation.lat)) *
-      Math.cos(toRadians(currentLocation.lat)) *
-      Math.sin(difLongitude) ** 2
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a))
-
-  const distance = EARTH_RADIUS * c
-  console.log(`geolocation::calculateDistance():distance: ${distance}`)
-  return distance
+  const currentDistance = distance(from, to, options)
+  console.log(`geolocation::calculateCurrentDistance:distance is: ${currentDistance}`)
+  return currentDistance
 }
 
-const calculateDistanceUserFromLocation = (args: InsideSecurityArea): boolean => {
-  const currentDistance = calculateDistance(args.initialLocation, currentUserLocation())
+const isIntoSecurityArea = (args: InsideSecurityArea): boolean => {
+  const currentDistance = calculateCurrentDistance(args.initialLocation, currentUserLocation())
   setDistanceToCenter(currentDistance)
   console.log(`distance: ${args.securityDistance}, current distance: ${currentDistance}`)
-  const isValidDistance = currentDistance <= args.securityDistance ? true : false
-  return isValidDistance
+  const isIntoSecurityArea = currentDistance <= args.securityDistance ? true : false
+  return isIntoSecurityArea
 }
 
 export const isUserInSecurityArea = (args: CalculateSecurityDistance): void => {
   const searchId = Utils.setInterval(() => {
-    const distance = calculateDistanceUserFromLocation({
+    const userIsIntoSecurityArea = isIntoSecurityArea({
       initialLocation: args.initialLocation,
       securityDistance: args.securityDistance,
     })
     if (args.mode === 'IN') {
-      if (!distance) {
-        Utils.clearInterval(searchId)
-        dialogs.alert('You are OUT of your SECURITY AREA!!!').then((r) => {
-          console.log(JSON.stringify(r))
-        })
-        setIsWatchUserLocationEnabled(false)
-      } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(searchId)
+      modeIsIn(userIsIntoSecurityArea, searchId)
     } else if (args.mode === 'OUT') {
-      if (distance) {
-        Utils.clearInterval(searchId)
-        dialogs.alert('You are INSIDE of the SECURITY AREA!!!').then((r) => {
-          console.log(JSON.stringify(r))
-        })
-        setIsWatchUserLocationEnabled(false)
-      } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(searchId)
+      modeIsOut(userIsIntoSecurityArea, searchId)
     }
   }, args.interval)
+}
+
+const modeIsIn = (userIsIntoSecurityArea: boolean, intervalId: any): any => {
+  if (!userIsIntoSecurityArea) {
+    Utils.clearInterval(intervalId)
+    dialogs.alert('You are OUT of your SECURITY AREA!!!').then((r) => {
+      console.log(JSON.stringify(r))
+    })
+    setIsWatchUserLocationEnabled(false)
+  } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(intervalId)
+}
+
+const modeIsOut = (userIsIntoSecurityArea: boolean, intervalId: any) => {
+  if (userIsIntoSecurityArea) {
+    Utils.clearInterval(intervalId)
+    dialogs.alert('You are INSIDE of the SECURITY AREA!!!').then((r) => {
+      console.log(JSON.stringify(r))
+    })
+    setIsWatchUserLocationEnabled(false)
+  } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(intervalId)
 }
