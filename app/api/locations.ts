@@ -52,6 +52,7 @@ const onTap = (id: string): void => {
   hasSecurityArea(id).then((result) => {
     if (result) {
       console.log('The locationProps has a security area')
+      return
     } else {
       setVisibility('newSecurityAreaMenu', true)
       setSelectedLocation(id)
