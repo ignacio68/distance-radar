@@ -8,7 +8,7 @@ const isVisible = Vue.observable({
   locationsList: false,
   securityArea: false,
   textFieldSoftKeyboard: true,
-})
+} as { [component: string]: boolean })
 
 export const getVisibility = (item: string): boolean => isVisible[item]
 
