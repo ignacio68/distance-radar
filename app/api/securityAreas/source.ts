@@ -1,7 +1,10 @@
 import circle from '@turf/circle'
 
+import { latLngToPosition } from '@/utils/commons'
+
 import { Source, LatLng } from '@/api/types'
-import { Circle, Position } from '@/utils/types'
+import { Circle } from '@/utils/types'
+import { Position } from '@/types/commons'
 import { GeoJSON } from 'geojson'
 
 export const createSource = (id: string, args: Circle): Source => {
@@ -22,7 +25,7 @@ const getSourceData = (args: Circle): GeoJSON => {
   return sourceData
 }
 
-const getCircleCenter = (center: LatLng): Position => [center.lng, center.lat]
+const getCircleCenter = (center: LatLng): Position => latLngToPosition(center)
 
 const getCircleOptions = (): Record<string, unknown> => ({
   steps: 32,
