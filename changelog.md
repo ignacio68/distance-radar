@@ -1,6 +1,31 @@
 # Changelog
 
-## [0.3.2] - 2020-12-14
+## [0.3.3] - 2021-01-26
+
+### Added
+
+- Circle turf.js method
+- Mapbox service
+- Validations to Security Areas API
+- New functions to map Api
+- Persistent storage to Map element
+
+### Changed
+
+- Calculate the circle polygon with turf.js
+- Mapbox plugin provider
+- Routes to types folders
+- Improve geocoder code
+
+### Fixed
+
+- Resolved circle deformation -> getDistanceX function bug
+
+### Removed
+
+- Remove item
+
+## [0.3.2] - 2020-12-16
 
 ### Added
 
@@ -17,15 +42,6 @@
 
 - Moved Mapbox plugin installation to Map component
 - Moved back button handler to MainNavigator page
-
-### Fixed
-
-- Fixed item
-
-### Removed
-
-- Remove item
-
 
 ## [0.3.1] - 2020-12-14
 
@@ -47,7 +63,6 @@
 ### Security
 
 - Resolved "ini" security issue
-
 
 ## [0.3.0] - 2020-12-09
 
@@ -73,7 +88,6 @@
 
 - Remove item
 
-
 ## [0.2.1] - 2020-11-26
 
 ### Added
@@ -97,7 +111,6 @@
 ### Removed
 
 - Remove item
-
 
 ## [0.2.0] - 2020-11-23
 
@@ -182,8 +195,8 @@
 
 - Remove generic marker methods & API
 
-
 ## [0.1.3] - 2020-11-02
+
 ### Added
 
 - Bottom App bar
@@ -201,7 +214,6 @@
 - Polygon options type
 - get current user location methods and types
 
-
 ## [0.1.2] - 2020-10-26
 
 ### Added
@@ -218,7 +230,6 @@
 ### Removed
 
 - geocoder icon color option
-
 
 ## [0.1.1] - 2020-10-23
 
