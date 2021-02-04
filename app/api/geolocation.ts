@@ -1,9 +1,6 @@
 import { Utils } from '@nativescript/core'
 import * as dialogs from '@nativescript/core/ui/dialogs'
 import { watchUserLocation, stopWatchUserLocation } from '@/services/geolocationService'
-import { toRadians } from '@/utils/maths'
-
-// import { calculateDistanceFromLocation } from '@/utils/circle'
 
 import {
   getCurrentUserLocation as currentUserLocation,
@@ -20,6 +17,9 @@ import { InsideSecurityArea, CalculateSecurityDistance } from './types'
 
 // TODO: Create a enum for constants
 const EARTH_RADIUS = 6378.137
+const TO_RADIANS = 0.017453292519943295 // (PI / 180)
+
+const toRadians = (degrees: number): number => degrees * TO_RADIANS
 
 export const startTrackingUserLocation = (): void => {
   setIsWatchUserLocationEnabled(true)
@@ -34,7 +34,7 @@ export const stopTrackingUserLocation = (watchId: number): void => {
 //  TODO: Rename the variables and refactore to functional programming
 const calculateDistance = (initialLocation: LatLng, currentLocation: LatLng): number => {
   console.log(
-    `geolocation::calculateDistance():initialLocation: ${JSON.stringify(initialLocation)}`
+    `geolocation::calculateDistance():initialLocation: ${JSON.stringify(initialLocation)}`,
   )
   const difLatitude = toRadians(currentLocation.lat - initialLocation.lat)
   const difLongitude = toRadians(currentLocation.lng - initialLocation.lng)
