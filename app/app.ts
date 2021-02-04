@@ -14,7 +14,6 @@ import Vue from 'nativescript-vue'
 import { i18n, setLanguage } from '@/locales'
 
 //Components
-// import Main from './views/Main/Main.vue'
 import MainNavigation from '@/views/Navigation/MainNavigation.vue'
 import Main from '@/views/Main/Main.vue'
 import DrawerContent from '@/views/Navigation/DrawerContent.vue'
@@ -23,6 +22,23 @@ import DrawerContent from '@/views/Navigation/DrawerContent.vue'
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Vue.use(VueDevtools as any, { host: '192.168.1.22' })
+
+  const inspect = require('util-inspect')
+  const newLineRegExp = /\\n/g
+  console.log = (function (log, inspect, Vue) {
+    return function (...args) {
+      return log.call(
+        this,
+        ...Array.prototype.map.call(args, function (arg) {
+          return inspect(arg, {
+            depth: 2,
+            colors: Vue.config,
+            showHidden: true,
+          }).replace(newLineRegExp, '\n')
+        }),
+      )
+    }
+  })(console.log, inspect, Vue)
 }
 
 // Prints Vue logs when --env.production is *NOT* set while building
