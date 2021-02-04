@@ -52,7 +52,7 @@ const isIntoSecurityArea = (args: InsideSecurityArea): boolean => {
   return isIntoSecurityArea
 }
 
-export const isUserInSecurityArea = (args: CalculateSecurityDistance): void => {
+export const isUserIntoSecurityArea = (args: CalculateSecurityDistance): void => {
   const searchId = Utils.setInterval(() => {
     const userIsIntoSecurityArea = isIntoSecurityArea({
       initialLocation: args.initialLocation,
