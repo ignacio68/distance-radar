@@ -106,7 +106,7 @@
       },
       getCurrentUserLocation,
       getDistanceToCenter,
-      getAllSecurityAreas,
+      // getAllSecurityAreas,
     },
 
     watch: {
@@ -115,9 +115,9 @@
         newValue ? this.isUserInSecurityArea(1000) : console.log('Watcher is off!!')
       },
 
-       getAllSecurityAreas(newValue: any, oldValue: any) {
-        console.log('------ THE SECURITY AREAS STORE HAS CHANGED!! -----')
-      },
+      //  getAllSecurityAreas(newValue: any, oldValue: any) {
+      //   console.log('------ THE SECURITY AREAS STORE HAS CHANGED!! -----')
+      // },
 
       // fetchUserLocation(newValue: LatLng, oldValue: LatLng) {
       //   if(newValue !== oldValue) {
