@@ -1,23 +1,37 @@
-import { mbAddLayer, mbRemoveLayer } from '@/services/mapboxService'
+import { mbAddLayer, mbRemoveLayer, mbAddSource } from '@/services/mapboxService'
 import { createLayer } from './layer'
+import { createSource } from './source'
 import { addSecurityAreaToLocation } from '@/api/locations'
 import { getMap } from '@/store/mapStore'
 import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store/securityAreasStore'
 
-import { SecurityAreaOptions, SecurityArea, PolygonLayer } from '@/api/types'
+import { SecurityAreaOptions, SecurityArea, PolygonLayer, LayerVisibility } from '@/api/types'
 
+// export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
+//   const source = createSource('pepe', args)
+//   mbAddLayer(getMap(), source).then((): void => {
+//     console.log(`securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(args.center)}`)
+//     // const newSecurityAreaToStore = getNewSecurityAreaToStore(args, securityAreaLayer)
+//     // addNewSecurityArea(newSecurityAreaToStore).then(() => {
+//     //   addSecurityAreaToLocation(newSecurityArea.id)
+//     // })
+//   })
+// }
 export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
   const securityAreaLayer = createLayer(args)
   mbAddLayer(getMap(), securityAreaLayer).then((): void => {
     console.log(`securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(args.center)}`)
-    const newSecurityArea = getNewSecurityArea(args, securityAreaLayer)
-    addNewSecurityArea(newSecurityArea).then(() => {
-      addSecurityAreaToLocation(newSecurityArea.id)
-    })
+    // const newSecurityAreaToStore = getNewSecurityAreaToStore(args, securityAreaLayer)
+    // addNewSecurityArea(newSecurityAreaToStore).then(() => {
+    //   addSecurityAreaToLocation(newSecurityArea.id)
+    // })
   })
 }
 
-const getNewSecurityArea = (args: SecurityAreaOptions, layer: PolygonLayer): SecurityArea => {
+const getNewSecurityAreaToStore = (
+  args: SecurityAreaOptions,
+  layer: PolygonLayer,
+): SecurityArea => {
   const { id, radius, center, isActive } = args
   const securityArea = {
     id,
@@ -39,35 +53,36 @@ export const updateSecurityArea = (securityArea: SecurityAreaOptions): void => {
   })
 }
 
-export const showSecurityArea = (id: string, value: boolean): void => {
+export const showSecurityArea = (id: string, value: LayerVisibility): void => {
   console.log('securityAreas.ts::showSecurityArea()')
   const securityArea = getSecurityArea(id)
-  validateSecurityArea(securityArea, value)
+  validateSecurityArea(securityArea)
   changeSecurityAreaVisibility(securityArea, value)
 }
 
-const validateSecurityArea = (securityArea: SecurityArea, value: boolean): void => {
+const validateSecurityArea = (securityArea: SecurityArea): void => {
   if (!isSecurityArea(securityArea)) {
     console.log('The security area not exist')
     return
   }
   // TODO: review this function use
-  if (isSecurityAreaVisible(securityArea, value)) {
-    console.log('The security visibility is the same!')
+  if (isSecurityAreaVisible(securityArea)) {
+    console.log('The security area is already visible!')
     return
   }
 }
 
 const isSecurityArea = (securityArea: SecurityArea): boolean => securityArea !== undefined || null
 
-const isSecurityAreaVisible = (securityArea: SecurityArea, value: boolean): boolean =>
-  securityArea.layer.visibility === value
+const isSecurityAreaVisible = (securityArea: SecurityArea): boolean => {
+  return securityArea.layer.paint.visibility === 'visible' ? true : false
+}
 
-const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: boolean): void => {
+const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: LayerVisibility): void => {
   console.log('securityAreas.ts::changeSecurityAreaVisibility()')
-  securityArea.layer.visibility = value
+  securityArea.layer.paint.visibility = value
   console.log(`visibility value: ${value}`)
-  console.log(`${securityArea.id} is visible?  ${securityArea.layer.visibility}`)
+  console.log(`${securityArea.id} is visible?  ${securityArea.layer.paint.visibility}`)
 
   // FIXME: refactoring
   // if (value) {
