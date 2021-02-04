@@ -1,71 +1,63 @@
 <template>
-    <StackLayout orientation="vertical">
-      <Label
-        class="menu_title"
-        :text="$t('lang.components.newArea.title')"
-        height="32"
-        borderColor="#00251e"
+  <StackLayout orientation="vertical">
+    <Label
+      class="menu_title"
+      :text="$t('lang.components.newArea.title')"
+      height="32"
+      borderColor="#00251e"
+    />
+    <GridLayout class="new-area-menu" rows="auto, auto, auto, auto, 56, 64" columns="*">
+      <CustomSlider
+        class="radius-slider"
+        row="0"
+        iconName="res://ic_visibility_white_24dp"
+        iconColor="#004842"
+        :sliderName="$t('lang.components.newArea.distance')"
+        :value="radius"
+        :minValue="0"
+        :maxValue="100"
+        rippleColor="#007a70"
+        @on-value-changed="onRadiusChanged"
       />
-      <GridLayout
-        class="new-area-menu"
-        rows="auto, auto, auto, auto, 56, 64"
-        columns="*"
+      <StackLayout row="1" class="hr" />
+      <CustomSlider
+        class="opacity-slider"
+        row="2"
+        iconName="res://ic_visibility_white_24dp"
+        iconColor="#004842"
+        :sliderName="$t('lang.components.newArea.opacity')"
+        :value="opacity"
+        :minValue="0"
+        :maxValue="1"
+        rippleColor="#007a70"
+        @on-value-changed="onOpacityChanged"
+      />
+      <StackLayout row="3" class="hr" />
+      <ColorSelector row="4" :labelWidth="64" @on-selected-color="setColor" />
+      <StackLayout
+        row="5"
+        class="new-marker-menu_buttons"
+        width="100%"
+        orientation="horizontal"
+        horizontalAlignment="right"
       >
-        <CustomSlider
-          class="radius-slider"
-          row="0"
-          iconName="res://ic_visibility_white_24dp"
-          iconColor="#004842"
-          :sliderName="$t('lang.components.newArea.distance')"
-          :value="radius"
-          :minValue="0"
-          :maxValue="100"
-          rippleColor="#007a70"
-          @on-value-changed="onRadiusChanged"
+        <MDButton
+          class="new-area-menu_button_cancel"
+          width="144"
+          :text="$t('lang.components.newArea.cancelButton')"
+          borderColor="#007a70"
+          borderWidth="1"
+          @tap="onCancel"
         />
-        <StackLayout row="1" class="hr"/>
-        <CustomSlider
-          class="opacity-slider"
-          row="2"
-          iconName="res://ic_visibility_white_24dp"
-          iconColor="#004842"
-          :sliderName="$t('lang.components.newArea.opacity')"
-          :value="opacity"
-          :minValue="0"
-          :maxValue="1"
-          rippleColor="#007a70"
-          @on-value-changed="onOpacityChanged"
+        <MDButton
+          class="new-area-menu_button_add m-r-0"
+          width="144"
+          :text="$t('lang.components.newArea.addButton')"
+          @tap="onAddNewSecurityArea"
         />
-        <StackLayout row="3" class="hr"/>
-        <ColorSelector
-          row="4"
-          :labelWidth="64"
-          @on-selected-color="setColor"
-        />
-        <StackLayout
-          row="5"
-          class="new-marker-menu_buttons"
-          width="100%"
-          orientation="horizontal"
-          horizontalAlignment="right"
-        >
-          <MDButton
-            class="new-area-menu_button_cancel"
-            width="144"
-            :text="$t('lang.components.newArea.cancelButton')"
-            borderColor="#007a70"
-            borderWidth="1"
-            @tap="onCancel"
-          />
-          <MDButton
-            class="new-area-menu_button_add m-r-0"
-            width="144"
-            :text="$t('lang.components.newArea.addButton')"
-            @tap="onAddNewSecurityArea"
-          />
-        </StackLayout>
-      </Gridlayout>
-    </StackLayout>
+      </StackLayout>
+    </GridLayout>
+  </StackLayout>
 </template>
 
 <script lang="ts">
@@ -79,8 +71,7 @@ import { startTrackingUserLocation } from '@/api/geolocation'
 
 import { hasId } from '@/store/securityAreasStore'
 
-import { Color } from '@nativescript/core'
-import { SecurityAreaOptions } from '@/api/types'
+import { SecurityAreaOptions, LayerVisibility } from '@/api/types'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
@@ -89,9 +80,9 @@ export default Vue.extend({
   name: 'NewSecurityAreaMenu',
   components: {
     CustomSlider,
-    ColorSelector
+    ColorSelector,
   },
-  data(){
+  data() {
     return {
       radius: 50,
       opacity: 0.5,
@@ -101,11 +92,11 @@ export default Vue.extend({
           lat: 0,
           lng: 0,
         },
-        radius: .1,
+        radius: 0.1,
         fillColor: '',
-        fillOpacity: .5,
+        fillOpacity: 0.5,
         group: null,
-        isVisible: true,
+        visibility: 'visible',
         isActive: true,
       },
       idError: 0,
@@ -115,7 +106,7 @@ export default Vue.extend({
   computed: {
     fetchCurrentLocation() {
       return fetchSelectedLocation()
-    }
+    },
   },
 
   watch: {
@@ -161,7 +152,7 @@ export default Vue.extend({
 
     setColor(color: string) {
       // console.log(`NewSecurityAreaMenu.vue::color: ${color.name}`)
-      this.securityArea.fillColor = new Color(color)
+      this.securityArea.fillColor = color
       console.log(`NewSecurityAreaMenu.vue::color: ${this.securityArea.fillColor}`)
     },
 
@@ -171,7 +162,7 @@ export default Vue.extend({
 
     setOpacity(value: number) {
       console.log('NewSecurityAreaMenu.vue::setRadius()')
-      this.securityArea.fillOpacity  = value / 10
+      this.securityArea.fillOpacity = value / 10
     },
 
     setIdError(value: number) {
@@ -179,26 +170,30 @@ export default Vue.extend({
     },
 
     hasIdError() {
-      !this.securityArea.id ?
-        this.setIdError(1)
-          : hasId(this.securityArea.id) ?
-          this.setIdError(2)
-            : this.setIdError(0)
+      !this.securityArea.id
+        ? this.setIdError(1)
+        : hasId(this.securityArea.id)
+        ? this.setIdError(2)
+        : this.setIdError(0)
     },
 
     async setIdAndCenter(): Promise<void> {
       // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
-      const options = await fetchSelectedLocation()
-      // console.log(`NewSecurityAreaMenu.vue::options:  + ${JSON.stringify(options)}`)
+      const options = fetchSelectedLocation()
+      console.log(`NewSecurityAreaMenu.vue::options:  + ${JSON.stringify(options)}`)
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
     },
 
-    async newSecurityArea(): Promise<void>{
+    async newSecurityArea(): Promise<void> {
       await this.setIdAndCenter()
       await newSecurityArea(this.securityArea)
-      console.log(`NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(this.securityArea)}`)
+      console.log(
+        `NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(
+          this.securityArea,
+        )}`,
+      )
       await this.hideNewSecurityAreaMenu()
       this.reset()
     },
@@ -214,10 +209,10 @@ export default Vue.extend({
       !this.idError ? this.newSecurityArea() : console.log(`ID error is: ${this.idError}`)
     },
 
-    showSecurityArea(id: string, value:boolean) {
+    showSecurityArea(id: string, value: LayerVisibility) {
       showSecurityArea(id, value)
     },
-  }
+  },
 })
 </script>
 
@@ -225,11 +220,11 @@ export default Vue.extend({
 @import '../../app-variables';
 
 .menu_title {
- font-weight: 700;
- font-size: 16;
- color: $primary-dark;
- opacity: .8;
- border-bottom: 1, solid, rgba($primary, .1);
+  font-weight: 700;
+  font-size: 16;
+  color: $primary-dark;
+  opacity: 0.8;
+  border-bottom: 1, solid, rgba($primary, 0.1);
 }
 .new-area-menu_button_cancel {
   color: $primary;
