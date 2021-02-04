@@ -20,6 +20,8 @@ export interface LngLat {
   lat: number
 }
 
+export type Position = [number, number]
+
 export interface InitialCoordinates {
   /**
    * The latitude of the initial coordinates, in degrees.
