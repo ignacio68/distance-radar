@@ -26,7 +26,7 @@ export interface SecurityAreaOptions extends Id {
   isActive: boolean
   fillColor: string | Color
   fillOpacity: number
-  isVisible: boolean
+  visibility: LayerVisibility
 }
 
 export interface SecurityArea {
@@ -54,21 +54,23 @@ export interface SourceOptions {
   data: GeoJSON
 }
 
-export interface Source extends Partial<Id> {}
+export interface Source extends Partial<Id>, SourceOptions {}
 
 export interface PolygonLayer extends Id {
   source: Source | string
   type?: string
   paint: PolygonLayerStyleOptions
+  layout?: Record<string, string>
 }
 
+export type LayerVisibility = 'visible' | 'none'
 export interface PolygonLayerStyleOptions {
-  fillAntialias?: boolean
-  fillColor: string | Color
-  fillOpacity: number
-  fillOutlineColor?: string | Color
-  fillSortKey?: number
-  visibility?: boolean
+  'fill-antialias'?: boolean
+  'fill-color': string | Color
+  'fill-opacity': number
+  'fill-outlineColor'?: string | Color
+  'fill-sortKey'?: number
+  visibility?: LayerVisibility
 }
 
 // export interface CircleLayer extends Layer {
