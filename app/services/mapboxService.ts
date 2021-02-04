@@ -25,17 +25,17 @@ export const mbSetCenter = (map: MapboxViewApi, options: SetCenterOptions): Prom
 
 export const mbSetZoomLevel = (
   map: MapboxViewApi,
-  options: SetZoomLevelOptions
+  options: SetZoomLevelOptions,
 ): Promise<unknown> => map.setZoomLevel(options)
 
 export const mbAnimateCamera = (
   map: MapboxViewApi,
-  options: AnimateCameraOptions
+  options: AnimateCameraOptions,
 ): Promise<unknown> => map.animateCamera(options)
 
 export const mbSetOnMapLongClickListener = (
   map: MapboxViewApi,
-  listener: SetOnMapLongClickListener
+  listener: SetOnMapLongClickListener,
 ): Promise<boolean> => map.setOnMapLongClickListener(listener)
 
 export const mbSetMapStyle = (map: MapboxViewApi, style: string | MapStyle): Promise<unknown> =>
@@ -53,24 +53,24 @@ export const mbAddSource = (
   map: MapboxViewApi,
   id: string,
   // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types
-  options: any
+  options: any,
   // options: AddSourceOptions
 ): Promise<void> =>
   map
     .addSource(id, options)
-    .then(() => console.log('mapboxService::addSource: ADD SOURCE!!'))
+    .then(() => console.log('mapboxService::addSource: ADDED SOURCE!!'))
     .catch((error) => console.log(`mapboxService::addSource: ERROR!!: ${error.message | error}`))
 
 // CURRENT IT'S NOT USED
 export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<void> =>
   map.removeSource(id)
 
-export const mbAddLayer = async (map: MapboxViewApi, style: unknown): Promise<void> => {
-  console.log('mapboxService::addLayer()')
+export const mbAddLayer = async (map: MapboxViewApi, style: any): Promise<void> => {
+  console.log(`mapboxService::addLayer(): ${JSON.stringify(style.paint)}`)
   map
     .addLayer(style)
-    .then(() => console.log('mapboxService::addLayer(): ADD LAYER!!'))
-    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message || error}`))
+    .then(() => console.log('mapboxService::addLayer(): ADDED LAYER!!'))
+    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message}`))
 }
 
 export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<void> => map.removeLayer(id)
