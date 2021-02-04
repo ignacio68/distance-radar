@@ -1,7 +1,7 @@
 import { removeEmptyKeys, objectToArray, reduceToString } from '@/utils/text'
 import { assert, expect } from 'chai'
 
-describe('Utils - Text', function () {
+describe.skip('Utils - Text', function () {
   describe('#removeEmptyKeys', function () {
     describe('remove the empty keys of an object', function () {
       it('return an object without the empty keys', function () {
