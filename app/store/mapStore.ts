@@ -12,21 +12,30 @@ const state = Vue.observable({
 // Create persist locations database
 const database: Database = createDatabase('map')
 
-const initializeDatabase = (): void => {
+const initializeMap = (): void => {
   const map: Map = getItem(database, 'map')
 
   map && setMap(map)
 }
 
-// initializeDatabase()
+// initializeMap()
 
 export const getMap = (): Map => state.map
 
 export const setMap = (map: Map): void => {
+  console.log(`mapStore::setMap()`)
   state.map = map
 
-  const isMap: Map = getItem(database, 'map')
-  isMap ? updateItem(database, 'map', map) : addItem<Map>(database, map, 'map')
+  // setMapToStorage(map)
+}
+
+// FIXME: map format
+const setMapToStorage = (map: Map): void => {
+  const isMap: Map | null = getItem(database, 'map')
+  console.log(`mapStore::setMapToStorage::isMap: ${isMap}`)
+  const userMap = JSON.parse(JSON.stringify(map))
+  isMap !== null ? updateItem(database, 'map', userMap) : addItem<Map>(database, userMap, 'map')
+  // isMap !== null ? updateItem(database, 'map', map) : console.log('The map is null')
 }
 
 export const deleteMap = (): void => {
