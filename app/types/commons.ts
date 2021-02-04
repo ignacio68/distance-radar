@@ -9,6 +9,17 @@ export interface LatLng {
   lng: number
 }
 
+export interface LngLat {
+  /**
+   * The latitude of the geolocation, in degrees, to match the GeoJSON specification.
+   */
+  lng: number
+  /**
+   * The longitude of the geolocation, in degrees. to match the GeoJSON specification.
+   */
+  lat: number
+}
+
 export interface InitialCoordinates {
   /**
    * The latitude of the initial coordinates, in degrees.
