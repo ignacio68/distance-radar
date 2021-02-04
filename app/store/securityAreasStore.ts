@@ -2,7 +2,7 @@ import Vue from 'nativescript-vue'
 
 import { removeSecurityAreaFromLocation } from './locationsStore'
 
-import { SecurityArea } from '@/api/types'
+import { SecurityArea, LayerVisibility } from '@/api/types'
 
 const state = Vue.observable({
   securityAreas: [] as SecurityArea[],
@@ -16,9 +16,9 @@ const findIndex = (id: string): number =>
 
 export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
-export const isSecurityAreaVisible = (id: string): boolean => {
+export const isSecurityAreaVisible = (id: string): LayerVisibility => {
   const index = findIndex(id)
-  const isVisible: boolean = state.securityAreas[index].layer.visibility
+  const isVisible = state.securityAreas[index].layer.paint.visibility
   return isVisible
 }
 
@@ -29,11 +29,11 @@ export const getSecurityArea = (id: string): SecurityArea => {
 
 export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
   state.securityAreas.push(securityArea)
-  console.log(
-    `securityAreasStore::addNewSecurityArea: ${JSON.stringify(
-      state.securityAreas[state.securityAreas.length - 1]
-    )}`
-  )
+  // console.log(
+  //   `securityAreasStore::addNewSecurityArea: ${JSON.stringify(
+  //     state.securityAreas[state.securityAreas.length - 1]
+  //   )}`
+  // )
 }
 
 // Only for development
