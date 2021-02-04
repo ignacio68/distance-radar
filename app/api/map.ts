@@ -1,34 +1,45 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { createUserMarker, updateUserMarker } from './userMarker'
 
 import { getCurrentUserLocation } from '@/services/geolocationService'
 
 import {
+  mbSetMap,
   mbSetZoomLevel,
   mbSetCenter,
   mbAddMarkers,
   mbAnimateCamera,
   mbSetOnMapLongClickListener,
-  SetOnMapLongClickListener,
   mbSetMapStyle,
 } from '@/services/mapboxService'
 
+import { initialMapSettings } from '@/setup/map'
+
 import { getMap } from '@/store/mapStore'
-import { getUserMarker as userMarker } from '@/store/userMarkerStore'
+import { getUserMarker as userMarker} from '@/store/userMarkerStore'
 import { getLocations } from '@/store/locationsStore'
 
-import { LatLng } from '@/types/types'
+import { MapSettings, LatLng, Map } from './types'
+import { SetOnMapLongClickListener } from '@/services/types'
 
-const map = getMap()
+export const initMap = (): void => {
+  //  TODO: load init map with markers and security areas(layers)
+}
+
+// TODO: improve the code
+export const setMap = (settings?: MapSettings): void => {
+  getMap() ? mbSetMap(settings) : mbSetMap(initialMapSettings)
+}
 
 export const setCenter = async (): Promise<void> => {
-  console.log('setCenter()')
+  console.log('map.ts::setCenter()')
   await getCurrentUserLocation().then((coordinates: LatLng) => {
-    console.log(`setCenter() coordinates: ${JSON.stringify(coordinates)}`)
-    mbSetZoomLevel(map, {
+    console.log(`map.ts::setCenter() coordinates: ${JSON.stringify(coordinates)}`)
+    mbSetZoomLevel(getMap(), {
       level: 15,
       animated: true,
     }).then(() => {
-      mbSetCenter(map, {
+      mbSetCenter(getMap(), {
         lat: coordinates.lat,
         lng: coordinates.lng,
         animated: true,
@@ -45,11 +56,11 @@ export const setCenter = async (): Promise<void> => {
 
 export const addMarkers = (): void => {
   console.log(`map.ts::addMarkers: ${JSON.stringify(getLocations())}`)
-  mbAddMarkers(map, getLocations())
+  mbAddMarkers(getMap(), getLocations())
 }
 
 export const flyTo = (location: LatLng): void => {
-  mbAnimateCamera(map, {
+  mbAnimateCamera(getMap(), {
     target: location,
     zoomLevel: 15, // Android
     bearing: 270, // Where the camera is pointing, 0-360 (degrees)
@@ -60,6 +71,6 @@ export const flyTo = (location: LatLng): void => {
 }
 
 export const setOnMapLongClickListener = (listener: SetOnMapLongClickListener): Promise<boolean> =>
-  mbSetOnMapLongClickListener(map, listener)
+  mbSetOnMapLongClickListener(getMap(), listener)
 
-export const setMapStyle = (style: string): Promise<unknown> => mbSetMapStyle(map, style)
+export const setMapStyle = (style: string): Promise<unknown> => mbSetMapStyle(getMap(), style)
