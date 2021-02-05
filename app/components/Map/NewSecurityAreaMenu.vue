@@ -6,7 +6,7 @@
       height="32"
       borderColor="#00251e"
     />
-    <GridLayout class="new-area-menu" rows="auto, auto, auto, auto, 56, 64" columns="*">
+    <GridLayout class="new-area-menu" rows="auto, auto, 56, auto, 96" columns="*">
       <CustomSlider
         class="radius-slider"
         row="0"
@@ -15,14 +15,13 @@
         :sliderName="$t('lang.components.newArea.distance')"
         :value="radius"
         :minValue="0"
-        :maxValue="100"
+        :maxValue="10"
         rippleColor="#007a70"
         @on-value-changed="onRadiusChanged"
       />
-      <StackLayout row="1" class="hr" />
       <CustomSlider
         class="opacity-slider"
-        row="2"
+        row="1"
         iconName="res://ic_visibility_white_24dp"
         iconColor="#004842"
         :sliderName="$t('lang.components.newArea.opacity')"
@@ -32,11 +31,11 @@
         rippleColor="#007a70"
         @on-value-changed="onOpacityChanged"
       />
-      <StackLayout row="3" class="hr" />
-      <ColorSelector row="4" :labelWidth="64" @on-selected-color="setColor" />
+      <ColorSelector row="2" :labelWidth="64" @on-selected-color="setColor" />
+      <ActivationMenu row="3" @on-checked-change="onActivationChanged" />
       <StackLayout
-        row="5"
-        class="new-marker-menu_buttons"
+        row="4"
+        class="new-marker-menu_buttons m-t-32"
         width="100%"
         orientation="horizontal"
         horizontalAlignment="right"
@@ -75,12 +74,14 @@ import { SecurityAreaOptions, LayerVisibility } from '@/api/types'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
+import ActivationMenu from '@/components/UI/ActivationMenu.vue'
 
 export default Vue.extend({
   name: 'NewSecurityAreaMenu',
   components: {
     CustomSlider,
     ColorSelector,
+    ActivationMenu,
   },
   data() {
     return {
@@ -97,7 +98,7 @@ export default Vue.extend({
         fillOpacity: 0.5,
         group: null,
         visibility: 'visible',
-        isActive: true,
+        isActive: false,
       },
       idError: 0,
     }
@@ -140,14 +141,19 @@ export default Vue.extend({
       // this.reset()
     },
 
-    onRadiusChanged(value) {
-      console.log(`NewSecurityAreaMenu.vue::onRadiusChanged(): ${value}`)
+    onRadiusChanged(value: number) {
+      console.log(`NewSecurityAreaMenu.vue::onRadiusChanged: ${value}`)
       this.securityArea.radius = value
     },
 
-    onOpacityChanged(value) {
-      console.log(`NewSecurityAreaMenu.vue::onOpacityChanged(): ${value}`)
+    onOpacityChanged(value: number) {
+      console.log(`NewSecurityAreaMenu.vue::onOpacityChanged: ${value}`)
       this.securityArea.fillOpacity = value
+    },
+
+    onActivationChanged(value: boolean) {
+      console.log(`NewSecurityAreaMenu.vue::onActivationChanged: ${value}`)
+      this.securityArea.isActivate = value
     },
 
     setColor(color: string) {
@@ -230,5 +236,8 @@ export default Vue.extend({
   color: $primary;
   background-color: white;
   text-align: center;
+}
+.divider {
+  background-color: $primary-light;
 }
 </style>
