@@ -6,7 +6,7 @@
       height="32"
       borderColor="#00251e"
     />
-    <GridLayout class="new-area-menu" rows="auto, auto, 56, auto, 96" columns="*">
+    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 96" columns="*">
       <CustomSlider
         class="radius-slider"
         row="0"
@@ -31,11 +31,20 @@
         rippleColor="#007a70"
         @on-value-changed="onOpacityChanged"
       />
-      <ColorSelector row="2" :labelWidth="64" @on-selected-color="setColor" />
-      <ActivationMenu row="3" @on-checked-change="onActivationChanged" />
+      <ColorSelector
+        row="2"
+        :labelWidth="64"
+        :title="$t('lang.components.colorSelector.text')"
+        @on-selected-color="setColor"
+      />
+      <ActivationMenu
+        row="3"
+        :activationText="$t('lang.components.activationMenu.activation')"
+        @on-checked-change="onActivationChanged"
+      />
       <StackLayout
         row="4"
-        class="new-marker-menu_buttons m-t-32"
+        class="new-marker-menu_buttons m-t-16"
         width="100%"
         orientation="horizontal"
         horizontalAlignment="right"
