@@ -58,6 +58,7 @@
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^3.0.0-alpha.2",
     "nativescript-ui-sidedrawer": "^9.0.3",
+    "nativescript-vibrate": "^4.0.1",
     "nativescript-vue": "^2.8.1"
   },
   "devDependencies": {
