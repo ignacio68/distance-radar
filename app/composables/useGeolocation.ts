@@ -6,9 +6,10 @@ const geolocation = Vue.observable({
 })
 
 // TODO: to remove if is not in used
-export const getIsEnabled = (): boolean => geolocation.isEnabled
+export const getIsGeolocationEnabled = (): boolean => geolocation.isEnabled
 // TODO: to remove if is not in used
-export const setIsEnabled = (isEnabled: boolean): boolean => (geolocation.isEnabled = isEnabled)
+export const setIsGeolocationEnabled = (isEnabled: boolean): boolean =>
+  (geolocation.isEnabled = isEnabled)
 
 export const getIsWatchUserLocationEnabled = (): boolean => geolocation.isWatchUserLocationEnabled
 export const setIsWatchUserLocationEnabled = (isEnabled: boolean): boolean =>
