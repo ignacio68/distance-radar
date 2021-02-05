@@ -1,27 +1,29 @@
 <template>
   <GridLayout columns="*, auto" rows="*" class="map" horizontalAlignment="right">
-    <Frame id="map" row="0" col="0" left="0" top="0" colSpan="2" width="100%" height="100%">
-      <Page>
-        <StackLayout>
-          <MapBox
-            ref="map"
-            :accessToken="mapToken"
-            :mapStyle="mapStyle"
-            :latitude="initialCoordinates.lat"
-            :longitude="initialCoordinates.lng"
-            :zoomLevel="15"
-            :hideCompass="true"
-            :disableRotation="true"
-            :disableScroll="false"
-            :disableZoom="false"
-            :showUserLocation="true"
-            @locationPermissionGranted="onLocationPermissionGranted"
-            @locationPermissionDenied="onLocationPermissionDenied"
-            @mapReady="onMapReady($event)"
-          />
-        </StackLayout>
-      </Page>
-    </Frame>
+    <MapBox
+      ref="map"
+      row="0"
+      col="0"
+      left="0"
+      top="0"
+      colSpan="2"
+      width="100%"
+      height="100%"
+      :accessToken="mapToken"
+      :mapStyle="mapStyle"
+      :latitude="initialCoordinates.lat"
+      :longitude="initialCoordinates.lng"
+      :zoomLevel="15"
+      :hideCompass="true"
+      :disableRotation="true"
+      :disableScroll="false"
+      :disableZoom="false"
+      :showUserLocation="true"
+      @locationPermissionGranted="onLocationPermissionGranted"
+      @locationPermissionDenied="onLocationPermissionDenied"
+      @mapReady="onMapReady($event)"
+    />
+
     <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1">
       <!-- TODO: Add animation -->
       <LocationsList
