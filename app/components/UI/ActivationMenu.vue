@@ -1,7 +1,7 @@
 <template>
   <StackLayout class="activation-menu">
     <StackLayout orientation="horizontal">
-      <Label class="activation-menu_title" text="Activar" textWrap="true" />
+      <Label class="activation-menu_title" :text="activationText" textWrap="true" />
       <Switch
         class="activation-menu_switch"
         checked="false"
@@ -18,6 +18,12 @@ import Vue from 'nativescript-vue'
 
 export default Vue.extend({
   name: 'ActivationMenu',
+  props: {
+    activationText: {
+      type: String,
+      default: '',
+    },
+  },
   data() {
     return {
       itemEnabled: false,

@@ -21,6 +21,9 @@ export default {
   colorSelector: {
     text: 'Color:',
   },
+  activationMenu: {
+    activation: 'Activate',
+  },
   geocoder: {
     hint: 'Search...',
     noResultsText: 'No match results',
