@@ -54,6 +54,7 @@
     "@types/mapbox-gl": "^1.12.2",
     "@types/webpack-env": "^1.15.3",
     "@vue/devtools": "^5.3.3",
+    "nativescript-audio-player": "^1.0.3",
     "nativescript-geocoding": "^2.0.2",
     "nativescript-socketio": "^3.3.1",
     "nativescript-toasty": "^3.0.0-alpha.2",

@@ -4,45 +4,44 @@
     backgroundSpanUnderStatusBar="true"
     androidStatusBarBackground="#00251e"
   >
-    <GridLayout class="home" rows="auto, *, 56" columns="*">
+    <GridLayout class="home" rows="auto, *, auto" columns="*">
       <MainActionBar class="action-bar" row="0" width="100%" />
       <MapWrapper id="MapWrapper" row="1" @first-location-alert="onConfirmFirstLocation" />
 
-      <!-- <StackLayout
-        class="Bottom"
-        row="2"
-      > -->
-      <!-- <Label textWrap="true">
+      <StackLayout class="Bottom" row="2">
+        <!-- <Label textWrap="true">
           <FormattedString>
-            <Span text="latitude: "/>
-            <Span :text="getCurrentUserLocation.lat"/>
+            <Span text="latitude: " />
+            <Span :text="getCurrentUserLocation.lat" />
           </FormattedString>
         </Label>
         <Label textWrap="true">
           <FormattedString>
-            <Span text="longitude: "/>
-            <Span :text="getCurrentUserLocation.lng"/>
+            <Span text="longitude: " />
+            <Span :text="getCurrentUserLocation.lng" />
+          </FormattedString>
+        </Label> -->
+        <!-- <Label textWrap="true">
+          <FormattedString>
+            <Span text="distance from location1: " />
+            <Span :text="getDistanceToCenter" />
           </FormattedString>
         </Label>
         <Label textWrap="true">
           <FormattedString>
-            <Span text="distance from location1: "/>
-            <Span :text="getDistanceToCenter"/>
+            <Span text="distance from location2: " />
+            <Span :text="getDistanceToCenter" />
           </FormattedString>
         </Label> -->
-      <!-- <Label textWrap="true">
-          <FormattedString>
-            <Span text="distance from location2: "/>
-            <Span :text="getDistanceToCenter"/>
-          </FormattedString>
-        </Label> -->
-      <!-- <StackLayout orientation="horizontal">
-          <Button text="START" @tap="onStart" />
-          <Button text="STOP" @tap="onStop" />
+        <StackLayout orientation="horizontal">
+          <Button text="VIB ON" @tap="onPlayVibration" />
+          <Button text="VIB OFF" @tap="onStopVibration" />
+          <Button text="MUSIC ON" @tap="onPlaySound" />
+          <Button text="MUSIC OFF" @tap="onStopSound" />
         </StackLayout>
-      </StackLayout> -->
+      </StackLayout>
 
-      <BottomAppBar class="BottomBar" row="2" />
+      <!-- <BottomAppBar class="BottomBar" row="2" /> -->
     </GridLayout>
   </Page>
 </template>
@@ -50,12 +49,13 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
+import { playVibration, stopVibration, playSound } from '@/api/common'
+
 import { ConfirmOptions } from '@nativescript/core'
-import { LatLng } from '@/types/commons'
 
 import { getVisibility } from '@/composables/useComponent'
 
-import { getSecurityAreaActive, getAllSecurityAreas } from '@/store/securityAreasStore'
+import { getSecurityAreaActive as isSecurityAreaActive } from '@/store/securityAreasStore'
 import {
   getCurrentUserLocation,
   getDistanceToCenter,
@@ -70,6 +70,9 @@ import {
   stopTrackingUserLocation,
   isUserIntoSecurityArea,
 } from '@/api/geolocation'
+
+import { LatLng } from '@/types/commons'
+import { SecurityArea, CalculateSecurityDistance } from '@/api/types'
 
 import { confirmFirstLocation } from '@/components/Dialogs/ConfirmFirstLocation'
 import MainActionBar from '@/components/UI/MainActionBar.vue'
@@ -102,7 +105,7 @@ export default Vue.extend({
     },
     getCurrentUserLocation,
     getDistanceToCenter,
-    // getAllSecurityAreas,
+    isSecurityAreaActive,
   },
 
   watch: {
@@ -111,15 +114,14 @@ export default Vue.extend({
       newValue ? this.isUserIntoSecurityArea(1000) : console.log('Watcher is off!!')
     },
 
-    //  getAllSecurityAreas(newValue: any, oldValue: any) {
-    //   console.log('------ THE SECURITY AREAS STORE HAS CHANGED!! -----')
-    // },
-
     // fetchUserLocation(newValue: LatLng, oldValue: LatLng) {
     //   if(newValue !== oldValue) {
     //     console.log(`Home::fetchUserLocation(): ${JSON.stringify(getCurrentUserLocation())}`)
     //   }
     // }
+    isSecurityAreaActive(newValue: SecurityArea, oldValue: SecurityArea) {
+      newValue ? this.securityAreaActive(newValue.radius) : this.securityAreaDesactive()
+    },
   },
 
   methods: {
@@ -133,8 +135,22 @@ export default Vue.extend({
       confirmFirstLocation(options)
     },
 
+    securityAreaActive(securityDistance: number): void {
+      startTrackingUserLocation()
+      const args: CalculateSecurityDistance = {
+        initialLocation: getCurrentUserLocation(),
+        securityDistance,
+        interval: 1000,
+      }
+      isUserIntoSecurityArea(args)
+    },
+
+    securityAreaDesactive() {
+      stopTrackingUserLocation(watchId())
+    },
+
     getSecurityAreaProps(): Record<string, unknown> {
-      const securityArea = getSecurityAreaActive()
+      const securityArea = isSecurityAreaActive()
       console.log(
         `Home.vue::getSecurityAreaProps():securityArea:center: ${JSON.stringify(
           securityArea.center,
@@ -152,6 +168,22 @@ export default Vue.extend({
       const securityAreaProps = this.getSecurityAreaProps()
       const securityDistanceProps = { ...securityAreaProps, interval }
       isUserIntoSecurityArea(securityDistanceProps)
+    },
+
+    onPlayVibration(): void {
+      playVibration([300, 500])
+    },
+
+    onStopVibration(): void {
+      stopVibration()
+    },
+
+    onPlaySound(): void {
+      playSound('PLAY')
+    },
+
+    onStopSound(): void {
+      playSound('STOP')
     },
 
     onStart(): void {

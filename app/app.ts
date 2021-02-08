@@ -13,6 +13,8 @@ import Vue from 'nativescript-vue'
 // Internationalization
 import { i18n, setLanguage } from '@/locales'
 
+import { initAudioPlayer } from '@/api/common'
+
 //Components
 import MainNavigation from '@/views/Navigation/MainNavigation.vue'
 import Main from '@/views/Main/Main.vue'
@@ -48,6 +50,7 @@ new Vue({
   i18n,
   created() {
     setLanguage()
+    initAudioPlayer()
   },
   render: (h) =>
     h(MainNavigation, [
