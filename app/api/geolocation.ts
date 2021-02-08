@@ -1,7 +1,7 @@
 import { Utils } from '@nativescript/core'
 import * as dialogs from '@nativescript/core/ui/dialogs'
 import { latLngToPosition } from '@/utils/commons'
-import { vibrationOn } from '@/api/common'
+import { playVibration } from '@/api/common'
 import { watchUserLocation, stopWatchUserLocation } from '@/services/geolocationService'
 import distance from '@turf/distance'
 import { point } from '@turf/helpers'
@@ -71,7 +71,7 @@ export const isUserIntoSecurityArea = (args: CalculateSecurityDistance): void =>
 const modeIsIn = (userIsIntoSecurityArea: boolean, intervalId: any): any => {
   if (!userIsIntoSecurityArea) {
     Utils.clearInterval(intervalId)
-    vibrationOn(300)
+    playVibration([300, 500])
     dialogs.alert('You are OUT of your SECURITY AREA!!!').then((r) => {
       console.log(JSON.stringify(r))
     })
