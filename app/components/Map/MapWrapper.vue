@@ -89,10 +89,6 @@ export default Vue.extend({
   },
 
   watch: {
-    // isVisible: function(newValue: boolean, oldValue: boolean) {
-    //   this.showSecurityArea('user', newValue)
-    // },
-
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
       console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
       if (newValue) {
@@ -128,7 +124,7 @@ export default Vue.extend({
     showBottomSheet() {
       console.log('showBottomSheet()')
       this.backgroundFilter = true
-      this.animationBottomSheet(600)
+      this.animationBottomSheet(700)
     },
     async hideBottomSheet() {
       console.log('hideBottomSheet()')
