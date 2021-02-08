@@ -46,7 +46,7 @@ export interface InsideSecurityArea {
 type DistanceMode = 'IN' | 'OUT'
 export interface CalculateSecurityDistance extends InsideSecurityArea {
   interval: number
-  mode: DistanceMode
+  mode?: DistanceMode
 }
 
 export interface SourceOptions {
@@ -72,6 +72,8 @@ export interface PolygonLayerStyleOptions {
   'fill-sortKey'?: number
   visibility?: LayerVisibility
 }
+
+export type SoundPlayMode = 'PLAY' | 'STOP'
 
 // export interface CircleLayer extends Layer {
 //   circleColor?: string | Color
