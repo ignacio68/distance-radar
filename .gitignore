@@ -5,6 +5,8 @@ node_modules/
 platforms/
 reports/
 jest/
+layout/
+hooks/
 
 # NativeScript Template
 *.js.map
@@ -27,11 +29,10 @@ yarn-error.log*
 .project
 tmp/
 typings/
-hooks/
-platforms/
+
 app/setup/
 nsconfig.json
-layout
+
 
 # Visual Studio Code
 .vscode/*
