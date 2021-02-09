@@ -5,7 +5,7 @@ import { Enums } from '@nativescript/core/'
 import { LatLng } from './types'
 
 import {
-  getCurrentUserLocation as userCurrentLocation,
+  getUserCurrentLocation as userCurrentLocation,
   setCurrentUserLocation,
   setWatchId,
 } from '@/store/userLocationStore'
@@ -16,14 +16,22 @@ const locationOptions: geolocation.Options = {
   timeout: 10000,
 }
 
-export const getCurrentUserLocation = async (): Promise<LatLng> => {
-  console.log('geolocationService::getUserCurrentLocation()')
-  let userLocation: Promise<LatLng>
-  await isLocationServicesEnabled()
-    .then((): void => {
-      userLocation = currentUserLocation()
+export const getUserCurrentLocation = async (): Promise<void | LatLng> => {
+  console.log(`geolocationService::getUserCurrentLocation()`)
+  const userLocation = isLocationServicesEnabled()
+    .then(async () => {
+      const userLocation = await getUserLocation()
+      console.log(
+        `geolocationService::getUserCurrentLocation()::userLocation: ${JSON.stringify(
+          userLocation,
+        )}`,
+      )
+      setCurrentUserLocation(userLocation)
+      return userLocation
     })
-    .catch((error) => console.log(`geolocationService::getUserCurrentLocation()::error: ${error.message || error}`))
+    .catch((error) =>
+      console.log(`geolocationService::getUserCurrentLocation()::error: ${error.message || error}`),
+    )
   return userLocation
 }
 
@@ -34,22 +42,17 @@ const isLocationServicesEnabled = async (): Promise<void> => {
 
 const enableLocationRequest = (): void => {
   console.log('geolocationService::enableLocationRequest()')
-  geolocation.enableLocationRequest(true, true).then((): Promise<void> => isLocationServicesEnabled())
+  geolocation.enableLocationRequest(true, true).then(() => isLocationServicesEnabled())
 }
 
-const currentUserLocation = async (): Promise<LatLng> => {
-  console.log('geolocationService::fetchCurrentUserLocation()')
-  const currentUserLocation = getUserLocation()
-  return currentUserLocation
-}
-
-const getUserLocation = async (): Promise<LatLng> => {
+const getUserLocation = (): Promise<LatLng> => {
+  console.log('geolocationService::getUserLocation()')
   const userLocation = geolocation.getCurrentLocation(locationOptions).then((result) => {
     const location: LatLng = {
       lat: result.latitude,
       lng: result.longitude,
     }
-    console.log(`geolocationService::fetchCurrentUserLocation()::: ${JSON.stringify(userLocation)}`)
+    console.log(`geolocationService::getUserLocation(): ${location.lat}`)
     return location
   })
   return userLocation
