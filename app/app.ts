@@ -28,7 +28,7 @@ if (TNS_ENV !== 'production') {
   const inspect = require('util-inspect')
   const newLineRegExp = /\\n/g
   console.log = (function (log, inspect, Vue) {
-    return function (...args) {
+    return function (...args: unknown[]) {
       return log.call(
         this,
         ...Array.prototype.map.call(args, function (arg) {
@@ -57,6 +57,5 @@ new Vue({
       h(DrawerContent, { slot: 'drawerContent' }),
       h(Main, { slot: 'mainContent' }),
     ]),
-  // render: (h) => h('frame', [h(MainNavigation)]),
   // render: (h) => h('frame', [h(HomeTest)]),
 }).$start()
