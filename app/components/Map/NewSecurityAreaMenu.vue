@@ -94,7 +94,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      radius: 50,
+      radius: 5,
       opacity: 0.5,
       securityArea: {
         id: '',
@@ -108,6 +108,7 @@ export default Vue.extend({
         group: null,
         visibility: 'visible',
         isActive: false,
+        activeMode: 'IN',
       },
       idError: 0,
     }
@@ -162,7 +163,7 @@ export default Vue.extend({
 
     onActivationChanged(value: boolean) {
       console.log(`NewSecurityAreaMenu.vue::onActivationChanged: ${value}`)
-      this.securityArea.isActivate = value
+      this.securityArea.isActive = value
     },
 
     setColor(color: string) {
