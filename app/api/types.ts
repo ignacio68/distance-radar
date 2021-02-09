@@ -29,24 +29,25 @@ export interface SecurityAreaOptions extends Id {
   visibility: LayerVisibility
 }
 
+type AlertMode = 'IN' | 'OUT'
 export interface SecurityArea {
   id: string
   owner: string
   radius: number
   center: LatLng
   isActive: boolean
+  isActiveMode?: AlertMode
   layer: PolygonLayer
 }
 
-export interface InsideSecurityArea {
+export interface AlertOptions extends Id {
   initialLocation: LatLng
   securityDistance: number
+  mode?: AlertMode
 }
 
-type DistanceMode = 'IN' | 'OUT'
-export interface CalculateSecurityDistance extends InsideSecurityArea {
+export interface CalculateSecurityDistance extends AlertOptions {
   interval: number
-  mode?: DistanceMode
 }
 
 export interface SourceOptions {
