@@ -1,43 +1,72 @@
 import { Utils } from '@nativescript/core'
-import * as dialogs from '@nativescript/core/ui/dialogs'
+
+import { i18n } from '@/locales'
+
 import { latLngToPosition } from '@/utils/commons'
-import { playVibration } from '@/api/common'
-import { watchUserLocation, stopWatchUserLocation } from '@/services/geolocationService'
+import { playVibration, playSound, stopSound } from '@/api/common'
+import {
+  getUserCurrentLocation,
+  watchUserLocation,
+  stopWatchUserLocation,
+} from '@/services/geolocationService'
 import distance from '@turf/distance'
 import { point } from '@turf/helpers'
 
 import {
-  getCurrentUserLocation as currentUserLocation,
+  getUserCurrentLocation as currentUserLocation,
   setDistanceToCenter,
+  getWatchId,
 } from '@/store/userLocationStore'
 
-import {
-  getIsWatchUserLocationEnabled as isWatchUserLocationEnabled,
-  setIsWatchUserLocationEnabled,
-} from '@/composables/useGeolocation'
+import { isWatcherEnabled, setIsWatcherEnabled } from '@/composables/useGeolocation'
 
 import { LatLng, Position } from '@/types/commons'
-import { InsideSecurityArea, CalculateSecurityDistance } from './types'
+import { AlertOptions, CalculateSecurityDistance, AlertMode } from './types'
 
-// TODO: Create a enum for constants
-const EARTH_RADIUS = 6378.137
-const TO_RADIANS = 0.017453292519943295 // (PI / 180)
+import { CancelAlarm } from '@/components/Dialogs/CancelAlarm'
 
-const toRadians = (degrees: number): number => degrees * TO_RADIANS
+// TODO: Revisar
+export const getUserLocation = () => getUserCurrentLocation()
 
-export const startTrackingUserLocation = (): void => {
-  setIsWatchUserLocationEnabled(true)
+export const startTrackingUserLocation = async (): Promise<void> => {
+  setIsWatcherEnabled(true)
   watchUserLocation()
 }
 
 export const stopTrackingUserLocation = (watchId: number): void => {
-  setIsWatchUserLocationEnabled(false)
+  setIsWatcherEnabled(false)
   stopWatchUserLocation(watchId)
 }
 
-const calculateCurrentDistance = (initialLocation: LatLng, currentLocation: LatLng): number => {
-  const from = point(latLngToPosition(initialLocation))
-  const to = point(latLngToPosition(currentLocation))
+export const isUserIntoSecurityArea = (args: CalculateSecurityDistance): void => {
+  searchUserPosition(args)
+}
+
+const searchUserPosition = (args: CalculateSecurityDistance): any => {
+  const { id, mode } = args
+
+  const searchId = Utils.setInterval(() => {
+    const userIsIntoSecurityArea = isUserPositionIntoSecurityArea(args)
+    console.log(`geolocation.ts::modeIn::user is into ${id} area? ${userIsIntoSecurityArea}`)
+
+    if (!userIsIntoSecurityArea && mode === 'IN') turnOnAlarm(searchId, id, mode)
+    else if (userIsIntoSecurityArea && mode === 'OUT') turnOnAlarm(searchId, id, mode)
+    return
+  }, args.interval)
+}
+
+const isUserPositionIntoSecurityArea = (args: CalculateSecurityDistance): boolean => {
+  const { initialLocation: center, securityDistance } = args
+  const currentDistance = calculateDistanceToCenter(center, currentUserLocation())
+  setDistanceToCenter(currentDistance)
+  // console.log(`${id} alarm: distance: ${securityDistance}, current distance: ${currentDistance}`)
+  const isIntoSecurityArea = currentDistance <= securityDistance ? true : false
+  return isIntoSecurityArea
+}
+
+const calculateDistanceToCenter = (center: LatLng, userLocation: LatLng): number => {
+  const from = point(latLngToPosition(center))
+  const to = point(latLngToPosition(userLocation))
   const options = { units: 'kilometers' as const }
 
   const currentDistance = distance(from, to, options)
@@ -45,46 +74,32 @@ const calculateCurrentDistance = (initialLocation: LatLng, currentLocation: LatL
   return currentDistance
 }
 
-const isIntoSecurityArea = (args: InsideSecurityArea): boolean => {
-  const currentDistance = calculateCurrentDistance(args.initialLocation, currentUserLocation())
-  setDistanceToCenter(currentDistance)
-  console.log(`distance: ${args.securityDistance}, current distance: ${currentDistance}`)
-  const isIntoSecurityArea = currentDistance <= args.securityDistance ? true : false
-  return isIntoSecurityArea
+const turnOnAlarm = (searchId: any, id: string, mode: AlertMode): void => {
+  activeAlarm(searchId)
+  if (mode === 'IN') modeInAlertDialog(id)
+  else modeOutAlertDialog(id)
 }
 
-export const isUserIntoSecurityArea = (args: CalculateSecurityDistance): void => {
-  const searchId = Utils.setInterval(() => {
-    const userIsIntoSecurityArea = isIntoSecurityArea({
-      initialLocation: args.initialLocation,
-      securityDistance: args.securityDistance,
-    })
-    modeIsIn(userIsIntoSecurityArea, searchId)
-    // if (args.mode === 'IN') {
-    //   modeIsIn(userIsIntoSecurityArea, searchId)
-    // } else if (args.mode === 'OUT') {
-    //   modeIsOut(userIsIntoSecurityArea, searchId)
-    // }
-  }, args.interval)
+const activeAlarm = (searchId: any): void => {
+  Utils.clearInterval(searchId)
+  playVibration([300, 500])
+  playSound()
 }
 
-const modeIsIn = (userIsIntoSecurityArea: boolean, intervalId: any): any => {
-  if (!userIsIntoSecurityArea) {
-    Utils.clearInterval(intervalId)
-    playVibration([300, 500])
-    dialogs.alert('You are OUT of your SECURITY AREA!!!').then((r) => {
-      console.log(JSON.stringify(r))
-    })
-    setIsWatchUserLocationEnabled(false)
-  } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(intervalId)
+const modeInAlertDialog = (id: string) => {
+  const cancelAlarmOptions = {
+    title: id,
+    message: i18n.tc('lang.dialogs.cancelAlarmIn.message'),
+    okButtonText: i18n.tc('lang.dialogs.cancelAlarmIn.okButtonText'),
+  }
+  CancelAlarm(cancelAlarmOptions)
 }
 
-const modeIsOut = (userIsIntoSecurityArea: boolean, intervalId: any) => {
-  if (userIsIntoSecurityArea) {
-    Utils.clearInterval(intervalId)
-    dialogs.alert('You are INSIDE of the SECURITY AREA!!!').then((r) => {
-      console.log(JSON.stringify(r))
-    })
-    setIsWatchUserLocationEnabled(false)
-  } else if (!isWatchUserLocationEnabled()) Utils.clearInterval(intervalId)
+const modeOutAlertDialog = (id: string) => {
+  const cancelAlarmOptions = {
+    title: id,
+    message: i18n.tc('lang.dialogs.cancelAlarmOut.message'),
+    okButtonText: i18n.tc('lang.dialogs.cancelAlarmOut.okButtonText'),
+  }
+  CancelAlarm(cancelAlarmOptions)
 }
