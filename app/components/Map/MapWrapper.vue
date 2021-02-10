@@ -124,7 +124,7 @@ export default Vue.extend({
     showBottomSheet() {
       console.log('showBottomSheet()')
       this.backgroundFilter = true
-      this.animationBottomSheet(700)
+      this.animationBottomSheet(800)
     },
     async hideBottomSheet() {
       console.log('hideBottomSheet()')
