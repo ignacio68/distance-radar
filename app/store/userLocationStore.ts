@@ -18,7 +18,7 @@ export const getInitialLocation = (): InitialCoordinates => {
   return initialLocation
 }
 
-export const getCurrentUserLocation = (): LatLng => state.currentUserLocation
+export const getUserCurrentLocation = (): LatLng => state.currentUserLocation
 
 export const setCurrentUserLocation = (coordinates: LatLng): void => {
   state.currentUserLocation.lat = coordinates.lat
