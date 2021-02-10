@@ -94,6 +94,7 @@ import { mapToken, customMapStyle } from '@/setup/map'
 
 import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
 import { updateUserMarker } from '@/api/userMarker'
+import { getUserCurrentLocation } from '@/services/geolocationService'
 
 import { getVisibility, setVisibility } from '@/composables/useComponent'
 
@@ -135,8 +136,8 @@ export default Vue.extend({
   },
 
   computed: {
-    mapStyle(): Promise<string> {
-      return this.customMapStyle ? this.customMapStyle : this.defaultMapStyle
+    mapStyle(): string | MapStyle {
+      return this.customMapStyle !== undefined ? this.customMapStyle : this.defaultMapStyle
     },
 
     isVisibleLocationsList(): boolean {
@@ -146,6 +147,10 @@ export default Vue.extend({
     isVisibleGeocoder(): boolean {
       return getVisibility('geocoder')
     },
+  },
+
+  mounted() {
+    getUserCurrentLocation()
   },
 
   methods: {
@@ -159,10 +164,10 @@ export default Vue.extend({
 
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
-      pipe(this.setMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setCenter())
+      pipe(this.saveMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setCenter())
     },
 
-    setMap(args: any) {
+    saveMap(args: any) {
       const map: Map = args.map
       console.log(`MapComponent::setMap()`)
       setMap(map)
@@ -201,7 +206,7 @@ export default Vue.extend({
       return newCoordinates
     },
 
-    onLocationSelected(location: [GeocoderLocation]) {
+    onLocationSelected(location: GeocoderLocation) {
       console.log(`onLocationSelected: ${JSON.stringify(location)}`)
       setVisibility('geocoder', false)
       const newCoordinates: LatLng = this.updateCoordinates(location)
