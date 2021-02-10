@@ -2,7 +2,7 @@ import Vue from 'nativescript-vue'
 
 const geolocation = Vue.observable({
   isEnabled: false, // TODO: to remove if is not in used
-  isWatchUserLocationEnabled: false,
+  isWatcherEnabled: false,
 })
 
 // TODO: to remove if is not in used
@@ -11,6 +11,6 @@ export const getIsGeolocationEnabled = (): boolean => geolocation.isEnabled
 export const setIsGeolocationEnabled = (isEnabled: boolean): boolean =>
   (geolocation.isEnabled = isEnabled)
 
-export const getIsWatchUserLocationEnabled = (): boolean => geolocation.isWatchUserLocationEnabled
-export const setIsWatchUserLocationEnabled = (isEnabled: boolean): boolean =>
-  (geolocation.isWatchUserLocationEnabled = isEnabled)
+export const isWatcherEnabled = (): boolean => geolocation.isWatcherEnabled
+export const setIsWatcherEnabled = (isEnabled: boolean): boolean =>
+  (geolocation.isWatcherEnabled = isEnabled)
