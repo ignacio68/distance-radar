@@ -1,5 +1,28 @@
 # Changelog
 
+## [0.3.4] - 2021-02-04
+
+### Added
+
+- Alarms API
+- Alarms storage
+- Alarm sounds
+- Alarm dialog
+- Phone vibration
+- Security areas persistent storage
+- ActivationMenu component
+- Turf.js distance method
+
+### Changed
+
+- Distance measurement with turf.js
+- NewSecurityAreaMenu component style
+- ColorSelector component style
+
+### Fixed
+
+- Current position bug at init
+
 ## [0.3.3] - 2021-01-26
 
 ### Added
@@ -20,10 +43,6 @@
 ### Fixed
 
 - Resolved circle deformation -> getDistanceX function bug
-
-### Removed
-
-- Remove item
 
 ## [0.3.2] - 2020-12-16
 
