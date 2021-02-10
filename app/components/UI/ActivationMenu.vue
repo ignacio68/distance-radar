@@ -4,7 +4,7 @@
       <Label class="activation-menu_title" :text="activationText" textWrap="true" />
       <Switch
         class="activation-menu_switch"
-        checked="false"
+        :checked="checked"
         v-model="itemEnabled"
         @checkedChange="onCheckedChange"
       />
@@ -22,6 +22,10 @@ export default Vue.extend({
     activationText: {
       type: String,
       default: '',
+    },
+    checked: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {

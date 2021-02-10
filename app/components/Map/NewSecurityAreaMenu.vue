@@ -40,6 +40,7 @@
       <ActivationMenu
         row="3"
         :activationText="$t('lang.components.activationMenu.activation')"
+        :checked="checkedActivation"
         @on-checked-change="onActivationChanged"
       />
       <StackLayout
@@ -71,15 +72,14 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { setVisibility, getVisibility } from '@/composables/useComponent'
+import { setVisibility } from '@/composables/useComponent'
 
 import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
 import { fetchSelectedLocation } from '@/api/locations'
-import { startTrackingUserLocation } from '@/api/geolocation'
 
 import { hasId } from '@/store/securityAreasStore'
 
-import { SecurityAreaOptions, LayerVisibility } from '@/api/types'
+import { LayerVisibility } from '@/api/types'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
@@ -108,9 +108,10 @@ export default Vue.extend({
         group: null,
         visibility: 'visible',
         isActive: false,
-        activeMode: 'IN',
+        alertMode: 'IN',
       },
       idError: 0,
+      checkedActivation: false,
     }
   },
 
@@ -139,10 +140,10 @@ export default Vue.extend({
   methods: {
     reset() {
       console.log('NewSecurityAreaMenu.vue::reset()')
-      // this.securityArea.id = ''
-      // this.securityArea.center.lat = 0
-      // this.securityArea.center.lng = 0
+      this.radius = 5
+      this.opacity = 0.5
       this.setIdError(0)
+      this.checkedActivation = false
     },
 
     hideNewSecurityAreaMenu() {
@@ -196,20 +197,20 @@ export default Vue.extend({
     async setIdAndCenter(): Promise<void> {
       // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
       const options = fetchSelectedLocation()
-      console.log(`NewSecurityAreaMenu.vue::options:  + ${JSON.stringify(options)}`)
+      console.log(`NewSecurityAreaMenu.vue::options:  ${JSON.stringify(options)}`)
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
     },
 
     async newSecurityArea(): Promise<void> {
-      await this.setIdAndCenter()
-      await newSecurityArea(this.securityArea)
       console.log(
         `NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(
           this.securityArea,
         )}`,
       )
+      await this.setIdAndCenter()
+      await newSecurityArea(this.securityArea)
       await this.hideNewSecurityAreaMenu()
       this.reset()
     },
