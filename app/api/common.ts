@@ -21,7 +21,7 @@ const playerOptions = {
 
 export const initAudioPlayer = () => {
   createAudioPlayer().then(() => {
-    audioPlayer.debug = true
+    audioPlayer.debug = false // use only for development
     audioPlayer.initFromFile(playerOptions).then(() => {
       console.log('api::common:: Sound audioPlayer is init')
       audioPlayer.getAudioTrackDuration().then((duration: string) => {
@@ -41,13 +41,9 @@ export const stopVibration = (): void => {
   vibrator.cancel()
 }
 
-export const playSound = (playMode: SoundPlayMode): void => {
-  if (playMode === 'PLAY') {
-    audioPlayer.play()
-    console.log(`api::common:playSound::PLAY: Is sound playing?: ${audioPlayer.isAudioPlaying()}`)
-  } else if (playMode === 'STOP') {
-    if (audioPlayer.isAudioPlaying()) audioPlayer.pause()
-    console.log(`api::common:playSound::STOP: Is sound playing?: ${audioPlayer.isAudioPlaying()}`)
-    return
-  }
+export const playSound = () => audioPlayer.play()
+
+export const stopSound = () => {
+  if (audioPlayer.isAudioPlaying()) audioPlayer.pause()
+  return
 }
