@@ -1,12 +1,37 @@
 import Vue from 'nativescript-vue'
 
-import { removeSecurityAreaFromLocation } from './locationsStore'
+import {
+  createDatabase,
+  getAllItems,
+  addItem,
+  updateItem,
+  deleteItem,
+  resetDatabase,
+} from '@/api/storage'
 
-import { SecurityArea, LayerVisibility } from '@/api/types'
+import { removeSecurityAreaFromLocation } from './locationsStore'
+import { addNewAlarm, removeAlarm } from './alarmsStore'
+
+import { SecurityArea, LayerVisibility, Database } from '@/api/types'
 
 const state = Vue.observable({
   securityAreas: [] as SecurityArea[],
 })
+
+// Create persist security areas database
+const database: Database = createDatabase('securityAreas')
+
+const initializeDatabase = (): void =>
+  getAllItems(database).forEach((securityArea: SecurityArea) =>
+    addSecurityAreaToState(securityArea),
+  )
+
+const addSecurityAreaToState = (securityArea: SecurityArea): void => {
+  console.log(`securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(alarm)}`)
+  state.securityAreas.push(securityArea)
+}
+
+initializeDatabase()
 
 const find = (id: string): SecurityArea =>
   state.securityAreas.find((securityArea) => securityArea.id === id)
@@ -28,26 +53,29 @@ export const getSecurityArea = (id: string): SecurityArea => {
 }
 
 export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
+  console.log(`securityAreaStore.ts::addNewSecurityArea()`)
+  // addSecurityAreaToState(securityArea)
   state.securityAreas.push(securityArea)
-  // console.log(
-  //   `securityAreasStore::addNewSecurityArea: ${JSON.stringify(
-  //     state.securityAreas[state.securityAreas.length - 1]
-  //   )}`
-  // )
+  addItem<SecurityArea>(database, securityArea, securityArea.id)
+  if (securityArea.isActive === true) addNewAlarm(securityArea.id)
+  return
 }
 
-// Only for development
-export const getAllSecurityAreas = (): void => {
-  console.dir(`securityAreasStore::getAllSecurityAreas(): ${JSON.stringify(state.securityAreas)}`)
-}
+export const getAllSecurityAreas = (): SecurityArea[] => state.securityAreas
 
-const findSecurityAreaActive = (): number =>
-  state.securityAreas.findIndex((securityArea) => securityArea.isActive === true)
+export const getSecurityAreasActive = (ids: string[]): SecurityArea[] =>
+  fetchSecurityAreasActive(ids)
 
-export const getSecurityAreaActive = (): SecurityArea => {
-  const index = findSecurityAreaActive()
-  console.dir(state.securityAreas[index])
-  return state.securityAreas[index]
+const fetchSecurityAreasActive = (ids: string[]): SecurityArea[] => {
+  console.log(`securityAreasStore::fetchSecurityAreasActive(): ${JSON.stringify(ids)}`)
+  const securityAreasActive = state.securityAreas.filter((securityArea) => {
+    for (const id of ids) {
+      if (securityArea.id === id) return securityArea
+      return
+    }
+  })
+
+  return securityAreasActive
 }
 
 // export const isVisible = (id: string, value: boolean): boolean => {
@@ -60,10 +88,17 @@ export const getSecurityAreaActive = (): SecurityArea => {
 //   return isVisible
 // }
 
-export const deleteSecurityArea = (securityAreaId: string): void => {
-  const index = findIndex(securityAreaId)
+export const deleteSecurityArea = (id: string): void => {
+  const index = findIndex(id)
   const owner = state.securityAreas[index].owner
   state.securityAreas.splice(index, 1)
-  removeSecurityAreaFromLocation(owner, securityAreaId)
-  console.log('removed element!!')
+  removeSecurityAreaFromLocation(owner, id)
+  removeAlarm(id)
+  deleteItem(database, id)
+  console.log('removed Security Area!!')
+}
+
+export const deleteAllSecurityAreas = (): void => {
+  state.securityAreas.length = 0
+  resetDatabase(database)
 }
