@@ -24,26 +24,27 @@ export interface SecurityAreaOptions extends Id {
   radius: number
   center: LatLng
   isActive: boolean
+  alertMode?: AlertMode
   fillColor: string | Color
   fillOpacity: number
   visibility: LayerVisibility
 }
 
-type AlertMode = 'IN' | 'OUT'
+export type AlertMode = 'IN' | 'OUT'
 export interface SecurityArea {
   id: string
   owner: string
   radius: number
   center: LatLng
   isActive: boolean
-  isActiveMode?: AlertMode
+  alertMode?: AlertMode
   layer: PolygonLayer
 }
 
 export interface AlertOptions extends Id {
   initialLocation: LatLng
   securityDistance: number
-  mode?: AlertMode
+  mode: AlertMode
 }
 
 export interface CalculateSecurityDistance extends AlertOptions {
