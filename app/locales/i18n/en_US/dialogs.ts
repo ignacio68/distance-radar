@@ -11,4 +11,12 @@ export default {
     okButton: 'Delete',
     cancelButton: 'Cancel',
   },
+  cancelAlarmIn: {
+    message: 'You are OUT of the SECURITY AREA!!!',
+    okButtonText: 'Ok',
+  },
+  cancelAlarmOut: {
+    message: 'You are INSIDE of the SECURITY AREA!!!',
+    okButtonText: 'Ok',
+  },
 }
