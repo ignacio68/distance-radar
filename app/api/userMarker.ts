@@ -7,16 +7,15 @@ import {
   getUserMarker as userMarker,
   updateUserMarkerPosition,
 } from '@/store/userMarkerStore'
-import { getCurrentUserLocation as userLocation } from '@/store/userLocationStore'
+import { getUserCurrentLocation as userLocation } from '@/store/userLocationStore'
 
 import { setVisibility } from '@/composables/useComponent'
 
 import { UserMarker, LatLng } from '@/types/commons'
 
-
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
-const isUserMarker = (): boolean => userMarker() ? true : false
+const isUserMarker = (): boolean => (userMarker() ? true : false)
 
 export const createUserMarker = (coordinates?: LatLng): void => {
   console.log('createUserMarker()')
@@ -40,8 +39,7 @@ export const updateUserMarker = (coordinates: LatLng): void => {
     }
     userMarker().update(values)
     updateUserMarkerPosition(coordinates)
-  }
-  else {
+  } else {
     createUserMarker(coordinates)
   }
 }
