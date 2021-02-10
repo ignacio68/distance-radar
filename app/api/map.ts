@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { createUserMarker, updateUserMarker } from './userMarker'
 
-import { getCurrentUserLocation } from '@/services/geolocationService'
+import { getUserCurrentLocation } from '@/services/geolocationService'
 
 import {
   mbSetMap,
@@ -16,7 +16,7 @@ import {
 import { initialMapSettings } from '@/setup/map'
 
 import { getMap } from '@/store/mapStore'
-import { getUserMarker as userMarker} from '@/store/userMarkerStore'
+import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 import { getLocations } from '@/store/locationsStore'
 
 import { MapSettings, LatLng, Map } from './types'
@@ -33,7 +33,7 @@ export const setMap = (settings?: MapSettings): void => {
 
 export const setCenter = async (): Promise<void> => {
   console.log('map.ts::setCenter()')
-  await getCurrentUserLocation().then((coordinates: LatLng) => {
+  await getUserCurrentLocation().then((coordinates: LatLng) => {
     console.log(`map.ts::setCenter() coordinates: ${JSON.stringify(coordinates)}`)
     mbSetZoomLevel(getMap(), {
       level: 15,
