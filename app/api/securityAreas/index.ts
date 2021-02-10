@@ -20,11 +20,11 @@ import { SecurityAreaOptions, SecurityArea, PolygonLayer, LayerVisibility } from
 export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
   const securityAreaLayer = createLayer(args)
   mbAddLayer(getMap(), securityAreaLayer).then((): void => {
-    console.log(`securityAreas.ts::newSecurityArea():map:center: ${JSON.stringify(args.center)}`)
-    // const newSecurityAreaToStore = getNewSecurityAreaToStore(args, securityAreaLayer)
-    // addNewSecurityArea(newSecurityAreaToStore).then(() => {
-    //   addSecurityAreaToLocation(newSecurityArea.id)
-    // })
+    console.log(`securityAreas.ts::newSecurityArea()::alertMode: ${JSON.stringify(args.alertMode)}`)
+    const newSecurityAreaToStore = getNewSecurityAreaToStore(args, securityAreaLayer)
+    addNewSecurityArea(newSecurityAreaToStore).then(() => {
+      addSecurityAreaToLocation(newSecurityAreaToStore.id)
+    })
   })
 }
 
@@ -32,7 +32,7 @@ const getNewSecurityAreaToStore = (
   args: SecurityAreaOptions,
   layer: PolygonLayer,
 ): SecurityArea => {
-  const { id, radius, center, isActive } = args
+  const { id, radius, center, isActive, alertMode } = args
   const securityArea = {
     id,
     owner: id,
@@ -40,6 +40,7 @@ const getNewSecurityAreaToStore = (
     center,
     isActive,
     layer,
+    alertMode,
   }
   return securityArea
 }
@@ -72,7 +73,7 @@ const validateSecurityArea = (securityArea: SecurityArea): void => {
   }
 }
 
-const isSecurityArea = (securityArea: SecurityArea): boolean => securityArea !== undefined || null
+const isSecurityArea = (securityArea: SecurityArea): boolean => securityArea !== (undefined || null)
 
 const isSecurityAreaVisible = (securityArea: SecurityArea): boolean => {
   return securityArea.layer.paint.visibility === 'visible' ? true : false
@@ -107,3 +108,5 @@ export const removeSecurityArea = async (id: string): Promise<void> => {
   }
   mbRemoveLayer(getMap(), id).then(() => deleteSecurityArea(id))
 }
+
+export { activateAlarms } from './alarms'
