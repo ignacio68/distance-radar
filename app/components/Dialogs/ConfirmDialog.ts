@@ -1,7 +1,7 @@
 import { confirm, ConfirmOptions } from '@nativescript/core'
 import { ConfirmDialog } from './types'
 
-const confirmDialog = (options: ConfirmDialog, callback: unknown): void => {
+const confirmDialog = (options: ConfirmDialog, callback: () => {}): void => {
   const confirmOptions: ConfirmOptions = {
     title: options.title,
     message: options.message,
