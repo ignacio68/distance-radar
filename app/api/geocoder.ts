@@ -4,7 +4,8 @@ import { formattedText } from '@/utils/text'
 
 import { GeocoderShortLocation, GeocoderLocation, SearchLocationsResult } from '@/services/types'
 
-export const getLocations = async(query: string): Promise<SearchLocationsResult> => await searchLocations(query)
+export const getLocations = async (query: string): Promise<SearchLocationsResult> =>
+  await searchLocations(query)
 
 const getShortLocation = (location: GeocoderLocation): GeocoderShortLocation => {
   const shortLocation: GeocoderShortLocation = {}
@@ -20,4 +21,4 @@ const getShortLocation = (location: GeocoderLocation): GeocoderShortLocation => 
   return shortLocation
 }
 
-export const formattedLocation = (location: any): string => pipe(getShortLocation, formattedText) as unknown as string
+export const formattedLocation = pipe(getShortLocation, formattedText)
