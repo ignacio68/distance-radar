@@ -33,9 +33,8 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { getVisibility, setVisibility } from '@/composables/useComponent'
-import { Color, Screen, Enums } from '@nativescript/core'
-import { Location, SecurityAreaOptions, LatLng } from '@/api/types'
+import { getVisibility } from '@/composables/useComponent'
+import { Screen, Enums } from '@nativescript/core'
 
 import MapInterface from './MapInterface.vue'
 import NewLocationMenu from './NewLocationMenu.vue'
