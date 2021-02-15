@@ -1,42 +1,84 @@
 <template>
-  <StackLayout class="activation-menu">
-    <StackLayout orientation="horizontal">
-      <Label class="activation-menu_title" :text="activationText" textWrap="true" />
-      <Switch
-        class="activation-menu_switch"
-        :checked="checked"
-        v-model="itemEnabled"
-        @checkedChange="onCheckedChange"
+  <GridLayout columns="auto, auto" rows="auto, auto" class="activation-menu">
+    <Label
+      col="0"
+      row="0"
+      class="activation-menu_title m-t-16"
+      :text="activationText"
+      textWrap="true"
+    />
+    <Switch
+      col="1"
+      row="0"
+      class="activation-menu_switch"
+      :checked="isChecked"
+      v-model="isSwitchEnabled"
+      @checkedChange="onCheckedChange"
+    />
+    <StackLayout col="1" row="1" class="m-l-16">
+      <RadioButton
+        v-for="(alertMode, index) in alertsMode"
+        :key="index"
+        class="alert-mode"
+        :isEnabled="isRadioButtonEnabled"
+        :text="$t(alertMode.text)"
+        :isChecked.sync="alertMode.isSelected"
+        @on-item-selected="onAlertModeSelected(alertMode)"
       />
     </StackLayout>
-    <!-- TODO: Implement options -->
-    <GridLayout rows="*, *" columns="*, *"></GridLayout>
-  </StackLayout>
+  </GridLayout>
 </template>
 <script lang="ts">
 import Vue from 'nativescript-vue'
+import RadioButton from '@/components/UI/RadioButton.vue'
 
 export default Vue.extend({
   name: 'ActivationMenu',
+  components: { RadioButton },
   props: {
     activationText: {
       type: String,
       default: '',
     },
-    checked: {
+    isChecked: {
       type: Boolean,
       default: false,
     },
   },
   data() {
     return {
-      itemEnabled: false,
+      isSwitchEnabled: false,
+      isRadioButtonEnabled: false,
+      alertsMode: [
+        { text: 'lang.components.activationMenu.alertMode[0]', mode: 'IN', isSelected: true },
+        { text: 'lang.components.activationMenu.alertMode[1]', mode: 'OUT', isSelected: false },
+      ],
     }
   },
+
+  mounted() {
+    // this.alertsMode.map((alertMode) => (this.isChecked = alertMode.isSelected))
+  },
+
   methods: {
     onCheckedChange(): void {
-      console.log(`ActivationMenu::onCheckedChange: ${this.itemEnabled}`)
-      this.$emit('on-checked-change', this.itemEnabled)
+      console.log(`ActivationMenu::onCheckedChange: ${this.isSwitchEnabled}`)
+      this.$emit('on-checked-change', this.isSwitchEnabled)
+      this.isRadioButtonEnabled = this.isSwitchEnabled
+    },
+
+    onAlertModeSelected(alertModeSelected: any): void {
+      if (!alertModeSelected.isSelected) {
+        alertModeSelected.isSelected = true
+        this.alertsMode.map((alertMode) => {
+          if (alertMode.text !== alertModeSelected.text) alertMode.isSelected = false
+        })
+        this.$emit('on-alert-mode-selected', alertModeSelected.mode)
+        console.log(
+          `onAlertModeSelected::mode selected: ${alertModeSelected.mode} - ${alertModeSelected.isSelected}`,
+        )
+      }
+      return
     },
   },
 })

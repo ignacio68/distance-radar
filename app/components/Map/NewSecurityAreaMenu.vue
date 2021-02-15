@@ -40,8 +40,9 @@
       <ActivationMenu
         row="3"
         :activationText="$t('lang.components.activationMenu.activation')"
-        :checked="checkedActivation"
+        :isChecked="checkedActivation"
         @on-checked-change="onActivationChanged"
+        @on-alert-mode-selected="onAlertModeSelected"
       />
       <StackLayout
         row="4"
@@ -108,7 +109,7 @@ export default Vue.extend({
         group: null,
         visibility: 'visible',
         isActive: false,
-        alertMode: 'IN',
+        alertMode: 'OUT',
       },
       idError: 0,
       checkedActivation: false,
@@ -119,16 +120,6 @@ export default Vue.extend({
     fetchCurrentLocation() {
       return fetchSelectedLocation()
     },
-  },
-
-  watch: {
-    // fetchCurrentLocation(newValue: Location) {
-    //   {
-    //     this.securityArea.id = this.fetchCurrentLocation.id
-    //     this.securityArea.center.lat = this.fetchCurrentLocation.lat
-    //     this.securityArea.center.lng = this.fetchCurrentLocation.lng
-    //   }
-    // }
   },
 
   async mounted() {
@@ -142,8 +133,9 @@ export default Vue.extend({
       console.log('NewSecurityAreaMenu.vue::reset()')
       this.radius = 5
       this.opacity = 0.5
-      this.setIdError(0)
+      this.setColor('#ff6ea1')
       this.checkedActivation = false
+      this.setIdError(0)
     },
 
     hideNewSecurityAreaMenu() {
@@ -163,14 +155,15 @@ export default Vue.extend({
     },
 
     onActivationChanged(value: boolean) {
-      console.log(`NewSecurityAreaMenu.vue::onActivationChanged: ${value}`)
       this.securityArea.isActive = value
     },
 
+    onAlertModeSelected(value: string) {
+      this.alertMode = value
+    },
+
     setColor(color: string) {
-      // console.log(`NewSecurityAreaMenu.vue::color: ${color.name}`)
       this.securityArea.fillColor = color
-      console.log(`NewSecurityAreaMenu.vue::color: ${this.securityArea.fillColor}`)
     },
 
     setRadius(value: number) {
@@ -178,7 +171,6 @@ export default Vue.extend({
     },
 
     setOpacity(value: number) {
-      console.log('NewSecurityAreaMenu.vue::setRadius()')
       this.securityArea.fillOpacity = value / 10
     },
 
