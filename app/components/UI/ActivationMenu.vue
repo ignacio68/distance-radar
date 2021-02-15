@@ -3,7 +3,8 @@
     <Label
       col="0"
       row="0"
-      class="activation-menu_title m-t-16"
+      class="activation-menu_title"
+      verticalAlignment="middle"
       :text="activationText"
       textWrap="true"
     />
