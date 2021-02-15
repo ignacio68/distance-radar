@@ -48,7 +48,7 @@ module.exports = {
         endOfLine: 'auto',
         htmlWhitespaceSensitivity: 'ignore',
         printWidth: 100,
-        trailingComma: 'es5',
+        trailingComma: 'es6',
       },
     ],
     'no-unused-vars': [
