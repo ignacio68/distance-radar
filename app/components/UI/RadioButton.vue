@@ -14,19 +14,6 @@
         backgroundColor="transparent"
         opacity="0"
       />
-      <!-- <Button
-        ref="radioOuter"
-        class="radio-btn__radio-outer -rounded-lg -outline"
-        col="0"
-        row="0"
-        :height="radioSize"
-        :width="radioSize"
-        borderRadius="50%"
-        borderWidth="2"
-        :borderColor="unCheckedColor"
-        backgroundColor="transparent"
-        @tap="onTap"
-      /> -->
       <Label
         ref="radioOuter"
         class="radio-btn__radio-outer"
