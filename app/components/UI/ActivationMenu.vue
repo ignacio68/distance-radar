@@ -10,12 +10,13 @@
     <Switch
       col="1"
       row="0"
+      width="64"
       class="activation-menu_switch"
       :checked="isChecked"
       v-model="isSwitchEnabled"
       @checkedChange="onCheckedChange"
     />
-    <StackLayout col="1" row="1" class="m-l-16">
+    <StackLayout col="1" row="1" class="m-l-8">
       <RadioButton
         v-for="(alertMode, index) in alertsMode"
         :key="index"
@@ -56,13 +57,8 @@ export default Vue.extend({
     }
   },
 
-  mounted() {
-    // this.alertsMode.map((alertMode) => (this.isChecked = alertMode.isSelected))
-  },
-
   methods: {
     onCheckedChange(): void {
-      console.log(`ActivationMenu::onCheckedChange: ${this.isSwitchEnabled}`)
       this.$emit('on-checked-change', this.isSwitchEnabled)
       this.isRadioButtonEnabled = this.isSwitchEnabled
     },
@@ -74,9 +70,6 @@ export default Vue.extend({
           if (alertMode.text !== alertModeSelected.text) alertMode.isSelected = false
         })
         this.$emit('on-alert-mode-selected', alertModeSelected.mode)
-        console.log(
-          `onAlertModeSelected::mode selected: ${alertModeSelected.mode} - ${alertModeSelected.isSelected}`,
-        )
       }
       return
     },
