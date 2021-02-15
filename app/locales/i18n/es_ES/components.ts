@@ -19,10 +19,11 @@ export default {
     addButton: 'Añadir',
   },
   colorSelector: {
-    text: 'Color:',
+    text: 'Color',
   },
   activationMenu: {
     activation: 'Activar',
+    alertMode: ['Salida', 'Entrada'],
   },
   geocoder: {
     hint: 'Buscar...',
