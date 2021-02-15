@@ -78,6 +78,8 @@ import { setVisibility } from '@/composables/useComponent'
 import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
 import { fetchSelectedLocation } from '@/api/locations'
 
+import { round } from '@/utils/maths'
+
 import { hasId } from '@/store/securityAreasStore'
 
 import { LayerVisibility } from '@/api/types'
@@ -146,12 +148,12 @@ export default Vue.extend({
 
     onRadiusChanged(value: number) {
       console.log(`NewSecurityAreaMenu.vue::onRadiusChanged: ${value}`)
-      this.securityArea.radius = value
+      this.securityArea.radius = round(value, 2)
     },
 
     onOpacityChanged(value: number) {
       console.log(`NewSecurityAreaMenu.vue::onOpacityChanged: ${value}`)
-      this.securityArea.fillOpacity = value
+      this.securityArea.fillOpacity = round(value, 1)
     },
 
     onActivationChanged(value: boolean) {
@@ -164,14 +166,6 @@ export default Vue.extend({
 
     setColor(color: string) {
       this.securityArea.fillColor = color
-    },
-
-    setRadius(value: number) {
-      this.securityArea.radius = value
-    },
-
-    setOpacity(value: number) {
-      this.securityArea.fillOpacity = value / 10
     },
 
     setIdError(value: number) {
