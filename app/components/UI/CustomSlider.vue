@@ -36,13 +36,13 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import Icon from '@/components/UI/Icon.vue'
+// import Icon from '@/components/UI/Icon.vue'
 
 import '@/plugins/installMDSlider'
 
 export default Vue.extend({
   name: 'CustomSlider',
-  components: { Icon },
+  // components: { Icon },
   props: {
     // Icon.$props,
     sliderWidth: {
@@ -50,18 +50,18 @@ export default Vue.extend({
       default: '100%',
     },
 
-    iconName: {
-      type: String,
-      default: '',
-    },
-    iconSize: {
-      type: [String, Number],
-      default: '48',
-    },
-    iconColor: {
-      type: String,
-      default: 'black',
-    },
+    // iconName: {
+    //   type: String,
+    //   default: '',
+    // },
+    // iconSize: {
+    //   type: [String, Number],
+    //   default: '48',
+    // },
+    // iconColor: {
+    //   type: String,
+    //   default: 'black',
+    // },
     rippleColor: {
       type: String,
       required: false,
@@ -122,9 +122,9 @@ export default Vue.extend({
   font-weight: 700;
   color: $primary-variant;
 }
-.customSlider_icon {
-  vertical-align: bottom;
-}
+// .customSlider_icon {
+//   vertical-align: bottom;
+// }
 .customSlider_minValue {
   padding {
     left: 24;
