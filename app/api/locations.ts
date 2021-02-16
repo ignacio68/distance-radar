@@ -22,12 +22,12 @@ import { Location } from './types'
 export const showLocations = getLocations()
 
 export const newLocation = (locationProps: Location): void => {
-  const location: Location = setLocationOpts(locationProps)
-  console.log(`locations.ts::addLocation(): ${JSON.stringify(location)}`)
+  const locationOptions: Location = setLocationOpts(locationProps)
+  console.log(`locations.ts::addLocation(): ${JSON.stringify(locationOptions)}`)
   const newLocation: Location[] = []
-  newLocation.push(location)
+  newLocation.push(locationOptions)
   mbAddMarkers(getMap(), newLocation).then(() => {
-    addNewLocation(location)
+    addNewLocation(locationOptions)
   })
 }
 
@@ -60,13 +60,18 @@ const onTap = (id: string): void => {
   })
 }
 
-const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
+const onCalloutTap = (): void =>
+  console.log(`locations.ts::onCalloutTapLocation()`)
 // export const fetchLocations = (): Locations[] => {
 //   map.addMarkers(getMap(), locationProps)
 // }
 
 export const fetchSelectedLocation = (): Location => {
-  console.log(`locations.ts::fetchSelectedLocation() ${JSON.stringify(getSelectedLocation())}`)
+  console.log(
+    `locations.ts::fetchSelectedLocation() ${JSON.stringify(
+      getSelectedLocation(),
+    )}`,
+  )
   return getSelectedLocation()
 }
 
@@ -92,7 +97,9 @@ export const removeAllLocations = (): void => {
   console.log(`locations.ts::removeAllLocation:`)
 }
 
-export const updateLocationAtInit = async (location: Location): Promise<void> => {
+export const updateLocationAtInit = async (
+  location: Location,
+): Promise<void> => {
   const options: Record<string, unknown> = {
     onTap: () => onTap(location.id),
     onCalloutTap: () => onCalloutTap(),
