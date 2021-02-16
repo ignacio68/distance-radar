@@ -1,5 +1,10 @@
 <template>
-  <GridLayout columns="*, auto" rows="*" class="map" horizontalAlignment="right">
+  <GridLayout
+    columns="*, auto, auto"
+    rows="*, auto"
+    class="map"
+    horizontalAlignment="right"
+  >
     <MapBox
       ref="map"
       row="0"
@@ -7,6 +12,7 @@
       left="0"
       top="0"
       colSpan="2"
+      rowSpan="2"
       width="100%"
       height="100%"
       :accessToken="mapToken"
@@ -23,8 +29,26 @@
       @locationPermissionDenied="onLocationPermissionDenied"
       @mapReady="onMapReady($event)"
     />
+    <MDFloatingActionButton
+      ref="alarmFAB"
+      row="1"
+      col="0"
+      horizontalAlignment="left"
+      class="alarm-fab m-b-32 m-l-16"
+      rippleColor="white"
+      color="white"
+      :elevation="elevationFAB"
+      src="res://ic_notifications_white_24dp"
+      @tap="onTapAlarmFAB"
+    />
 
-    <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1">
+    <GridLayout
+      class="right-menu"
+      rows="*, auto"
+      columns="auto"
+      row="0"
+      col="1"
+    >
       <!-- TODO: Add animation -->
       <LocationsList
         v-if="isVisibleLocationsList"
@@ -90,9 +114,17 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
+import { Color } from '@nativescript/core'
+
 import { mapToken, customMapStyle } from '@/setup/map'
 
-import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
+import {
+  setCenter,
+  addMarkers,
+  flyTo,
+  setOnMapLongClickListener,
+  setMapStyle,
+} from '@/api/map'
 import { updateUserMarker } from '@/api/userMarker'
 import { getUserCurrentLocation } from '@/services/geolocationService'
 
@@ -101,6 +133,7 @@ import { getVisibility, setVisibility } from '@/composables/useComponent'
 import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
 import { setMap } from '@/store/mapStore'
 import { numberOfLocations } from '@/store/locationsStore'
+import { getAllAlarms } from '@/store/alarmsStore'
 
 import { pipe } from '@/utils/functional'
 
@@ -137,7 +170,9 @@ export default Vue.extend({
 
   computed: {
     mapStyle(): string | MapStyle {
-      return this.customMapStyle !== undefined ? this.customMapStyle : this.defaultMapStyle
+      return this.customMapStyle !== undefined
+        ? this.customMapStyle
+        : this.defaultMapStyle
     },
 
     isVisibleLocationsList(): boolean {
@@ -147,10 +182,32 @@ export default Vue.extend({
     isVisibleGeocoder(): boolean {
       return getVisibility('geocoder')
     },
+
+    alarmFAB() {
+      return this.$refs.alarmFAB.nativeView
+    },
+
+    isAlarmActive(): boolean {
+      return getAllAlarms().length > 0 ? true : false
+      //   return (this.alarmFAB.backgroundColor = new Color(
+      //     getAllAlarms().length > 0 ? '#dd251b' : '#ced7d8',
+      //   ))
+    },
   },
 
   mounted() {
     getUserCurrentLocation()
+  },
+
+  watch: {
+    isAlarmActive: {
+      // immediate: true,
+      handler(newValue: boolean, oldValue: boolean) {
+        this.alarmFAB.backgroundColor = new Color(
+          newValue ? '#dd251b' : '#ced7d8',
+        )
+      },
+    },
   },
 
   methods: {
@@ -164,7 +221,12 @@ export default Vue.extend({
 
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
-      pipe(this.saveMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setCenter())
+      pipe(
+        this.saveMap(args),
+        addMarkers(),
+        this.setOnMapLongClickAction(),
+        this.setCenter(),
+      )
     },
 
     saveMap(args: any) {
@@ -175,7 +237,11 @@ export default Vue.extend({
 
     setOnMapLongClickAction(): void {
       setOnMapLongClickListener((point: LatLng) => {
-        console.log(`MapComponent::setOnMapLongClickAction:point: ${JSON.stringify(point)}`)
+        console.log(
+          `MapComponent::setOnMapLongClickAction:point: ${JSON.stringify(
+            point,
+          )}`,
+        )
         updateUserMarker(point)
         return true
       })
@@ -183,7 +249,8 @@ export default Vue.extend({
 
     setCenter(): void {
       setCenter().then(() => {
-        if (!numberOfLocations()) this.$emit('first-location-alert')
+        if (numberOfLocations() === undefined)
+          this.$emit('first-location-alert')
       })
     },
 
@@ -213,9 +280,15 @@ export default Vue.extend({
       this.flyTo(newCoordinates)
     },
 
+    onTapAlarmFAB() {
+      console.log(`deactivate alarm button tapped!!`)
+    },
+
     changeMapStyle() {
       this.isSatelliteMap = !this.isSatelliteMap
-      this.isSatelliteMap ? setMapStyle(this.satelliteMapStyle) : setMapStyle(this.mapStyle)
+      this.isSatelliteMap
+        ? setMapStyle(this.satelliteMapStyle)
+        : setMapStyle(this.mapStyle)
     },
   },
 })
@@ -231,6 +304,15 @@ export default Vue.extend({
   background-color: $background;
   color: $secondary;
   horizontal-align: right;
+}
+.alarm-fab {
+  background-color: $primary-light;
+}
+.alarm-fab_activate {
+  background-color: $secondary-variant;
+}
+.alarm-fab_deactivate {
+  background-color: $primary-light;
 }
 .map-style_fab {
   margin-bottom: 192;
