@@ -52,8 +52,16 @@ export default Vue.extend({
       isSwitchEnabled: false,
       isRadioButtonEnabled: false,
       alertsMode: [
-        { text: 'lang.components.activationMenu.alertMode[0]', mode: 'IN', isSelected: true },
-        { text: 'lang.components.activationMenu.alertMode[1]', mode: 'OUT', isSelected: false },
+        {
+          text: 'lang.components.activationMenu.alertMode[0]',
+          mode: 'EXIT',
+          isSelected: true,
+        },
+        {
+          text: 'lang.components.activationMenu.alertMode[1]',
+          mode: 'ENTRANCE',
+          isSelected: false,
+        },
       ],
     }
   },
@@ -68,9 +76,13 @@ export default Vue.extend({
       if (!alertModeSelected.isSelected) {
         alertModeSelected.isSelected = true
         this.alertsMode.map((alertMode) => {
-          if (alertMode.text !== alertModeSelected.text) alertMode.isSelected = false
+          if (alertMode.text !== alertModeSelected.text)
+            alertMode.isSelected = false
         })
         this.$emit('on-alert-mode-selected', alertModeSelected.mode)
+        console.log(
+          `onAlertModeSelected::mode selected: ${alertModeSelected.mode} - ${alertModeSelected.isSelected}`,
+        )
       }
       return
     },

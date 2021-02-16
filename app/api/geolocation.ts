@@ -18,7 +18,10 @@ import {
   getWatchId,
 } from '@/store/userLocationStore'
 
-import { isWatcherEnabled, setIsWatcherEnabled } from '@/composables/useGeolocation'
+import {
+  isWatcherEnabled,
+  setIsWatcherEnabled,
+} from '@/composables/useGeolocation'
 
 import { LatLng, Position } from '@/types/commons'
 import { AlertOptions, CalculateSecurityDistance, AlertMode } from './types'
@@ -38,7 +41,9 @@ export const stopTrackingUserLocation = (watchId: number): void => {
   stopWatchUserLocation(watchId)
 }
 
-export const isUserIntoSecurityArea = (args: CalculateSecurityDistance): void => {
+export const isUserIntoSecurityArea = (
+  args: CalculateSecurityDistance,
+): void => {
   searchUserPosition(args)
 }
 
@@ -46,37 +51,51 @@ const searchUserPosition = (args: CalculateSecurityDistance): any => {
   const { id, mode } = args
 
   const searchId = Utils.setInterval(() => {
-    const userIsIntoSecurityArea = isUserPositionIntoSecurityArea(args)
-    console.log(`geolocation.ts::modeIn::user is into ${id} area? ${userIsIntoSecurityArea}`)
+    const getIsIntoSecurityArea = isUserPositionIntoSecurityArea(args)
+    console.log(
+      `geolocation.ts::modeIn::user is into ${id} area? ${getIsIntoSecurityArea}`,
+    )
 
-    if (!userIsIntoSecurityArea && mode === 'IN') turnOnAlarm(searchId, id, mode)
-    else if (userIsIntoSecurityArea && mode === 'OUT') turnOnAlarm(searchId, id, mode)
+    if (!getIsIntoSecurityArea && mode === 'EXIT')
+      turnOnAlarm(searchId, id, mode)
+    else if (getIsIntoSecurityArea && mode === 'ENTRANCE')
+      turnOnAlarm(searchId, id, mode)
     return
   }, args.interval)
 }
 
-const isUserPositionIntoSecurityArea = (args: CalculateSecurityDistance): boolean => {
+const isUserPositionIntoSecurityArea = (
+  args: CalculateSecurityDistance,
+): boolean => {
   const { initialLocation: center, securityDistance } = args
-  const currentDistance = calculateDistanceToCenter(center, currentUserLocation())
+  const currentDistance = calculateDistanceToCenter(
+    center,
+    currentUserLocation(),
+  )
   setDistanceToCenter(currentDistance)
   // console.log(`${id} alarm: distance: ${securityDistance}, current distance: ${currentDistance}`)
   const isIntoSecurityArea = currentDistance <= securityDistance ? true : false
   return isIntoSecurityArea
 }
 
-const calculateDistanceToCenter = (center: LatLng, userLocation: LatLng): number => {
+const calculateDistanceToCenter = (
+  center: LatLng,
+  userLocation: LatLng,
+): number => {
   const from = point(latLngToPosition(center))
   const to = point(latLngToPosition(userLocation))
   const options = { units: 'kilometers' as const }
 
   const currentDistance = distance(from, to, options)
-  console.log(`geolocation::calculateCurrentDistance:distance is: ${currentDistance}`)
+  console.log(
+    `geolocation::calculateCurrentDistance:distance is: ${currentDistance}`,
+  )
   return currentDistance
 }
 
 const turnOnAlarm = (searchId: any, id: string, mode: AlertMode): void => {
   activeAlarm(searchId)
-  if (mode === 'IN') modeInAlertDialog(id)
+  if (mode === 'EXIT') modeInAlertDialog(id)
   else modeOutAlertDialog(id)
 }
 

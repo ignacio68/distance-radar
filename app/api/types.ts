@@ -30,7 +30,8 @@ export interface SecurityAreaOptions extends Id {
   visibility: LayerVisibility
 }
 
-export type AlertMode = 'IN' | 'OUT'
+export type AlertMode = 'EXIT' | 'ENTRANCE'
+
 export interface SecurityArea {
   id: string
   owner: string

@@ -6,7 +6,11 @@
       height="32"
       borderColor="#00251e"
     />
-    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 96" columns="*">
+    <GridLayout
+      class="new-area-menu m-x-16 m-t-16"
+      rows="auto, auto, 56, auto, 96"
+      columns="*"
+    >
       <CustomSlider
         class="radius-slider"
         row="0"
@@ -111,7 +115,7 @@ export default Vue.extend({
         group: null,
         visibility: 'visible',
         isActive: false,
-        alertMode: 'OUT',
+        alertMode: 'EXIT',
       },
       idError: 0,
       checkedActivation: false,
@@ -183,7 +187,9 @@ export default Vue.extend({
     async setIdAndCenter(): Promise<void> {
       // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
       const options = fetchSelectedLocation()
-      console.log(`NewSecurityAreaMenu.vue::options:  ${JSON.stringify(options)}`)
+      console.log(
+        `NewSecurityAreaMenu.vue::options:  ${JSON.stringify(options)}`,
+      )
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
@@ -209,7 +215,9 @@ export default Vue.extend({
 
     async onAddNewSecurityArea() {
       // console.log('NewSecurityAreaMenu.vue::onAddNewSecurityArea()')
-      !this.idError ? this.newSecurityArea() : console.log(`ID error is: ${this.idError}`)
+      !this.idError
+        ? this.newSecurityArea()
+        : console.log(`ID error is: ${this.idError}`)
     },
 
     showSecurityArea(id: string, value: LayerVisibility) {
