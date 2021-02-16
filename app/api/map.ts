@@ -8,6 +8,7 @@ import {
   mbSetZoomLevel,
   mbSetCenter,
   mbAddMarkers,
+  mbAddLayer,
   mbAnimateCamera,
   mbSetOnMapLongClickListener,
   mbSetMapStyle,
@@ -18,6 +19,7 @@ import { initialMapSettings } from '@/setup/map'
 import { getMap } from '@/store/mapStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 import { getLocations } from '@/store/locationsStore'
+import { getAllSecurityAreas } from '@/store/securityAreasStore'
 
 import { MapSettings, LatLng, Map } from './types'
 import { SetOnMapLongClickListener } from '@/services/types'
@@ -34,7 +36,9 @@ export const setMap = (settings?: MapSettings): void => {
 export const setCenter = async (): Promise<void> => {
   console.log('map.ts::setCenter()')
   await getUserCurrentLocation().then((coordinates: LatLng) => {
-    console.log(`map.ts::setCenter() coordinates: ${JSON.stringify(coordinates)}`)
+    console.log(
+      `map.ts::setCenter() coordinates: ${JSON.stringify(coordinates)}`,
+    )
     mbSetZoomLevel(getMap(), {
       level: 15,
       animated: true,
@@ -44,7 +48,7 @@ export const setCenter = async (): Promise<void> => {
         lng: coordinates.lng,
         animated: true,
       }).then(() => {
-        if (userMarker()) updateUserMarker(coordinates)
+        if (userMarker() !== undefined) updateUserMarker(coordinates)
         else {
           console.log('There is not user marker, create one!')
           createUserMarker(coordinates)
@@ -56,7 +60,22 @@ export const setCenter = async (): Promise<void> => {
 
 export const addMarkers = (): void => {
   console.log(`map.ts::addMarkers: ${JSON.stringify(getLocations())}`)
-  mbAddMarkers(getMap(), getLocations())
+  mbAddMarkers(getMap(), getLocations()).then(() =>
+    addUserMarker().then(() => addSecurityAreas()),
+  )
+}
+
+const addUserMarker = async () => {
+  if (userMarker() !== undefined) mbAddMarkers(getMap(), [userMarker()])
+  return
+}
+
+const addSecurityAreas = (): void => {
+  console.log(
+    `map.ts::addSecurityAreas: ${JSON.stringify(getAllSecurityAreas())}`,
+  )
+  const securityAreas = getAllSecurityAreas()
+  securityAreas.map((securityArea) => mbAddLayer(getMap(), securityArea.layer))
 }
 
 export const flyTo = (location: LatLng): void => {
@@ -70,7 +89,9 @@ export const flyTo = (location: LatLng): void => {
   }).then(() => updateUserMarker(location))
 }
 
-export const setOnMapLongClickListener = (listener: SetOnMapLongClickListener): Promise<boolean> =>
-  mbSetOnMapLongClickListener(getMap(), listener)
+export const setOnMapLongClickListener = (
+  listener: SetOnMapLongClickListener,
+): Promise<boolean> => mbSetOnMapLongClickListener(getMap(), listener)
 
-export const setMapStyle = (style: string): Promise<unknown> => mbSetMapStyle(getMap(), style)
+export const setMapStyle = (style: string): Promise<unknown> =>
+  mbSetMapStyle(getMap(), style)
