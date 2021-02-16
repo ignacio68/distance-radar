@@ -20,8 +20,10 @@ export const mbSetMap = (settings: ShowOptions): MapboxView => {
   return mapView
 }
 
-export const mbSetCenter = (map: MapboxViewApi, options: SetCenterOptions): Promise<unknown> =>
-  map.setCenter(options)
+export const mbSetCenter = (
+  map: MapboxViewApi,
+  options: SetCenterOptions,
+): Promise<unknown> => map.setCenter(options)
 
 export const mbSetZoomLevel = (
   map: MapboxViewApi,
@@ -38,15 +40,22 @@ export const mbSetOnMapLongClickListener = (
   listener: SetOnMapLongClickListener,
 ): Promise<boolean> => map.setOnMapLongClickListener(listener)
 
-export const mbSetMapStyle = (map: MapboxViewApi, style: string | MapStyle): Promise<unknown> =>
-  map.setMapStyle(style)
+export const mbSetMapStyle = (
+  map: MapboxViewApi,
+  style: string | MapStyle,
+): Promise<unknown> => map.setMapStyle(style)
 
-export const mbAddMarkers = (map: MapboxViewApi, markers: MapboxMarker[]): Promise<unknown> => {
+export const mbAddMarkers = (
+  map: MapboxViewApi,
+  markers: MapboxMarker[],
+): Promise<unknown> => {
   console.log('mapboxService::addMarkers()')
   return map.addMarkers(markers)
 }
-export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<void> =>
-  map.removeMarkers(markers)
+export const mbRemoveMarkers = (
+  map: MapboxViewApi,
+  markers?: string[],
+): Promise<void> => map.removeMarkers(markers)
 
 // CURRENT IT'S NOT USED
 export const mbAddSource = (
@@ -59,18 +68,27 @@ export const mbAddSource = (
   map
     .addSource(id, options)
     .then(() => console.log('mapboxService::addSource: ADDED SOURCE!!'))
-    .catch((error) => console.log(`mapboxService::addSource: ERROR!!: ${error.message | error}`))
+    .catch((error) =>
+      console.log(
+        `mapboxService::addSource: ERROR!!: ${error.message | error}`,
+      ),
+    )
 
 // CURRENT IT'S NOT USED
 export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<void> =>
   map.removeSource(id)
 
-export const mbAddLayer = async (map: MapboxViewApi, style: any): Promise<void> => {
-  console.log(`mapboxService::addLayer(): ${JSON.stringify(style.paint)}`)
+export const mbAddLayer = async (
+  map: MapboxViewApi,
+  style: any,
+): Promise<void> => {
   map
     .addLayer(style)
     .then(() => console.log('mapboxService::addLayer(): ADDED LAYER!!'))
-    .catch((error) => console.log(`mapboxService::addLayer(): ERROR!!: ${error.message}`))
+    .catch((error) =>
+      console.log(`mapboxService::addLayer(): ERROR!!: ${error.message}`),
+    )
 }
 
-export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<void> => map.removeLayer(id)
+export const mbRemoveLayer = (map: MapboxViewApi, id: string): Promise<void> =>
+  map.removeLayer(id)
