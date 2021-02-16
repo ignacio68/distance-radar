@@ -1,5 +1,10 @@
 <template>
-  <StackLayout ref="radioButtonWrap" class="radio-btn" :orientation="orientation" @tap="onTap">
+  <StackLayout
+    ref="radioButtonWrap"
+    class="radio-btn"
+    :orientation="orientation"
+    @tap="onTap"
+  >
     <GridLayout class="radio-btn__radio" columns="auto" rows="auto">
       <Label
         ref="radioRipple"
@@ -215,8 +220,6 @@ export default Vue.extend({
     onTap() {
       if (this.isEnabled) {
         console.log('You have tapped the radio button')
-        // this.setEnabledColor(this.lastColor, this.textColor)
-        // this.setCheckedColor()
         this.onRadioRipple()
         this.$emit('on-item-selected')
       }
