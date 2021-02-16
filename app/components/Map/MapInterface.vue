@@ -29,17 +29,12 @@
       @locationPermissionDenied="onLocationPermissionDenied"
       @mapReady="onMapReady($event)"
     />
-    <MDFloatingActionButton
-      ref="alarmFAB"
+    <AlarmFAB
       row="1"
       col="0"
       horizontalAlignment="left"
-      class="alarm-fab m-b-32 m-l-16"
-      rippleColor="white"
-      color="white"
-      :elevation="elevationFAB"
-      src="res://ic_notifications_white_24dp"
-      @tap="onTapAlarmFAB"
+      class="m-b-32 m-l-16"
+      @on-tap-alarm-fab="onTapAlarmFAB"
     />
 
     <GridLayout
@@ -114,8 +109,6 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { Color } from '@nativescript/core'
-
 import { mapToken, customMapStyle } from '@/setup/map'
 
 import {
@@ -133,7 +126,6 @@ import { getVisibility, setVisibility } from '@/composables/useComponent'
 import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
 import { setMap } from '@/store/mapStore'
 import { numberOfLocations } from '@/store/locationsStore'
-import { getAllAlarms } from '@/store/alarmsStore'
 
 import { pipe } from '@/utils/functional'
 
@@ -145,12 +137,14 @@ import '@/plugins/installMapbox'
 import '@/plugins/installFAB'
 import LocationsList from '@/components/Locations/LocationsList.vue'
 import Geocoder from '@/components/Geocoder/Geocoder.vue'
+import AlarmFAB from './AlarmFAB.vue'
 
 export default Vue.extend({
   name: 'MapInterface',
   components: {
     LocationsList,
     Geocoder,
+    AlarmFAB,
   },
 
   data() {
@@ -182,32 +176,10 @@ export default Vue.extend({
     isVisibleGeocoder(): boolean {
       return getVisibility('geocoder')
     },
-
-    alarmFAB() {
-      return this.$refs.alarmFAB.nativeView
-    },
-
-    isAlarmActive(): boolean {
-      return getAllAlarms().length > 0 ? true : false
-      //   return (this.alarmFAB.backgroundColor = new Color(
-      //     getAllAlarms().length > 0 ? '#dd251b' : '#ced7d8',
-      //   ))
-    },
   },
 
   mounted() {
     getUserCurrentLocation()
-  },
-
-  watch: {
-    isAlarmActive: {
-      // immediate: true,
-      handler(newValue: boolean, oldValue: boolean) {
-        this.alarmFAB.backgroundColor = new Color(
-          newValue ? '#dd251b' : '#ced7d8',
-        )
-      },
-    },
   },
 
   methods: {
@@ -304,15 +276,6 @@ export default Vue.extend({
   background-color: $background;
   color: $secondary;
   horizontal-align: right;
-}
-.alarm-fab {
-  background-color: $primary-light;
-}
-.alarm-fab_activate {
-  background-color: $secondary-variant;
-}
-.alarm-fab_deactivate {
-  background-color: $primary-light;
 }
 .map-style_fab {
   margin-bottom: 192;
