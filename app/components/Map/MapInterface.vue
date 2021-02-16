@@ -178,13 +178,34 @@ export default Vue.extend({
     },
   },
 
+  beforeMount() {
+    console.log('__MapInterface::beforeMount()')
+  },
+
   mounted() {
+    console.log('__MapInterface::mounted()')
     getUserCurrentLocation()
+  },
+
+  beforeUpdate() {
+    console.log('__MapInterface::beforeUpdate()')
+  },
+
+  updated() {
+    console.log('__MapInterface::updated()')
+  },
+
+  beforeDestroy() {
+    console.log('__MapInterface::beforeDestroy()')
+  },
+
+  destroyed() {
+    console.log('__MapInterface::beforeDestroy()')
   },
 
   methods: {
     onLocationPermissionGranted() {
-      console.log('MapComponent::onLocationPermissionGranted()')
+      console.log('MapInterface::onLocationPermissionGranted()')
     },
 
     onLocationPermissionDenied() {
@@ -194,14 +215,14 @@ export default Vue.extend({
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
       pipe(
-        this.saveMap(args),
+        this.setMap(args),
         addMarkers(),
         this.setOnMapLongClickAction(),
         this.setCenter(),
       )
     },
 
-    saveMap(args: any) {
+    setMap(args: any) {
       const map: Map = args.map
       console.log(`MapComponent::setMap()`)
       setMap(map)
