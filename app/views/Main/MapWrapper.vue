@@ -1,6 +1,10 @@
 <template>
   <GridLayout>
-    <MapInterface height="100%" row="0" @first-location-alert="$emit('first-location-alert')" />
+    <MapInterface
+      height="100%"
+      row="0"
+      @first-location-alert="$emit('first-location-alert')"
+    />
     <StackLayout
       v-if="backgroundFilter"
       class="backgroundFilter"
@@ -36,9 +40,9 @@ import Vue from 'nativescript-vue'
 import { getVisibility } from '@/composables/useComponent'
 import { Screen, Enums } from '@nativescript/core'
 
-import MapInterface from './MapInterface.vue'
-import NewLocationMenu from './NewLocationMenu.vue'
-import NewSecurityAreaMenu from './NewSecurityAreaMenu.vue'
+import MapInterface from '@/components/Map/MapInterface.vue'
+import NewLocationMenu from '@/components/Map/NewLocationMenu.vue'
+import NewSecurityAreaMenu from '@/components/Map/NewSecurityAreaMenu.vue'
 
 export default Vue.extend({
   name: 'Home',
@@ -68,7 +72,9 @@ export default Vue.extend({
   computed: {
     isVisibleNewLocationMenu(): boolean {
       console.log(
-        `MapWrapper::computed:isVisibleNewLocationMenu() ${getVisibility('newLocationMenu')}`,
+        `MapWrapper::computed:isVisibleNewLocationMenu() ${getVisibility(
+          'newLocationMenu',
+        )}`,
       )
       return getVisibility('newLocationMenu')
     },
@@ -99,7 +105,9 @@ export default Vue.extend({
     },
 
     isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
-      console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
+      console.log(
+        `MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`,
+      )
       if (newValue) {
         this.bottomSheetContent = NewSecurityAreaMenu
         this.showBottomSheet()
@@ -107,6 +115,30 @@ export default Vue.extend({
         this.hideBottomSheet()
       }
     },
+  },
+
+  beforeMount() {
+    console.log('__MapWrapper::beforeMount()')
+  },
+
+  mounted() {
+    console.log('__MapWrapper::mounted()')
+  },
+
+  beforeUpdate() {
+    console.log('__MapWrapper::beforeUpdate()')
+  },
+
+  updated() {
+    console.log('__MapWrapper::updated()')
+  },
+
+  beforeDestroy() {
+    console.log('__MapWrapper::beforeDestroy()')
+  },
+
+  destroyed() {
+    console.log('__MapWrapper::beforeDestroy()')
   },
 
   methods: {

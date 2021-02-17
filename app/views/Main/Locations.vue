@@ -1,31 +1,19 @@
 <template>
-  <Page
-    actionBarHidden="true"
-    backgroundSpanUnderStatusBar="true"
-    androidStatusBarBackground="#00251e"
-  >
-   <GridLayout
-      class="Locations"
-      rows="auto, *"
-    >
-      <CommonActionBar
-        row="0"
-        :title="$t('lang.views.Locations.title')"
-        @on-tap="onBackNavigation"
-      />
-      <ScrollView
-        row="1"
-      >
-        <ListView for="location in locations" @itemTap="onItemTap">
-          <v-template>
-            <LocationCard
-              :item="location"
-              @on-tap="onConfirmDeleteLocation(location.id)"
-            />
-          </v-template>
-        </ListView>
-      </ScrollView>
-         <!-- <StackLayout
+  <GridLayout class="Locations" rows="auto, *">
+    <Label row="0" text="Locations Page" fontSize="24" />
+    <ScrollView row="1">
+      <ListView for="location in locations" @itemTap="onItemTap">
+        <v-template>
+          <LocationCard
+            :item="location"
+            :activationText="$t('lang.components.activationMenu.activation')"
+            :updateButtonText="$t('lang.components.locationCard.updateButton')"
+            @on-tap="onConfirmDeleteLocation(location.id)"
+          />
+        </v-template>
+      </ListView>
+    </ScrollView>
+    <!-- <StackLayout
           row="2"
           class="locations-list-menu_buttons"
           width="100%"
@@ -48,8 +36,7 @@
             @tap="onClose"
           />
         </StackLayout> -->
-    </GridLayout>
-  </Page>
+  </GridLayout>
 </template>
 <script lang="ts">
 import Vue from 'nativescript-vue'
@@ -65,44 +52,37 @@ import CommonActionBar from '@/components/UI/CommonActionBar.vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
 import '@/plugins/installMDButton'
 
-import Main from './Main.vue'
-
 export default Vue.extend({
   name: 'Locations',
 
   components: {
     LocationCard,
     CommonActionBar,
-    Main
-    },
+  },
 
   props: {
     isCanceled: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
 
   data() {
     return {
       locations: getLocations(),
-      Main: Main,
     }
   },
 
   methods: {
-    onBackNavigation() {
-      console.log('Locations::onBackNavigation()')
-      this.$navigateTo(Main, {'ClearHistory': true})
-    },
-
     onConfirmDeleteLocation(id: string): void {
       const options: ConfirmOptions = {
         // title: `${this.$t('lang.dialogs.deleteLocation.title')}`,
         title: id,
         message: `${this.$t('lang.dialogs.deleteLocation.message')}`,
         okButtonText: `${this.$t('lang.dialogs.deleteLocation.okButton')}`,
-        cancelButtonText: `${this.$t('lang.dialogs.deleteLocation.cancelButton')}`
+        cancelButtonText: `${this.$t(
+          'lang.dialogs.deleteLocation.cancelButton',
+        )}`,
       }
       confirmDeleteLocation(options, id)
     },
@@ -117,8 +97,7 @@ export default Vue.extend({
 
     onClose() {
       console.log('Locations::onClose()')
-    }
-  }
-
+    },
+  },
 })
 </script>

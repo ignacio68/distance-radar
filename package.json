@@ -39,6 +39,7 @@
   },
   "dependencies": {
     "@nativescript-community/ui-mapbox": "^6.2.3",
+    "@nativescript-community/ui-material-bottom-navigation": "^5.2.5",
     "@nativescript-community/ui-material-button": "^5.0.25",
     "@nativescript-community/ui-material-floatingactionbutton": "^5.0.14",
     "@nativescript-community/ui-material-slider": "^5.1.4",
