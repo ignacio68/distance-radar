@@ -1,4 +1,11 @@
 export default {
+  Main: {
+    bottomTabbar: {
+      map: 'Map',
+      locations: 'Locations',
+      securityAreas: 'Areas',
+    },
+  },
   Locations: {
     title: 'Locations',
   },
