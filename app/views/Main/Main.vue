@@ -32,10 +32,7 @@
           </MDTabStripItem>
         </MDTabStrip>
         <MDTabContentItem>
-          <MapWrapper
-            id="MapWrapper"
-            @first-location-alert="onConfirmFirstLocation"
-          />
+          <MapWrapper />
         </MDTabContentItem>
         <MDTabContentItem>
           <Locations />
@@ -92,8 +89,6 @@ import Vue from 'nativescript-vue'
 
 import '@/plugins/installMDBottomNavigation'
 
-import { ConfirmOptions } from '@nativescript/core'
-
 import { activateAlarms } from '@/api/securityAreas'
 
 import { getAllAlarms } from '@/store/alarmsStore'
@@ -105,7 +100,6 @@ import {
 import MapWrapper from './MapWrapper.vue'
 import Locations from './Locations.vue'
 import SecurityAreas from './SecurityAreas.vue'
-import { confirmFirstLocation } from '@/components/Dialogs/ConfirmFirstLocation'
 import MainActionBar from '@/components/UI/MainActionBar.vue'
 
 export default Vue.extend({
@@ -138,18 +132,6 @@ export default Vue.extend({
   },
 
   methods: {
-    onConfirmFirstLocation(): void {
-      const options: ConfirmOptions = {
-        title: `${this.$t('lang.dialogs.firstLocation.title')}`,
-        message: `${this.$t('lang.dialogs.firstLocation.message')}`,
-        okButtonText: `${this.$t('lang.dialogs.firstLocation.okButton')}`,
-        cancelButtonText: `${this.$t(
-          'lang.dialogs.firstLocation.cancelButton',
-        )}`,
-      }
-      confirmFirstLocation(options)
-    },
-
     activateAlarms(alarms: string[]): void {
       console.log(`Main.vue::activateAlarms:alarms ${JSON.stringify(alarms)}`)
       activateAlarms(alarms)

@@ -3,7 +3,7 @@
     <MapInterface
       height="100%"
       row="0"
-      @first-location-alert="$emit('first-location-alert')"
+      @first-location-alert="onFirstLocationAlert"
     />
     <StackLayout
       v-if="backgroundFilter"
@@ -36,6 +36,9 @@
 
 <script lang="ts">
 import Vue from 'nativescript-vue'
+
+import { ConfirmOptions } from '@nativescript/core'
+import { confirmFirstLocation } from '@/components/Dialogs/ConfirmFirstLocation'
 
 import { getVisibility } from '@/composables/useComponent'
 import { Screen, Enums } from '@nativescript/core'
@@ -147,21 +150,36 @@ export default Vue.extend({
       return
     },
 
+    onFirstLocationAlert(): void {
+      const options: ConfirmOptions = {
+        title: `${this.$t('lang.dialogs.firstLocation.title')}`,
+        message: `${this.$t('lang.dialogs.firstLocation.message')}`,
+        okButtonText: `${this.$t('lang.dialogs.firstLocation.okButton')}`,
+        cancelButtonText: `${this.$t(
+          'lang.dialogs.firstLocation.cancelButton',
+        )}`,
+      }
+      confirmFirstLocation(options)
+    },
+
     /***** BOTTOM SHEET *****/
     loadBottomSheet() {
       console.log('loadBottomSheet()')
       this.bottomSheet.translateY = this.screenHeight
     },
+
     showBottomSheet() {
       console.log('showBottomSheet()')
       this.backgroundFilter = true
       this.animationBottomSheet(800)
     },
+
     async hideBottomSheet() {
       console.log('hideBottomSheet()')
       await this.animationBottomSheet(0)
       this.backgroundFilter = false
     },
+
     animationBottomSheet(height: number) {
       this.bottomSheet.animate({
         duration: 1000,
