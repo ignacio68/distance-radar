@@ -1,13 +1,10 @@
 <template>
   <StackLayout class="Drawer">
-    <DrawerHeader
-      class="drawer-header"
-      :text="userName"
-    />
+    <DrawerHeader class="drawer-header" :text="userName" />
     <DrawerItem
       class="drawer-item"
-      :text="$t('lang.components.drawerItem.locations')"
-      @on-tap="onItemTap(Locations)"
+      :text="$t('lang.components.drawerItem.configuration')"
+      @on-tap="onItemTap(Configuration)"
     />
     <DrawerItem
       class="drawer-item"
@@ -21,51 +18,51 @@
 </template>
 
 <script lang="ts">
-  import Vue from 'nativescript-vue'
+import Vue from 'nativescript-vue'
 
-  import { setVisibility } from '@/composables/useComponent'
+import { setVisibility } from '@/composables/useComponent'
 
-  import DrawerHeader from '@/components/Drawer/DrawerHeader.vue'
-  import DrawerItem from '@/components/Drawer/DrawerItem.vue'
+import DrawerHeader from '@/components/Drawer/DrawerHeader.vue'
+import DrawerItem from '@/components/Drawer/DrawerItem.vue'
 
-  import Locations from '@/views/Main/Locations.vue'
+import Configuration from '@/views/Drawer/Configuration.vue'
 
-  export default Vue.extend({
-    name: 'DrawerContent',
+export default Vue.extend({
+  name: 'DrawerContent',
 
-    components: {
-      DrawerHeader,
-      DrawerItem,
-      Locations
-    },
+  components: {
+    DrawerHeader,
+    DrawerItem,
+    Configuration,
+  },
 
-    data() {
-      return {
-        userName: 'User_Name',
-        Locations: Locations
-      }
-    },
-
-    methods: {
-      onItemTap(component: unknown): void {
-        console.log(`DrawerItem::methods:onTap(): ${component}`)
-        this.$navigateTo(component, {'ClearHistory': true})
-        setVisibility('drawer', false)
-      }
+  data() {
+    return {
+      userName: 'User_Name',
+      Configuration: Configuration,
     }
-  })
+  },
+
+  methods: {
+    onItemTap(component: unknown): void {
+      console.log(`DrawerItem::methods:onTap(): ${component}`)
+      this.$navigateTo(component, { ClearHistory: true })
+      setVisibility('drawer', false)
+    },
+  },
+})
 </script>
 
 <style lang="scss" scoped>
- @import '../../app-variables';
+@import '../../app-variables';
 
-.drawer{
+.drawer {
   background-color: white;
 }
 .drawer-header {
   padding: 50 16 16 16;
   margin-bottom: 16;
-  background-color:#007a70;
+  background-color: #007a70;
   color: #ffffff;
   font-size: 24;
 }

@@ -6,8 +6,8 @@ export default {
       securityAreas: 'Areas',
     },
   },
-  Locations: {
-    title: 'Locations',
+  Configuration: {
+    title: 'Configuration',
   },
   welcome: {
     title: 'WELCOME!',

@@ -6,7 +6,8 @@ export default {
     title: 'Nueva Ubicación',
     id: 'Nombre:',
     groupError: 'La ubicación necesita un grupo',
-    idError: 'Hace falta un nombre | Tienes una localización con el mismo nombre',
+    idError:
+      'Hace falta un nombre | Tienes una localización con el mismo nombre',
     group: 'Grupo: ',
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
@@ -30,8 +31,11 @@ export default {
     noResultsText: 'No se han encontrado resultados',
   },
   drawerItem: {
-    locations: 'Ubicaciones',
+    configuration: 'Configuración',
     following: 'Siguiendo',
     followers: 'Seguidores',
+  },
+  locationCard: {
+    updateButton: 'Actualizar',
   },
 }
