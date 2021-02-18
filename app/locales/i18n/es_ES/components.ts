@@ -6,8 +6,7 @@ export default {
     title: 'Nueva Ubicación',
     id: 'Nombre:',
     groupError: 'La ubicación necesita un grupo',
-    idError:
-      'Hace falta un nombre | Tienes una localización con el mismo nombre',
+    idError: 'Hace falta un nombre | Tienes una ubicación con el mismo nombre',
     group: 'Grupo: ',
     cancelButton: 'Cancelar',
     addButton: 'Añadir',
@@ -35,7 +34,5 @@ export default {
     following: 'Siguiendo',
     followers: 'Seguidores',
   },
-  locationCard: {
-    updateButton: 'Actualizar',
-  },
+  locationCard: {},
 }

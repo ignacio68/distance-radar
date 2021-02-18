@@ -35,7 +35,5 @@ export default {
     following: 'Following',
     followers: 'Followers',
   },
-  locationCard: {
-    updateButton: 'Update',
-  },
+  locationCard: {},
 }
