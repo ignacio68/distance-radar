@@ -1,41 +1,44 @@
 <template>
   <GridLayout class="Locations" rows="auto, *">
-    <Label row="0" text="Locations Page" fontSize="24" />
-    <ScrollView row="1">
-      <ListView for="location in locations" @itemTap="onItemTap">
-        <v-template>
-          <LocationCard
-            :item="location"
-            :activationText="$t('lang.components.activationMenu.activation')"
-            :updateButtonText="$t('lang.components.locationCard.updateButton')"
-            @on-tap="onConfirmDeleteLocation(location.id)"
-          />
-        </v-template>
-      </ListView>
-    </ScrollView>
-    <!-- <StackLayout
-          row="2"
-          class="locations-list-menu_buttons"
-          width="100%"
-          orientation="horizontal"
-          horizontalAlignment="right"
+    <Label
+      row="0"
+      class="Locations-title m-x-16 p-t-8"
+      :text="$t('lang.views.Locations.title')"
+    />
+    <StackLayout row="1" class="m-x-16 p-t-16">
+      <Label
+        v-if="locations.length === 0"
+        class="Locations-empty m-x-16 m-t-32"
+        :text="$t('lang.views.Locations.noLocation')"
+      />
+      <GridLayout v-else rows="*, auto">
+        <!-- <ScrollView row="0" class="Locations-list m-x-16"> -->
+        <ListView
+          row="0"
+          for="location in locations"
+          @itemTap="onItemTap"
+          class="Location-list"
         >
-          <MDButton
-            class="locations-list-menu_button_cancel"
-            width="144"
-            :text="$t('lang.components.newLocation.cancelButton')"
-            borderColor="#007a70"
-            borderWidth="1"
-            @tap="onCancel"
-          />
-          <MDButton
-            class="locations-list-menu_button_add m-r-0"
-            width="144"
-            :isEnabled="isEnabledAddButton"
-            :text="$t('lang.components.newLocation.addButton')"
-            @tap="onClose"
-          />
-        </StackLayout> -->
+          <v-template>
+            <LocationCard
+              :item="location"
+              class="Locations-list_item m-y-4"
+              :coordinatesTitle="
+                $t('lang.components.locationCard.coordinatesTitle')
+              "
+              @on-tap="onConfirmDeleteLocation(location.id)"
+            />
+          </v-template>
+        </ListView>
+        <MDButton
+          row="1"
+          class="Locations-accept-button m-t-32 pull-right"
+          width="144"
+          @tap="onButtonTap"
+          :text="$t('lang.views.Locations.acceptButton')"
+        />
+      </GridLayout>
+    </StackLayout>
   </GridLayout>
 </template>
 <script lang="ts">
@@ -44,10 +47,11 @@ import Vue from 'nativescript-vue'
 import { confirmDeleteLocation } from '@/components/Dialogs/ConfirmDeleteLocation'
 import { ConfirmOptions } from '@nativescript/core'
 
-import { setVisibility, getVisibility } from '@/composables/useComponent'
+import { getLocations } from '@/store/locationsStore'
 
-import { getLocations, updateLocationsStore } from '@/store/locationsStore'
+import { Location } from '@/api/types'
 
+import Main from '@/views/Main/Main.vue'
 import CommonActionBar from '@/components/UI/CommonActionBar.vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
 import '@/plugins/installMDButton'
@@ -58,19 +62,19 @@ export default Vue.extend({
   components: {
     LocationCard,
     CommonActionBar,
-  },
-
-  props: {
-    isCanceled: {
-      type: Boolean,
-      default: false,
-    },
+    Main,
   },
 
   data() {
     return {
-      locations: getLocations(),
+      Main: Main,
     }
+  },
+
+  computed: {
+    locations(): Location[] {
+      return getLocations()
+    },
   },
 
   methods: {
@@ -87,17 +91,34 @@ export default Vue.extend({
       confirmDeleteLocation(options, id)
     },
 
+    onButtonTap() {
+      console.log('Locations::onButtonTap()')
+      // this.$navigateTo(this.Main, { ClearHistory: true })
+    },
+
     onItemTap() {
       console.log('Locations::onItemTap()')
-    },
-
-    onCancel() {
-      console.log('Locations::onCancel()')
-    },
-
-    onClose() {
-      console.log('Locations::onClose()')
     },
   },
 })
 </script>
+
+<style lang="scss" scoped>
+@import '../../app-variables';
+.Locations-title {
+  font: {
+    size: $font-sz-xl;
+    weight: 700;
+  }
+  color: $primary-dark;
+}
+
+.Locations-empty {
+  font-size: $font-sz-l;
+  color: $primary-dark;
+}
+
+.Locations-list_item {
+  background-color: $surface-light;
+}
+</style>

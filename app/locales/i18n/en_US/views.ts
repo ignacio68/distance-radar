@@ -6,9 +6,17 @@ export default {
       securityAreas: 'Areas',
     },
   },
+
   Configuration: {
     title: 'Configuration',
   },
+
+  Locations: {
+    title: 'Locations',
+    noLocation: "You don't have any location",
+    acceptButton: 'Accept',
+  },
+
   welcome: {
     title: 'WELCOME!',
     subtitle: 'Load your security areas ',
@@ -18,6 +26,7 @@ export default {
     toSignUp: 'To Sign Up',
     toLogIn: 'I have a count',
   },
+
   signup: {
     text: 'Please, write your phone number',
     phoneNumberHint: 'phone number',

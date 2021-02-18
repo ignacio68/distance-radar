@@ -6,9 +6,17 @@ export default {
       securityAreas: 'Areas',
     },
   },
+
+  Locations: {
+    title: 'Ubicaciones',
+    noLocation: 'No tienes ninguna ubicación',
+    acceptButton: 'Aceptar',
+  },
+
   Configuration: {
     title: 'Configuración',
   },
+
   welcome: {
     title: '¡BIENVENIDO!',
     subtitle: 'Activa tus zonas de seguridad',
@@ -18,6 +26,7 @@ export default {
     toSignUp: 'Dar de alta',
     toLogIn: 'Ya tengo una cuenta',
   },
+
   signup: {
     text: 'Escribe tu número de movil, por favor',
     phoneNumberHint: 'número de teléfono',

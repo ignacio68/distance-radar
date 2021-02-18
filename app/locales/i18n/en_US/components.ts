@@ -35,5 +35,7 @@ export default {
     following: 'Following',
     followers: 'Followers',
   },
-  locationCard: {},
+  locationCard: {
+    coordinatesTitle: 'Coordinates',
+  },
 }
