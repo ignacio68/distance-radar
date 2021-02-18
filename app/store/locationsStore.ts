@@ -1,5 +1,7 @@
 import Vue from 'nativescript-vue'
 
+import { deleteSecurityArea } from './securityAreasStore'
+
 import {
   createDatabase,
   getAllItems,
@@ -20,7 +22,9 @@ const state = Vue.observable({
 const database: Database = createDatabase('locations')
 
 const initializeDatabase = (): void =>
-  getAllItems(database).forEach((location: Location) => addLocationToState(location))
+  getAllItems(database).forEach((location: Location) =>
+    addLocationToState(location),
+  )
 
 const addLocationToState = (location: Location): void => {
   console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
@@ -38,7 +42,8 @@ const updateLocation = async (location: Location): Promise<Location> => {
   return updatedLocation
 }
 
-export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
+export const hasId = (id: string): boolean =>
+  findIndex(id) >= 0 ? true : false
 
 export const numberOfLocations = (): number => state.locations.length
 
@@ -52,7 +57,9 @@ export const addNewLocation = (location: Location): void => {
   addItem<Location>(database, location, location.id)
 }
 
-export const updateLocationsStore = async (location: Location): Promise<void> => {
+export const updateLocationsStore = async (
+  location: Location,
+): Promise<void> => {
   const resolveLocation = await updateLocation(location)
   state.locations.splice(findIndex(location.id), 1, resolveLocation)
   updateItem(database, resolveLocation.id, resolveLocation)
@@ -61,8 +68,11 @@ export const updateLocationsStore = async (location: Location): Promise<void> =>
 export const deleteLocation = (id: string): void => {
   state.locations.splice(findIndex(id), 1)
   deleteItem(database, id)
+  deleteSecurityArea(id)
+  // TODO: delete the security areas that they are ownership of the location
 }
 
+// TODO: improve the code
 export const deleteAllLocations = (): void => {
   state.locations.length = 0
   resetDatabase(database)
@@ -73,7 +83,8 @@ export const setSelectedLocation = (id: string): string => {
   return (state.selectedLocation = id)
 }
 
-export const getSelectedLocation = (): Location => getLocation(state.selectedLocation)
+export const getSelectedLocation = (): Location =>
+  getLocation(state.selectedLocation)
 
 export const hasSecurityArea = async (id: string): Promise<boolean> => {
   console.log(`locationsStore.ts::hasSecurityArea: ${id}`)
@@ -83,14 +94,17 @@ export const hasSecurityArea = async (id: string): Promise<boolean> => {
 
 export const removeSecurityAreaFromLocation = (
   locationId: string,
-  securityAreaId: string
+  securityAreaId: string,
 ): void => {
   const locationIndex = findIndex(locationId)
   const securityAreaIndex = getSecurityAreaIndex(locationIndex, securityAreaId)
   state.locations[locationIndex].securityAreas.splice(securityAreaIndex, 1)
 }
 
-const getSecurityAreaIndex = (locationIndex: number, securityAreaId: string): number =>
+const getSecurityAreaIndex = (
+  locationIndex: number,
+  securityAreaId: string,
+): number =>
   state.locations[locationIndex].securityAreas.findIndex(
-    (securityArea) => securityArea === securityAreaId
+    (securityArea) => securityArea === securityAreaId,
   )
