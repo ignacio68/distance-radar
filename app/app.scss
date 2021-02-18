@@ -1,16 +1,15 @@
-@import "~@nativescript/theme/core";
-@import "~@nativescript/theme/blue";
+@import '~@nativescript/theme/core';
+@import '~@nativescript/theme/blue';
 
-@import "./app-variables";
+@import './app-variables';
 
 // classes
-@import "./styles/MDMargins";
-@import "./styles/MDPaddings";
-@import "./styles/MDFonts";
+@import './styles/MDMargins';
+@import './styles/MDPaddings';
+@import './styles/MDFonts';
 
 // Place any CSS rules you want to apply on both iOS and Android here.
 // This is where the vast majority of your CSS code goes.
-
 
 /*------ GENERAL ------*/
 Page {
@@ -49,6 +48,7 @@ MDButton {
   border-radius: 50%;
   background-color: $primary;
   color: $onPrimary;
+  font-size: $font-sz-s;
 }
 
 MDTextField {
@@ -89,12 +89,11 @@ MDSlider {
 .DrawerItem {
   background-color: $surface;
 
-  Label{
+  Label {
     background-color: transparent;
     color: $primary-dark;
   }
 }
-
 
 // // Place any CSS rules you want to apply on both iOS and Android here.
 // // This is where the vast majority of your CSS code goes.
