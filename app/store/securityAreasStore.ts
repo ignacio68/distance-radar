@@ -27,19 +27,16 @@ const initializeDatabase = (): void =>
   )
 
 const addSecurityAreaToState = (securityArea: SecurityArea): void => {
-  console.log(`securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(alarm)}`)
+  console.log(
+    `securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(alarm)}`,
+  )
   state.securityAreas.push(securityArea)
 }
 
 initializeDatabase()
 
-const find = (id: string): SecurityArea =>
-  state.securityAreas.find((securityArea) => securityArea.id === id)
-
-const findIndex = (id: string): number =>
-  state.securityAreas.findIndex((securityArea) => securityArea.id === id)
-
-export const hasId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
+export const hasId = (id: string): boolean =>
+  findIndex(id) >= 0 ? true : false
 
 export const isSecurityAreaVisible = (id: string): LayerVisibility => {
   const index = findIndex(id)
@@ -47,12 +44,20 @@ export const isSecurityAreaVisible = (id: string): LayerVisibility => {
   return isVisible
 }
 
+const findIndex = (id: string): number =>
+  state.securityAreas.findIndex((securityArea) => securityArea.id === id)
+
 export const getSecurityArea = (id: string): SecurityArea => {
   const securityArea = find(id)
   return securityArea
 }
 
-export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
+const find = (id: string): SecurityArea =>
+  state.securityAreas.find((securityArea) => securityArea.id === id)
+
+export const addNewSecurityArea = async (
+  securityArea: SecurityArea,
+): Promise<void> => {
   console.log(`securityAreaStore.ts::addNewSecurityArea()`)
   // addSecurityAreaToState(securityArea)
   state.securityAreas.push(securityArea)
@@ -67,7 +72,9 @@ export const getSecurityAreasActive = (ids: string[]): SecurityArea[] =>
   fetchSecurityAreasActive(ids)
 
 const fetchSecurityAreasActive = (ids: string[]): SecurityArea[] => {
-  console.log(`securityAreasStore::fetchSecurityAreasActive(): ${JSON.stringify(ids)}`)
+  console.log(
+    `securityAreasStore::fetchSecurityAreasActive(): ${JSON.stringify(ids)}`,
+  )
   const securityAreasActive = state.securityAreas.filter((securityArea) => {
     for (const id of ids) {
       if (securityArea.id === id) return securityArea
@@ -78,17 +85,13 @@ const fetchSecurityAreasActive = (ids: string[]): SecurityArea[] => {
   return securityAreasActive
 }
 
-// export const isVisible = (id: string, value: boolean): boolean => {
-//   const index = findIndex(id)
-//   const isVisible: boolean = state.securityAreas[index].layer.visibility
-//   if (isVisible === value) {
-//     console.log('The visibility is the same')
-//     return
-//   }
-//   return isVisible
-// }
+export const updateSecurityAreaStore = (securityArea: SecurityArea): void => {
+  deleteSecurityArea(securityArea.id).then(() =>
+    addNewSecurityArea(securityArea),
+  )
+}
 
-export const deleteSecurityArea = (id: string): void => {
+export const deleteSecurityArea = async (id: string): Promise<void> => {
   const index = findIndex(id)
   const owner = state.securityAreas[index].owner
   state.securityAreas.splice(index, 1)
