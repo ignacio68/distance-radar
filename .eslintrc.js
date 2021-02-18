@@ -38,7 +38,11 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
     'space-before-function-paren': 0, // 2
     'vue/component-name-in-template-casing': ['error', 'PascalCase'],
-    'vue/attribute-hyphenation': ['error', 'never', { ignore: ['custom-prop', 'v-'] }],
+    'vue/attribute-hyphenation': [
+      'error',
+      'never',
+      { ignore: ['custom-prop', 'v-'] },
+    ],
     // 'no-unused-vars': ["error", {"args": "none"}],
     'prettier-vue/prettier': [
       'error',
@@ -48,7 +52,7 @@ module.exports = {
         endOfLine: 'auto',
         htmlWhitespaceSensitivity: 'ignore',
         printWidth: 100,
-        trailingComma: 'es6',
+        trailingComma: 'es5',
       },
     ],
     'no-unused-vars': [
