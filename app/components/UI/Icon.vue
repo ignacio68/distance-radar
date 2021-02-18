@@ -1,80 +1,79 @@
 <template>
-  <StackLayout
+  <GridLayout
     class="Icon"
+    rows="auto"
+    columns="auto"
     :width="size"
     :height="size"
     horizontalAlignment="middle"
     verticalAlignment="middle"
     backgroundColor="transparent"
   >
-    <GridLayout
-      class="icon_wrapper"
-      rows="auto"
-      columns="auto"
-      backgroundColor="transparent"
-    >
-      <Label
-        ref="iconRipple"
-        class="icon_ripple"
-        col="0"
-        row="0"
-        height="48"
-        width="48"
-        borderRadius="50%"
-        opacity="0"
-        :color="rippleColor"
-      />
-      <Image
-        class="icon_image"
-        col="0"
-        row="0"
-        width="24"
-        height="24"
-        :color="iconColor"
-        :src="name"
-        :tintColor="iconColor"
-        @tap="onTap"
-      />
-    </GridLayout>
-  </StackLayout>
+    <Label
+      ref="iconRipple"
+      class="icon-ripple"
+      col="0"
+      row="0"
+      :height="size"
+      :width="size"
+      borderRadius="50%"
+      opacity="0"
+      :backgroundColor="rippleColor"
+    />
+    <Image
+      class="icon-image"
+      col="0"
+      row="0"
+      :width="iconSize"
+      :height="iconSize"
+      :color="iconColor"
+      :src="name"
+      :tintColor="iconColor"
+      @tap="onTap"
+    />
+  </GridLayout>
 </template>
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { EventData } from "@nativescript/core"
+import { EventData } from '@nativescript/core'
 import { AnimationCurve } from '@nativescript/core/ui/enums'
 
-export default Vue.extend ({
-  name: "Icon",
+export default Vue.extend({
+  name: 'Icon',
   props: {
     name: {
       type: String,
-      default: ''
+      default: '',
     },
     size: {
       type: [String, Number],
-      default: '48'
+      default: '48',
+    },
+    iconSize: {
+      type: [String, Number],
+      default: '24',
     },
     iconColor: {
       type: String,
-      default: "white"
+      default: 'white',
     },
     rippleColor: {
       type: String,
-      default: "white"
+      default: 'white',
     },
     rippleOpacity: {
       type: Number,
-      default: 0.5
+      default: 0.5,
     },
     rippleDuration: {
       type: Number,
-      default: 300
+      default: 300,
     },
     hasRipple: {
       type: Boolean,
-      default: true
-    }
+      default: true,
+    },
   },
   methods: {
     radioRipple(e: EventData): void {
@@ -83,16 +82,15 @@ export default Vue.extend ({
         .animate({
           curve: AnimationCurve.easeIn,
           duration: this.rippleDuration,
-          opacity: this.rippleOpacity
+          opacity: this.rippleOpacity,
         })
         .then(() => {
           this.$emit('on-tap', e)
-          iconRipple
-            .animate({
-              curve: AnimationCurve.easeOut,
-              duration: this.rippleDuration,
-              opacity: 0.0
-            })
+          iconRipple.animate({
+            curve: AnimationCurve.easeOut,
+            duration: this.rippleDuration,
+            opacity: 0.0,
+          })
         })
     },
 
@@ -104,11 +102,4 @@ export default Vue.extend ({
 </script>
 <style lang="scss" scoped>
 @import '../../app-variables';
-
-.icon_ripple {
-  background-color: $accent;
-}
-.icon_image {
-  color: white;
-}
 </style>
