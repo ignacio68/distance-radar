@@ -99,6 +99,7 @@ export default Vue.extend({
     ColorSelector,
     ActivationMenu,
   },
+
   data() {
     return {
       radius: 5,
@@ -165,7 +166,7 @@ export default Vue.extend({
     },
 
     onAlertModeSelected(value: string) {
-      this.alertMode = value
+      this.securityArea.alertMode = value
     },
 
     setColor(color: string) {
