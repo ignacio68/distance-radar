@@ -23,13 +23,13 @@ export const showLocations = getAllLocations()
 
 export const newLocation = (locationProps: Location): void => {
   const map = getMap()
-  const newLocation: Location = setLocationOpts(locationProps)
+  const newLocation: Location = setLocationOptions(locationProps)
   mbAddMarkers(map, [newLocation]).then(() => {
     addNewLocation(newLocation)
   })
 }
 
-const setLocationOpts = (locationProps: Location): Location => {
+const setLocationOptions = (locationProps: Location): Location => {
   const { id } = locationProps
   const options: Location = {
     id,
