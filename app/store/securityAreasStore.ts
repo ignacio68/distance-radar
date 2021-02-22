@@ -21,19 +21,29 @@ const state = Vue.observable({
 // Create persist security areas database
 const database: Database = createDatabase('securityAreas')
 
-const initializeDatabase = (): void =>
-  getAllItems(database).forEach((securityArea: SecurityArea) =>
-    addSecurityAreaToState(securityArea),
-  )
+const initializeDatabase = (): void => {
+  const securityAreas = getAllItems(database)
+
+  if (securityAreas.length > 0) {
+    securityAreas.forEach((securityArea: SecurityArea) =>
+      addSecurityAreaToState(securityArea),
+    )
+  }
+  return
+}
 
 const addSecurityAreaToState = (securityArea: SecurityArea): void => {
   console.log(
-    `securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(alarm)}`,
+    `securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(
+      securityArea,
+    )}`,
   )
   state.securityAreas.push(securityArea)
 }
 
 initializeDatabase()
+
+// resetDatabase(database)
 
 export const hasId = (id: string): boolean =>
   findIndex(id) >= 0 ? true : false
@@ -103,5 +113,6 @@ export const deleteSecurityArea = async (id: string): Promise<void> => {
 
 export const deleteAllSecurityAreas = (): void => {
   state.securityAreas.length = 0
+  state.securityAreas.map((securityArea) => deleteSecurityArea(securityArea.id))
   resetDatabase(database)
 }
