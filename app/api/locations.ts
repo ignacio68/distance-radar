@@ -22,12 +22,9 @@ import { Location } from './types'
 export const showLocations = getLocations()
 
 export const newLocation = (locationProps: Location): void => {
-  const locationOptions: Location = setLocationOpts(locationProps)
-  console.log(`locations.ts::addLocation(): ${JSON.stringify(locationOptions)}`)
-  const newLocation: Location[] = []
-  newLocation.push(locationOptions)
-  mbAddMarkers(getMap(), newLocation).then(() => {
-    addNewLocation(locationOptions)
+  const newLocation: Location = setLocationOpts(locationProps)
+  mbAddMarkers(getMap(), [newLocation]).then(() => {
+    addNewLocation(newLocation)
   })
 }
 
