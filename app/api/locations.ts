@@ -12,7 +12,6 @@ import {
   deleteLocation,
   deleteAllLocations,
   setSelectedLocation,
-  getSelectedLocation,
   isSecurityArea,
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
