@@ -10,7 +10,7 @@
       <slot name="drawerContent" />
     </StackLayout>
     <Frame ~mainContent ref="drawerMainContent">
-      <slot name="mainContent"/>
+      <slot name="mainContent" />
     </Frame>
   </RadSideDrawer>
 </template>
@@ -21,31 +21,26 @@ import Vue from 'vue'
 import { Application as application } from '@nativescript/core'
 import { onBackEvent, clearBackEvent } from '@/utils/backButton'
 
-import {SlideInOnTopTransition} from 'nativescript-ui-sidedrawer'
+import { SlideInOnTopTransition } from 'nativescript-ui-sidedrawer'
 
 import { getVisibility, setVisibility } from '@/composables/useComponent'
 
 import '@/plugins/installRadSideDrawer'
-// import MainContent from './MainContent.vue'
-// import DrawerContent from './DrawerContent.vue'
 
 export default Vue.extend({
   name: 'MainNavigation',
 
-  // components: {
-  //   DrawerContent,
-  //   MainContent
-  // },
-
   data() {
     return {
-      transition: new SlideInOnTopTransition()
+      transition: new SlideInOnTopTransition(),
     }
   },
 
   computed: {
     isVisibleDrawer(): boolean {
-      console.log(`MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`)
+      console.log(
+        `MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`,
+      )
       return getVisibility('drawer')
     },
 
@@ -56,8 +51,10 @@ export default Vue.extend({
 
   watch: {
     isVisibleDrawer(newVal: boolean, oldVal: boolean) {
-      newVal ? this.$refs.drawer.nativeView.showDrawer() : this.$refs.drawer.nativeView.closeDrawer()
-    }
+      newVal
+        ? this.$refs.drawer.nativeView.showDrawer()
+        : this.$refs.drawer.nativeView.closeDrawer()
+    },
   },
 
   created() {
@@ -69,14 +66,14 @@ export default Vue.extend({
   },
 
   methods: {
-      backEvent() {
-        console.log('Has presionado el botón de volver de Android!!')
-        application.android.foregroundActivity.finish();
-      },
+    backEvent() {
+      console.log('Has presionado el botón de volver de Android!!')
+      application.android.foregroundActivity.finish()
+    },
 
-      onDrawerClosed() {
-        setVisibility('drawer', false)
-      }
-  }
+    onDrawerClosed() {
+      setVisibility('drawer', false)
+    },
+  },
 })
 </script>
