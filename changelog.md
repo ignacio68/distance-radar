@@ -1,5 +1,39 @@
 # Changelog
 
+## [0.4.0] - 2021-02-11
+
+### Added
+
+- Bottom navigation bar component
+- ResetBottomSheet method
+- Module for botton navigation bar plugin installation
+- Alarm floating button single component
+- Configuration page
+- New Locations handler page
+- Color validation
+- Updated mapbox plugin
+- Items list to Security Areas view
+- Guards to methods
+- Delete database method on storage api
+- SecurityArea view locales
+- getLayers() to MapBox service
+
+### Changed
+
+- Alarm mode names
+- Moved first location alert to Map Wrapper view
+- Improved Icon component code
+- Improved newSecurityArea() code
+- improve SecurityArea module code
+- onSetColor() name
+
+### Fixed
+
+- Remove Security Area bug
+- Bug from formatted text function of geocoder
+- Added security areas and user marker when map is loading
+- Assign alert mode to security area bug
+
 ## [0.3.4] - 2021-02-04
 
 ### Added
