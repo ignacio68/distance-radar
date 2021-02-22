@@ -46,29 +46,15 @@ const setLocationOpts = (locationProps: Location): Location => {
 }
 
 const onTap = (id: string): void => {
-  isSecurityArea(id).then((result) => {
-    if (!result) {
-      setVisibility('newSecurityAreaMenu', true)
-      setSelectedLocation(id)
-    }
-    return
-  })
+  if (!isSecurityArea(id)) {
+    setVisibility('newSecurityAreaMenu', true)
+    setSelectedLocation(id)
+  }
+  return
 }
 
 const onCalloutTap = (): void =>
   console.log(`locations.ts::onCalloutTapLocation()`)
-// export const fetchLocations = (): Locations[] => {
-//   map.addMarkers(getMap(), locationProps)
-// }
-
-export const fetchSelectedLocation = (): Location => {
-  console.log(
-    `locations.ts::fetchSelectedLocation() ${JSON.stringify(
-      getSelectedLocation(),
-    )}`,
-  )
-  return getSelectedLocation()
-}
 
 export const updateLocation = async (location: Location): Promise<void> => {
   await updateLocationsStore(location).then(() => {
