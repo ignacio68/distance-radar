@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 
-import { deleteSecurityArea } from './securityAreasStore'
+import { removeSecurityArea } from '@/api/securityAreas'
 
 import {
   createDatabase,
@@ -21,11 +21,16 @@ const state = Vue.observable({
 // Create persist locations database
 const database: Database = createDatabase('locations')
 
-const initializeDatabase = (): void =>
-  getAllItems(database).forEach((location: Location) =>
-    addLocationToState(location),
-  )
+const initializeDatabase = (): void => {
+  const locations = getAllItems(database)
 
+  if (locations.length > 0) {
+    getAllItems(database).forEach((location: Location) =>
+      addLocationToState(location),
+    )
+  }
+  return
+}
 const addLocationToState = (location: Location): void => {
   console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
   state.locations.push(location)
@@ -68,8 +73,7 @@ export const updateLocationsStore = async (
 export const deleteLocation = (id: string): void => {
   state.locations.splice(findIndex(id), 1)
   deleteItem(database, id)
-  deleteSecurityArea(id)
-  // TODO: delete the security areas that they are ownership of the location
+  removeSecurityArea(id)
 }
 
 // TODO: improve the code
