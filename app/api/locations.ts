@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { mbAddMarkers } from '@/services/mapboxService'
+import { mbAddMarkers, mbRemoveMarkers } from '@/services/mapboxService'
 
 import { setVisibility } from '@/composables/useComponent'
 
@@ -88,8 +88,10 @@ export const addSecurityAreaToLocation = (id: string): void => {
 }
 
 export const removeLocation = (id: string): void => {
-  deleteLocation(id)
-  console.log(`locations.ts::removeLocation:`)
+  mbRemoveMarkers(getMap(), [id]).then(() => {
+    deleteLocation(id)
+    console.log(`locations.ts::removeLocation:`)
+  })
 }
 
 export const removeAllLocations = (): void => {
