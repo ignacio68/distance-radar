@@ -12,13 +12,14 @@ const isVisible = Vue.observable({
 
 export const getVisibility = (item: string): boolean => isVisible[item]
 
-export const toggleVisibility = (item: string): boolean => (isVisible[item] = !isVisible[item])
+export const toggleVisibility = (item: string): boolean =>
+  (isVisible[item] = !isVisible[item])
 
 export const setVisibility = (item: string, visibility: boolean): boolean =>
   (isVisible[item] = visibility)
 
-export default {
-  getVisibility,
-  toggleVisibility,
-  setVisibility,
+export const resetBottomSheet = (): void => {
+  setVisibility('newLocationMenu', false)
+  setVisibility('newSecurityAreaMenu', false)
+  setVisibility('textFieldSoftKeyboard', false)
 }
