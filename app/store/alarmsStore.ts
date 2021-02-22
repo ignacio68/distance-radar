@@ -26,15 +26,20 @@ const addAlarmToState = (alarm: string): void => {
   state.alarms.push(alarm)
 }
 
+// resetDatabase(database)
+
 initializeDatabase()
 
-const findAlarm = (id: string): string => state.alarms.find((alarm) => alarm === id)
+const findAlarm = (id: string): string =>
+  state.alarms.find((alarm) => alarm === id)
 
 export const addNewAlarm = (id: string): void => {
   if (findAlarm(id) === undefined) {
     addAlarmToState(id)
     addItem<string>(database, id, id)
-    console.log(`alarmsStore::addNewAlar:alarms: ${JSON.stringify(state.alarms)}`)
+    console.log(
+      `alarmsStore::addNewAlar:alarms: ${JSON.stringify(state.alarms)}`,
+    )
   }
   return
 }
@@ -50,7 +55,8 @@ export const removeAlarm = (id: string): void => {
   return
 }
 
-const findIndex = (id: string): number => state.alarms.findIndex((alarm) => alarm === id)
+const findIndex = (id: string): number =>
+  state.alarms.findIndex((alarm) => alarm === id)
 
 export const deleteAllAlarms = (): void => {
   state.alarms.length = 0
