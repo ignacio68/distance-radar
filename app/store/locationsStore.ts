@@ -90,8 +90,8 @@ export const setSelectedLocation = (id: string): string => {
 export const getSelectedLocation = (): Location =>
   getLocation(state.selectedLocation)
 
-export const hasSecurityArea = async (id: string): Promise<boolean> => {
-  console.log(`locationsStore.ts::hasSecurityArea: ${id}`)
+export const isSecurityArea = async (id: string): Promise<boolean> => {
+  console.log(`locationsStore.ts::isSecurityArea: ${id}`)
   const location = findIndex(id)
   return state.locations[location].securityAreas.length ? true : false
 }

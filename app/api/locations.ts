@@ -13,7 +13,7 @@ import {
   deleteAllLocations,
   setSelectedLocation,
   getSelectedLocation,
-  hasSecurityArea,
+  isSecurityArea,
 } from '@/store/locationsStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
@@ -46,7 +46,7 @@ const setLocationOpts = (locationProps: Location): Location => {
 }
 
 const onTap = (id: string): void => {
-  hasSecurityArea(id).then((result) => {
+  isSecurityArea(id).then((result) => {
     if (!result) {
       setVisibility('newSecurityAreaMenu', true)
       setSelectedLocation(id)
@@ -89,13 +89,13 @@ export const removeLocation = (id: string): void => {
 
 export const removeAllLocations = (): void => deleteAllLocations()
 
-export const updateLocationAtInit = async (
-  location: Location,
-): Promise<void> => {
-  const options: Record<string, unknown> = {
-    onTap: () => onTap(location.id),
-    onCalloutTap: () => onCalloutTap(),
-  }
-  const updatedLocation: Location = { ...location, ...options }
-  await updateLocation(updatedLocation)
-}
+// export const updateLocationAtInit = async (
+//   location: Location,
+// ): Promise<void> => {
+//   const options: Record<string, unknown> = {
+//     onTap: () => onTap(location.id),
+//     onCalloutTap: () => onCalloutTap(),
+//   }
+//   const updatedLocation: Location = { ...location, ...options }
+//   await updateLocation(updatedLocation)
+// }
