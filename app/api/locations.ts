@@ -14,7 +14,7 @@ import {
   setSelectedLocation,
   isSecurityArea,
 } from '@/store/locationsStore'
-import { getUserMarker as userMarker } from '@/store/userMarkerStore'
+import { getUserMarker } from '@/store/userMarkerStore'
 
 import { Location } from './types'
 
@@ -30,10 +30,11 @@ export const newLocation = (locationProps: Location): void => {
 
 const setLocationOptions = (locationProps: Location): Location => {
   const { id } = locationProps
+  const { lat, lng } = getUserMarker()
   const options: Location = {
     id,
-    lat: userMarker().lat,
-    lng: userMarker().lng,
+    lat,
+    lng,
     title: id,
     selected: true,
     securityAreas: [],
