@@ -18,7 +18,7 @@ import { initialMapSettings } from '@/setup/map'
 
 import { getMap } from '@/store/mapStore'
 import { getUserMarker as userMarker } from '@/store/userMarkerStore'
-import { getLocations } from '@/store/locationsStore'
+import { getAllLocations } from '@/store/locationsStore'
 import { getAllSecurityAreas } from '@/store/securityAreasStore'
 
 import { MapSettings, LatLng, Map } from './types'
@@ -59,10 +59,10 @@ export const setCenter = async (): Promise<void> => {
 }
 
 export const addMarkers = (): void => {
-  const locations = getLocations()
+  const locations = getAllLocations()
   if (locations.length > 0) {
     console.log(`map.ts::addMarkers: ${JSON.stringify(locations)}`)
-    mbAddMarkers(getMap(), getLocations()).then(() =>
+    mbAddMarkers(getMap(), getAllLocations()).then(() =>
       addUserMarker().then(() => addSecurityAreas()),
     )
   }

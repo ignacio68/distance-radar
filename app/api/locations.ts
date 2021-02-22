@@ -8,7 +8,7 @@ import {
   addNewLocation,
   updateLocationsStore,
   getLocation,
-  getLocations,
+  getAllLocations,
   deleteLocation,
   deleteAllLocations,
   setSelectedLocation,
@@ -19,11 +19,12 @@ import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 
 import { Location } from './types'
 
-export const showLocations = getLocations()
+export const showLocations = getAllLocations()
 
 export const newLocation = (locationProps: Location): void => {
+  const map = getMap()
   const newLocation: Location = setLocationOpts(locationProps)
-  mbAddMarkers(getMap(), [newLocation]).then(() => {
+  mbAddMarkers(map, [newLocation]).then(() => {
     addNewLocation(newLocation)
   })
 }
@@ -45,15 +46,12 @@ const setLocationOpts = (locationProps: Location): Location => {
 }
 
 const onTap = (id: string): void => {
-  console.log(`locations::onTap(): ${id}`)
   hasSecurityArea(id).then((result) => {
-    if (result) {
-      console.log('The locationProps has a security area')
-      return
-    } else {
+    if (!result) {
       setVisibility('newSecurityAreaMenu', true)
       setSelectedLocation(id)
     }
+    return
   })
 }
 
@@ -85,16 +83,11 @@ export const addSecurityAreaToLocation = (id: string): void => {
 }
 
 export const removeLocation = (id: string): void => {
-  mbRemoveMarkers(getMap(), [id]).then(() => {
-    deleteLocation(id)
-    console.log(`locations.ts::removeLocation:`)
-  })
+  const map = getMap()
+  mbRemoveMarkers(map, [id]).then(() => deleteLocation(id))
 }
 
-export const removeAllLocations = (): void => {
-  deleteAllLocations()
-  console.log(`locations.ts::removeAllLocation:`)
-}
+export const removeAllLocations = (): void => deleteAllLocations()
 
 export const updateLocationAtInit = async (
   location: Location,

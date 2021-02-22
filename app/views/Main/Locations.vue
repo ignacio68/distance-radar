@@ -47,7 +47,7 @@ import Vue from 'nativescript-vue'
 import { confirmDeleteLocation } from '@/components/Dialogs/ConfirmDeleteLocation'
 import { ConfirmOptions } from '@nativescript/core'
 
-import { getLocations } from '@/store/locationsStore'
+import { getAllLocations } from '@/store/locationsStore'
 
 import { Location } from '@/api/types'
 
@@ -73,7 +73,7 @@ export default Vue.extend({
 
   computed: {
     locations(): Location[] {
-      return getLocations()
+      return getAllLocations()
     },
   },
 

@@ -1,12 +1,11 @@
 <template>
-  <StackLayout orientation="vertical"
+  <StackLayout
+    orientation="vertical"
     :width="width"
     :height="listHeight"
     :androidElevation="listElevation"
   >
-    <ListView
-      for="location in locations"
-    >
+    <ListView for="location in locations">
       <v-template>
         <Label
           :height="labelHeight"
@@ -26,7 +25,7 @@ import { setVisibility, getVisibility } from '@/composables/useComponent'
 
 import { flyTo } from '@/api/map'
 
-import { getLocations } from '@/store/locationsStore'
+import { getAllLocations } from '@/store/locationsStore'
 
 import { LatLng, Location } from '@/types/commons'
 import { Elevation } from '@/types/enums/elevations'
@@ -37,11 +36,11 @@ export default Vue.extend({
   props: {
     width: {
       type: [String, Number],
-      default: 100
+      default: 100,
     },
     labelHeight: {
       type: [String, Number],
-      default: 48
+      default: 48,
     },
   },
 
@@ -53,12 +52,16 @@ export default Vue.extend({
 
   computed: {
     isVisibleLocationsList(): boolean {
-        console.log(`LocationsList::computed:isVisibleLocationsList() ${getVisibility('locationsList')}`)
-        return getVisibility('locationsList')
+      console.log(
+        `LocationsList::computed:isVisibleLocationsList() ${getVisibility(
+          'locationsList',
+        )}`,
+      )
+      return getVisibility('locationsList')
     },
 
     locations(): Location[] {
-      return getLocations()
+      return getAllLocations()
     },
 
     listHeight(): number {
@@ -76,19 +79,18 @@ export default Vue.extend({
     onItemTap(args: Location): void {
       const coordinates: LatLng = {
         lat: args.lat,
-        lng: args.lng
+        lng: args.lng,
       }
       flyTo(coordinates)
       this.hideLocationsListMenu()
-    }
-  }
-
+    },
+  },
 })
 </script>
 <style lang="scss" scoped>
-  @import '../../app-variables';
+@import '../../app-variables';
 
-  Label {
-    font-size: $font-sz-m;
-  }
+Label {
+  font-size: $font-sz-m;
+}
 </style>

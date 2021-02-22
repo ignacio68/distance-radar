@@ -55,7 +55,7 @@ export const numberOfLocations = (): number => state.locations.length
 export const getLocation = (id: string): Location =>
   state.locations.find((location) => location.id === id)
 
-export const getLocations = (): Location[] => state.locations
+export const getAllLocations = (): Location[] => state.locations
 
 export const addNewLocation = (location: Location): void => {
   addLocationToState(location)
