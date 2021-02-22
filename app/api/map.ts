@@ -59,10 +59,14 @@ export const setCenter = async (): Promise<void> => {
 }
 
 export const addMarkers = (): void => {
-  console.log(`map.ts::addMarkers: ${JSON.stringify(getLocations())}`)
-  mbAddMarkers(getMap(), getLocations()).then(() =>
-    addUserMarker().then(() => addSecurityAreas()),
-  )
+  const locations = getLocations()
+  if (locations.length > 0) {
+    console.log(`map.ts::addMarkers: ${JSON.stringify(locations)}`)
+    mbAddMarkers(getMap(), getLocations()).then(() =>
+      addUserMarker().then(() => addSecurityAreas()),
+    )
+  }
+  return
 }
 
 const addUserMarker = async () => {
