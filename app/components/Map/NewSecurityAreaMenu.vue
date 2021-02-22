@@ -80,11 +80,11 @@ import Vue from 'nativescript-vue'
 import { setVisibility } from '@/composables/useComponent'
 
 import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
-import { fetchSelectedLocation } from '@/api/locations'
 
 import { round } from '@/utils/maths'
 
 import { hasId } from '@/store/securityAreasStore'
+import { getSelectedLocation } from '@/store/locationsStore'
 
 import { LayerVisibility } from '@/api/types'
 
@@ -124,8 +124,8 @@ export default Vue.extend({
   },
 
   computed: {
-    fetchCurrentLocation() {
-      return fetchSelectedLocation()
+    currentSelectLocation() {
+      getSelectedLocation()
     },
   },
 
@@ -202,8 +202,7 @@ export default Vue.extend({
     },
 
     async setIdAndCenter(): Promise<void> {
-      // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
-      const options = fetchSelectedLocation()
+      const options = this.currentSelectedLocation
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
