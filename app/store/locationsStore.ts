@@ -25,66 +25,71 @@ const initializeDatabase = (): void => {
   const locations = getAllItems(database)
 
   if (locations.length > 0) {
-    getAllItems(database).forEach((location: Location) =>
-      addLocationToState(location),
-    )
+    locations.forEach((location: Location) => addLocationToState(location))
   }
   return
 }
-const addLocationToState = (location: Location): void => {
-  console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
-  state.locations.push(location)
-}
 
 initializeDatabase()
-
-const findIndex = (id: string): number =>
-  state.locations.findIndex((location) => location.id === id)
-
-const updateLocation = async (location: Location): Promise<Location> => {
-  const currentLocation = getLocation(location.id)
-  const updatedLocation = { ...currentLocation, ...location }
-  return updatedLocation
-}
-
-export const hasId = (id: string): boolean =>
-  findIndex(id) >= 0 ? true : false
-
-export const numberOfLocations = (): number => state.locations.length
-
-export const getLocation = (id: string): Location =>
-  state.locations.find((location) => location.id === id)
-
-export const getAllLocations = (): Location[] => state.locations
 
 export const addNewLocation = (location: Location): void => {
   addLocationToState(location)
   addItem<Location>(database, location, location.id)
 }
 
-export const updateLocationsStore = async (
-  location: Location,
-): Promise<void> => {
-  const resolveLocation = await updateLocation(location)
-  state.locations.splice(findIndex(location.id), 1, resolveLocation)
-  updateItem(database, resolveLocation.id, resolveLocation)
+const addLocationToState = (location: Location): void => {
+  console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
+  state.locations.push(location)
 }
 
+export const getLocation = (id: string): Location =>
+  state.locations.find((location) => location.id === id)
+
+export const getAllLocations = (): Location[] => state.locations
+
+export const isId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
+
+const findIndex = (id: string): number =>
+  state.locations.findIndex((location) => location.id === id)
+
+export const numberOfLocations = (): number => state.locations.length
+
+export const updateLocation = (location: Location): void => {
+  const updatedLocation = setUpdateLocation(location)
+  replaceLocationInState(updatedLocation)
+  updateItem(database, updatedLocation.id, updatedLocation)
+}
+
+const setUpdateLocation = (location: Location): Location => {
+  const currentLocation = getLocation(location.id)
+  const updatedLocation = { ...currentLocation, ...location }
+  return updatedLocation
+}
+
+const replaceLocationInState = (location: Location) =>
+  state.locations.splice(findIndex(location.id), 1, location)
+
 export const deleteLocation = (id: string): void => {
-  state.locations.splice(findIndex(id), 1)
+  deleteLocationFromState(id)
   deleteItem(database, id)
   removeSecurityArea(id)
 }
 
-// TODO: improve the code
+const deleteLocationFromState = (id: string): void => {
+  state.locations.splice(findIndex(id), 1)
+}
+
 export const deleteAllLocations = (): void => {
-  state.locations.length = 0
+  deleteAllLocationsFromState()
   resetDatabase(database)
 }
 
-export const setSelectedLocation = (id: string): string => {
-  console.log(`locationsStore.ts::setSelectedLocation: ${id}`)
-  return (state.selectedLocation = id)
+const deleteAllLocationsFromState = (): void => {
+  state.locations.length = 0
+}
+
+export const setSelectedLocation = (id: string): void => {
+  state.selectedLocation = id
 }
 
 export const getSelectedLocation = (): Location =>
@@ -102,7 +107,7 @@ export const removeSecurityAreaFromLocation = (
 ): void => {
   const locationIndex = findIndex(locationId)
   const securityAreaIndex = getSecurityAreaIndex(locationIndex, securityAreaId)
-  state.locations[locationIndex].securityAreas.splice(securityAreaIndex, 1)
+  removeSecurityAreaFromState(locationIndex, securityAreaIndex)
 }
 
 const getSecurityAreaIndex = (
@@ -112,3 +117,10 @@ const getSecurityAreaIndex = (
   state.locations[locationIndex].securityAreas.findIndex(
     (securityArea) => securityArea === securityAreaId,
   )
+
+const removeSecurityAreaFromState = (
+  locationIndex: number,
+  securityAreaIndex: number,
+): void => {
+  state.locations[locationIndex].securityAreas.splice(securityAreaIndex, 1)
+}

@@ -83,7 +83,7 @@ import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
 
 import { round } from '@/utils/maths'
 
-import { hasId } from '@/store/securityAreasStore'
+import { isId } from '@/store/securityAreasStore'
 import { getSelectedLocation } from '@/store/locationsStore'
 
 import { LayerVisibility } from '@/api/types'
@@ -193,10 +193,10 @@ export default Vue.extend({
       this.idError = value
     },
 
-    hasIdError() {
+    isIdError() {
       !this.securityArea.id
         ? this.setIdError(1)
-        : hasId(this.securityArea.id)
+        : isId(this.securityArea.id)
         ? this.setIdError(2)
         : this.setIdError(0)
     },

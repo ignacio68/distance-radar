@@ -45,7 +45,10 @@ import '@/plugins/installMDButton'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
-import { getAllLocations, updateLocationsStore } from '@/store/locationsStore'
+import {
+  getAllLocations,
+  updateLocation as updateLocationInStore,
+} from '@/store/locationsStore'
 
 export default Vue.extend({
   name: 'LocationsAdjusts',

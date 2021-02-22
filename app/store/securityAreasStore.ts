@@ -45,8 +45,7 @@ initializeDatabase()
 
 // resetDatabase(database)
 
-export const hasId = (id: string): boolean =>
-  findIndex(id) >= 0 ? true : false
+export const isId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
 export const isSecurityAreaVisible = (id: string): LayerVisibility => {
   const index = findIndex(id)

@@ -61,7 +61,7 @@ import { setVisibility, getVisibility } from '@/composables/useComponent'
 
 import { newLocation } from '@/api/locations'
 
-import { hasId } from '@/store/locationsStore'
+import { isId } from '@/store/locationsStore'
 
 import { Location } from '@/types/commons'
 
@@ -171,10 +171,10 @@ export default Vue.extend({
       // this.$emit('enabled-fab', false)
     },
 
-    hasIdError() {
+    isIdError() {
       !this.location.id
         ? this.setIdError(1)
-        : hasId(this.location.id)
+        : isId(this.location.id)
         ? this.setIdError(2)
         : this.setIdError(0)
     },
@@ -186,7 +186,7 @@ export default Vue.extend({
 
     async onReturnPress(textValue: string) {
       await this.setId(textValue)
-      await this.hasIdError()
+      await this.isIdError()
       this.enabledAddButton(true)
     },
 

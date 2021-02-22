@@ -6,7 +6,7 @@ import { setVisibility } from '@/composables/useComponent'
 import { getMap } from '@/store/mapStore'
 import {
   addNewLocation,
-  updateLocationsStore,
+  updateLocation as updateLocationInStore,
   getLocation,
   getAllLocations,
   deleteLocation,
@@ -56,16 +56,13 @@ const onTap = (id: string): void => {
 const onCalloutTap = (): void =>
   console.log(`locations.ts::onCalloutTapLocation()`)
 
-export const updateLocation = async (location: Location): Promise<void> => {
-  await updateLocationsStore(location).then(() => {
-    console.log(`locations.ts::updateLocation: ${JSON.stringify(location)}`)
-  })
-}
+export const updateLocation = (location: Location): void =>
+  updateLocationInStore(location)
 
 export const addSecurityAreaToLocation = (id: string): void => {
   const location: Location = getLocation(id)
   location.securityAreas.push(id)
-  updateLocationsStore(location)
+  updateLocationInStore(location)
 }
 
 export const removeLocation = (id: string): void => {
