@@ -13,7 +13,13 @@ export default {
 
   Locations: {
     title: 'Locations',
-    noLocation: "You don't have any location",
+    noLocation: "You don't have any location.",
+    acceptButton: 'Accept',
+  },
+
+  SecurityAreas: {
+    title: 'Security Areas',
+    noSecurityAreas: "You don't have any security area.",
     acceptButton: 'Accept',
   },
 

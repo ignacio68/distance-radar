@@ -9,8 +9,14 @@ export default {
 
   Locations: {
     title: 'Ubicaciones',
-    noLocation: 'No tienes ninguna ubicación',
+    noLocation: 'No tienes ninguna ubicación.',
     acceptButton: 'Aceptar',
+  },
+
+  SecurityAreas: {
+    title: 'Areas de Seguridad',
+    noSecurityAreas: 'No tienes ningún área de seguridad.',
+    acceptButton: 'Accept',
   },
 
   Configuration: {
