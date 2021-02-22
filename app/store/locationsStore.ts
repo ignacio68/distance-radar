@@ -72,7 +72,8 @@ const replaceLocationInState = (location: Location) =>
 export const deleteLocation = (id: string): void => {
   deleteLocationFromState(id)
   deleteItem(database, id)
-  removeSecurityArea(id)
+  if (isSecurityArea(id)) removeSecurityArea(id)
+  return
 }
 
 const deleteLocationFromState = (id: string): void => {
