@@ -39,7 +39,7 @@
         row="2"
         :labelWidth="64"
         :title="$t('lang.components.colorSelector.text')"
-        @on-selected-color="setColor"
+        @on-selected-color="onSetColor"
       />
       <ActivationMenu
         row="3"
@@ -130,9 +130,25 @@ export default Vue.extend({
   },
 
   async mounted() {
-    console.log('NewSecurityAreaMenu.vue::mounted()')
-    this.setColor('#ff6ea1')
-    // await this.reset()
+    console.log('__NewSecurityAreaMenu.vue::mounted()')
+    // this.onSetColor('#ff6ea1')
+    this.reset()
+  },
+
+  beforeUpdate() {
+    console.log('__NewSecurityAreaMenu::beforeUpdate()')
+  },
+
+  updated() {
+    console.log('__NewSecurityAreaMenu::updated()')
+  },
+
+  beforeDestroy() {
+    console.log('__NewSecurityAreaMenu::beforeDestroy()')
+  },
+
+  destroyed() {
+    console.log('__NewSecurityAreaMenu::beforeDestroy()')
   },
 
   methods: {
@@ -140,7 +156,7 @@ export default Vue.extend({
       console.log('NewSecurityAreaMenu.vue::reset()')
       this.radius = 5
       this.opacity = 0.5
-      this.setColor('#ff6ea1')
+      this.onSetColor('#ff6ea1')
       this.checkedActivation = false
       this.setIdError(0)
     },
@@ -169,7 +185,7 @@ export default Vue.extend({
       this.securityArea.alertMode = value
     },
 
-    setColor(color: string) {
+    onSetColor(color: string) {
       this.securityArea.fillColor = color
     },
 
@@ -188,9 +204,6 @@ export default Vue.extend({
     async setIdAndCenter(): Promise<void> {
       // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
       const options = fetchSelectedLocation()
-      console.log(
-        `NewSecurityAreaMenu.vue::options:  ${JSON.stringify(options)}`,
-      )
       this.securityArea.id = options.id
       this.securityArea.center.lat = options.lat
       this.securityArea.center.lng = options.lng
