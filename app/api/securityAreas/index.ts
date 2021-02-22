@@ -1,7 +1,7 @@
-import { mbAddLayer, mbRemoveLayer } from '@/services/mapboxService'
-import { createLayer } from './layer'
+import { createLayer, removeLayer } from './layer'
+import { removeSource } from './source'
 import { addSecurityAreaToLocation } from '@/api/locations'
-import { getMap } from '@/store/mapStore'
+
 import {
   addNewSecurityArea,
   getSecurityArea,
@@ -18,12 +18,8 @@ import {
 export const newSecurityArea = async (
   args: SecurityAreaOptions,
 ): Promise<void> => {
-  const securityAreaLayer = createLayer(args)
-  mbAddLayer(getMap(), securityAreaLayer).then((): void => {
-    const newSecurityAreaToStore = putNewSecurityAreaToStore(
-      args,
-      securityAreaLayer,
-    )
+  createLayer(args).then((layer) => {
+    const newSecurityAreaToStore = putNewSecurityAreaToStore(args, layer)
     addNewSecurityArea(newSecurityAreaToStore).then(() => {
       addSecurityAreaToLocation(newSecurityAreaToStore.id)
     })
@@ -110,8 +106,10 @@ const changeSecurityAreaVisibility = (
 export const removeSecurityArea = async (id: string): Promise<void> => {
   console.log('securityAreas.ts::removeSecurityArea()')
   const isSecurityArea = getSecurityArea(id)
-  if (isSecurityArea) {
-    mbRemoveLayer(getMap(), id).then(() => deleteSecurityArea(id))
+  if (typeof isSecurityArea !== 'undefined') {
+    removeLayer(id)
+      .then(() => removeSource(id))
+      .then(() => deleteSecurityArea(id))
   }
   return
 }
