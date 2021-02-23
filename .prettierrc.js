@@ -3,7 +3,7 @@ module.exports = {
   semi: false,
   endOfLine: 'auto',
   htmlWhitespaceSensitivity: 'ignore',
-  printWidth: 80,
+  printWidth: 100,
   tabWidth: 2,
   trailingComma: 'all',
 }
