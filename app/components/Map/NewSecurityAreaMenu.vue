@@ -6,11 +6,7 @@
       height="32"
       borderColor="#00251e"
     />
-    <GridLayout
-      class="new-area-menu m-x-16 m-t-16"
-      rows="auto, auto, 56, auto, 96"
-      columns="*"
-    >
+    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 96" columns="*">
       <CustomSlider
         class="radius-slider"
         row="0"
@@ -124,8 +120,8 @@ export default Vue.extend({
   },
 
   computed: {
-    currentSelectLocation() {
-      getSelectedLocation()
+    currentSelectedLocation() {
+      return getSelectedLocation()
     },
   },
 
@@ -164,7 +160,7 @@ export default Vue.extend({
     hideNewSecurityAreaMenu() {
       // console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
       setVisibility('newSecurityAreaMenu', false)
-      // this.reset()
+      this.reset()
     },
 
     onRadiusChanged(value: number) {
@@ -189,6 +185,14 @@ export default Vue.extend({
       this.securityArea.fillColor = color
     },
 
+    async setIdAndCenter(): Promise<void> {
+      // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
+      const { id, lat, lng } = this.currentSelectedLocation
+      this.securityArea.id = id
+      this.securityArea.center.lat = lat
+      this.securityArea.center.lng = lng
+    },
+
     setIdError(value: number) {
       this.idError = value
     },
@@ -201,36 +205,26 @@ export default Vue.extend({
         : this.setIdError(0)
     },
 
-    async setIdAndCenter(): Promise<void> {
-      const options = this.currentSelectedLocation
-      this.securityArea.id = options.id
-      this.securityArea.center.lat = options.lat
-      this.securityArea.center.lng = options.lng
-    },
-
-    async newSecurityArea(): Promise<void> {
+    addNewSecurityArea(): void {
       console.log(
-        `NewSecurityAreaMenu.vue::newSecurityArea():securityArea: ${JSON.stringify(
+        `NewSecurityAreaMenu.vue::addNewSecurityArea():securityArea: ${JSON.stringify(
           this.securityArea,
         )}`,
       )
-      await this.setIdAndCenter()
-      await newSecurityArea(this.securityArea)
-      await this.hideNewSecurityAreaMenu()
-      this.reset()
+      this.setIdAndCenter().then(() => {
+        newSecurityArea(this.securityArea)
+      })
+      this.hideNewSecurityAreaMenu()
     },
 
-    async onCancel() {
+    onCancel() {
       // console.log('NewSecurityAreaMenu.vue::onCancel()')
-      await this.hideNewSecurityAreaMenu()
-      this.reset()
+      this.hideNewSecurityAreaMenu()
     },
 
-    async onAddNewSecurityArea() {
+    onAddNewSecurityArea() {
       // console.log('NewSecurityAreaMenu.vue::onAddNewSecurityArea()')
-      !this.idError
-        ? this.newSecurityArea()
-        : console.log(`ID error is: ${this.idError}`)
+      !this.idError ? this.addNewSecurityArea() : console.log(`ID error is: ${this.idError}`)
     },
 
     showSecurityArea(id: string, value: LayerVisibility) {

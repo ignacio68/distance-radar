@@ -16,7 +16,9 @@ import Vue from 'vue'
 import { Color } from '@nativescript/core'
 import { Elevation } from '@/types/enums/elevations'
 
-import { getAllAlarms } from '@/store/alarmsStore'
+import { getSecurityAreasActive } from '@/store/securityAreasStore'
+// import { getAllAlarms } from '@/store/alarmsStore'
+// import { fetchAlarmsActive } from '@/api/securityAreas'
 
 import '@/plugins/installFAB'
 
@@ -34,16 +36,14 @@ export default Vue.extend({
     },
 
     isAlarmActive(): boolean {
-      return getAllAlarms().length > 0 ? true : false
+      return getSecurityAreasActive().length > 0 ? true : false
     },
   },
   watch: {
     isAlarmActive: {
       // immediate: true,
       handler(newValue: boolean, oldValue: boolean) {
-        this.alarmFAB.backgroundColor = new Color(
-          newValue ? '#dd251b' : '#ced7d8',
-        )
+        this.alarmFAB.backgroundColor = new Color(newValue ? '#dd251b' : '#ced7d8')
       },
     },
   },

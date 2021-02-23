@@ -48,7 +48,7 @@ export interface AlertOptions extends Id {
   mode: AlertMode
 }
 
-export interface CalculateSecurityDistance extends AlertOptions {
+export interface SecurityDistanceArgs extends AlertOptions {
   interval: number
 }
 

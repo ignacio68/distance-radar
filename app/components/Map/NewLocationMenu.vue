@@ -102,9 +102,7 @@ export default Vue.extend({
   computed: {
     isVisibleNewLocationMenu(): boolean {
       console.log(
-        `NewLocationMenu::computed:isVisibleNewLocationMenu() ${getVisibility(
-          'newLocationMenu',
-        )}`,
+        `NewLocationMenu::computed:isVisibleNewLocationMenu() ${getVisibility('newLocationMenu')}`,
       )
       return getVisibility('newLocationMenu')
     },
@@ -112,9 +110,7 @@ export default Vue.extend({
 
   watch: {
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
-      console.log(
-        `NewLocationMenu::watch:isVisibleNewLocationMenu(): ${newValue}`,
-      )
+      console.log(`NewLocationMenu::watch:isVisibleNewLocationMenu(): ${newValue}`)
       if (newValue) {
         this.resetTextField(false)
         this.dismissKeyboard(false)
@@ -132,9 +128,7 @@ export default Vue.extend({
   methods: {
     dismissKeyboard(value: boolean) {
       this.isDismissedKeyboard = value
-      console.log(
-        `NewLocationMenu::dismissKeyboard: ${this.isDismissedKeyboard}`,
-      )
+      console.log(`NewLocationMenu::dismissKeyboard: ${this.isDismissedKeyboard}`)
     },
 
     resetTextField(value: boolean) {
@@ -161,8 +155,7 @@ export default Vue.extend({
     async hideNewLocationMenu() {
       console.log('NewLocationMenu::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
-      await this.reset()
-      this.dismissKeyboard(true)
+      this.reset().then(() => this.dismissKeyboard(true))
     },
 
     setId(id: string) {
@@ -196,9 +189,7 @@ export default Vue.extend({
     },
 
     onAddNewLocation() {
-      !this.idError
-        ? this.newLocation()
-        : console.log(`ID error is: ${this.idError}`)
+      !this.idError ? this.newLocation() : console.log(`ID error is: ${this.idError}`)
     },
   },
 })

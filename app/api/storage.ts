@@ -1,6 +1,6 @@
 import {
   cbSetDatabase,
-  cbAddDocument,
+  cbCreateDocument,
   cbGetDocument,
   cbUpdateDocument,
   cbQueryDocuments,
@@ -15,28 +15,24 @@ export const createSomeDatabases = (names: string[]): void => {
   names.map((name) => createDatabase(name))
 }
 
-export const addItem = <T>(
-  database: Database,
-  value: T,
-  itemId: string,
-): void => cbAddDocument(database, value, itemId)
+export const addItemToDatabase = <T>(database: Database, value: T, itemId: string): void =>
+  cbCreateDocument(database, value, itemId)
 
-export const getItem = <T>(database: Database, itemId: string): T =>
+export const getItemFromDatabase = <T>(database: Database, itemId: string): T =>
   cbGetDocument(database, itemId)
 
-export const getAllItems = <T>(database: Database): Array<T> =>
-  queryItems(database, { select: [] })
+export const getAllItemsFromDatabase = <T>(database: Database): Array<T> =>
+  queryItemsInDatabase(database, { select: [] })
 
-export const updateItem = <T>(
-  database: Database,
-  itemId: string,
-  value: T,
-): void => cbUpdateDocument(database, itemId, value)
+export const updateItemInDatabase = <T>(database: Database, itemId: string, value: T): void =>
+  cbUpdateDocument(database, itemId, value)
 
-export const deleteItem = (database: Database, itemId: string): void =>
+export const deleteItemInDatabase = (database: Database, itemId: string): void => {
+  console.log(`storage.ts::deleteItemInDatabase::itemID: ${itemId}`)
   cbDeleteDocument(database, itemId)
+}
 
-export const queryItems = <T>(database: Database, query: QueryDB): Array<T> =>
+export const queryItemsInDatabase = <T>(database: Database, query: QueryDB): Array<T> =>
   cbQueryDocuments(database, query)
 
 // export const initializeDatabase = <T>(nameDB: string, callback: (item: T) => void): Database => {
@@ -50,8 +46,9 @@ export const queryItems = <T>(database: Database, query: QueryDB): Array<T> =>
 
 export const resetDatabase = (database: Database): void =>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  getAllItems(database).forEach((item: any) => deleteItem(database, item))
+  getAllItemsFromDatabase(database).forEach((item: any) =>
+    deleteItemInDatabase(database, item.itemId),
+  )
 // cbDestroyDatabase(database)
 
-export const deleteDatabase = (database: Database): void =>
-  cbDestroyDatabase(database)
+export const deleteDatabase = (database: Database): void => cbDestroyDatabase(database)

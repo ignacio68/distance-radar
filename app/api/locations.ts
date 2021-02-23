@@ -53,19 +53,12 @@ const onTap = (id: string): void => {
   return
 }
 
-const onCalloutTap = (): void =>
-  console.log(`locations.ts::onCalloutTapLocation()`)
+const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
 
-export const updateLocation = (location: Location): void =>
-  updateLocationInStore(location)
-
-export const addSecurityAreaToLocation = (id: string): void => {
-  const location: Location = getLocation(id)
-  location.securityAreas.push(id)
-  updateLocationInStore(location)
-}
+export const updateLocation = (location: Location): void => updateLocationInStore(location)
 
 export const removeLocation = (id: string): void => {
+  console.log(`locations.ts::removeLocation()::id: ${id}`)
   const map = getMap()
   mbRemoveMarkers(map, [id]).then(() => deleteLocation(id))
 }

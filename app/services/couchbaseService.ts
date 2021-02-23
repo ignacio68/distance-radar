@@ -6,8 +6,10 @@ export const cbCloseDatabase = (database: CouchBase): void => database.close()
 
 export const cbDestroyDatabase = (database: CouchBase): void => database.destroyDatabase()
 
-export const cbAddDocument = <T>(database: CouchBase, value: T, documentId: string): void =>
-  database.createDocument(JSON.parse(JSON.stringify(value)), documentId)
+export const cbCreateDocument = <T>(database: CouchBase, value: T, documentId: string): void => {
+  const data = JSON.parse(JSON.stringify(value))
+  database.createDocument(data, documentId)
+}
 
 export const cbGetDocument = <T>(database: CouchBase, documentId: string): T =>
   database.getDocument(documentId)
@@ -17,6 +19,7 @@ export const cbUpdateDocument = <T>(database: CouchBase, documentId: string, val
 }
 
 export const cbDeleteDocument = (database: CouchBase, documentId: string): void => {
+  console.log(`couchbaseService.ts::cbDeleteDocument::documentId: ${JSON.stringify(documentId)}`)
   database.deleteDocument(documentId)
 }
 

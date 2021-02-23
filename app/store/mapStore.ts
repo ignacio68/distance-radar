@@ -1,6 +1,12 @@
 import Vue from 'nativescript-vue'
 
-import { createDatabase, getItem, addItem, updateItem, resetDatabase } from '@/api/storage'
+import {
+  createDatabase,
+  getItemFromDatabase,
+  addItemToDatabase,
+  updateItemInDatabase,
+  resetDatabase,
+} from '@/api/storage'
 
 import { Database } from '@/api/types'
 import { Map } from '@/api/types'
@@ -13,7 +19,7 @@ const state = Vue.observable({
 const database: Database = createDatabase('map')
 
 const initializeMap = (): void => {
-  const map: Map = getItem(database, 'map')
+  const map: Map = getItemFromDatabase(database, 'map')
 
   map && setMap(map)
 }
@@ -31,11 +37,13 @@ export const setMap = (map: Map): void => {
 
 // FIXME: map format
 const setMapToStorage = (map: Map): void => {
-  const isMap: Map | null = getItem(database, 'map')
+  const isMap: Map | null = getItemFromDatabase(database, 'map')
   console.log(`mapStore::setMapToStorage::isMap: ${isMap}`)
   const userMap = JSON.parse(JSON.stringify(map))
-  isMap !== null ? updateItem(database, 'map', userMap) : addItem<Map>(database, userMap, 'map')
-  // isMap !== null ? updateItem(database, 'map', map) : console.log('The map is null')
+  isMap !== null
+    ? updateItemInDatabase(database, 'map', userMap)
+    : addItemToDatabase<Map>(database, userMap, 'map')
+  // isMap !== null ? updateItemInDatabase(database, 'map', map) : console.log('The map is null')
 }
 
 export const deleteMap = (): void => {

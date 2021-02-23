@@ -17,26 +17,17 @@
         <MDTabStrip>
           <MDTabStripItem>
             <Label :text="$t('lang.views.Main.bottomTabbar.map')" />
-            <Image
-              class="botton-navigation-tab_icon"
-              src="res://ic_public_white_24dp"
-            />
+            <Image class="botton-navigation-tab_icon" src="res://ic_public_white_24dp" />
           </MDTabStripItem>
 
           <MDTabStripItem>
             <Label :text="$t('lang.views.Main.bottomTabbar.locations')" />
-            <Image
-              class="botton-navigation-tab_icon"
-              src="res://ic_place_white_24dp"
-            />
+            <Image class="botton-navigation-tab_icon" src="res://ic_place_white_24dp" />
           </MDTabStripItem>
 
           <MDTabStripItem>
             <Label :text="$t('lang.views.Main.bottomTabbar.securityAreas')" />
-            <Image
-              class="botton-navigation-tab_icon"
-              src="res://ic_blur_circular_white_24dp"
-            />
+            <Image class="botton-navigation-tab_icon" src="res://ic_blur_circular_white_24dp" />
           </MDTabStripItem>
         </MDTabStrip>
 
@@ -66,12 +57,9 @@ import { activateAlarms } from '@/api/securityAreas'
 import { resetBottomSheet } from '@/composables/useComponent'
 
 import { getAllLocations } from '@/store/locationsStore'
-import { getAllSecurityAreas } from '@/store/securityAreasStore'
-import { getAllAlarms } from '@/store/alarmsStore'
-import {
-  getUserCurrentLocation,
-  getDistanceToCenter,
-} from '@/store/userLocationStore'
+import { getAllSecurityAreas, getSecurityAreasActive } from '@/store/securityAreasStore'
+// import { getAllAlarms } from '@/store/alarmsStore'
+import { getUserCurrentLocation, getDistanceToCenter } from '@/store/userLocationStore'
 
 import MapWrapper from './MapWrapper.vue'
 import Locations from './Locations.vue'
@@ -104,13 +92,14 @@ export default Vue.extend({
     securityAreas(): number | undefined {
       return getAllSecurityAreas().length
     },
-    getAllAlarms,
+    getSecurityAreasActive,
+    // getAllAlarms,
     // getUserCurrentLocation,
     // getDistanceToCenter,
   },
 
   watch: {
-    getAllLocations(newValue: unknown, oldValue: unknown) {
+    getLocations(newValue: unknown, oldValue: unknown) {
       if (newValue !== undefined) this.bottomNavigation.showBadge(1, newValue)
       return
     },
@@ -118,7 +107,7 @@ export default Vue.extend({
       if (newValue !== undefined) this.bottomNavigation.showBadge(2, newValue)
       return
     },
-    getAllAlarms(newValue: string[], oldValue: string[]) {
+    getSecurityAreasActive(newValue: string[], oldValue: string[]) {
       if (newValue.length !== undefined) this.activateAlarms(newValue)
       return
     },
