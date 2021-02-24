@@ -2,30 +2,17 @@ import { searchLocations } from '@/services/geocodingService'
 import { pipe } from '@/utils/functional'
 import { formattedText } from '@/utils/text'
 
-import {
-  GeocoderShortLocation,
-  GeocoderLocation,
-  SearchLocationsResult,
-} from '@/services/types'
+import { GeocoderShortLocation, GeocoderLocation, SearchLocationsResult } from '@/services/types'
 
-export const getAllLocations = async (
-  query: string,
-): Promise<SearchLocationsResult> => await searchLocations(query)
+export const getAllLocations = async (query: string): Promise<SearchLocationsResult> =>
+  await searchLocations(query)
 
-const getShortLocation = (
-  location: GeocoderLocation,
-): GeocoderShortLocation => {
-  const shortLocation: GeocoderShortLocation = {}
+const getSortLocation = (location: GeocoderLocation): GeocoderShortLocation => ({
+  thoroughfare: location.thoroughfare,
+  subThoroughfare: location.subThoroughfare,
+  locality: location.locality,
+  postalCode: location.postalCode,
+  country: location.country,
+})
 
-  shortLocation.thoroughfare = location.thoroughfare
-  shortLocation.subThoroughfare = location.subThoroughfare
-  shortLocation.locality = location.locality
-  shortLocation.postalCode = location.postalCode
-  shortLocation.country = location.country
-
-  console.log(`shortLocation: ${JSON.stringify(shortLocation)}`)
-
-  return shortLocation
-}
-
-export const formattedLocation = pipe(getShortLocation, formattedText)
+export const formattedLocation = pipe(getSortLocation, formattedText)
