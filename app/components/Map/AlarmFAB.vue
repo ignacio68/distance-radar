@@ -20,8 +20,6 @@ import { getSecurityAreasActive } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
 // import { fetchAlarmsActive } from '@/api/securityAreas'
 
-import '@/plugins/installFAB'
-
 export default Vue.extend({
   name: 'AlarmFAB',
 

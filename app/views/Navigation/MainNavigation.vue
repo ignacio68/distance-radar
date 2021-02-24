@@ -25,8 +25,6 @@ import { SlideInOnTopTransition } from 'nativescript-ui-sidedrawer'
 
 import { getVisibility, setVisibility } from '@/composables/useComponent'
 
-import '@/plugins/installRadSideDrawer'
-
 export default Vue.extend({
   name: 'MainNavigation',
 
@@ -38,9 +36,7 @@ export default Vue.extend({
 
   computed: {
     isVisibleDrawer(): boolean {
-      console.log(
-        `MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`,
-      )
+      console.log(`MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`)
       return getVisibility('drawer')
     },
 

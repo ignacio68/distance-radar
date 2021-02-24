@@ -50,8 +50,6 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import '@/plugins/installMDBottomNavigation'
-
 import { activateAlarms } from '@/api/securityAreas'
 
 import { resetBottomSheet } from '@/composables/useComponent'

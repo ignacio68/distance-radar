@@ -1,5 +1,5 @@
 <template>
-  <StackLayout orientation="vertical">
+  <StackLayout orientation="vertical" height="300">
     <Label
       class="menu_title"
       :text="$t('lang.components.newLocation.title')"
@@ -54,8 +54,6 @@
 
 <script lang="ts">
 import Vue from 'nativescript-vue'
-
-import '@/plugins/installMDButton'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 

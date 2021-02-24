@@ -7,11 +7,7 @@
   >
     <ListView for="location in locations">
       <v-template>
-        <Label
-          :height="labelHeight"
-          :text="location.id"
-          @tap="onItemTap(location)"
-        />
+        <Label :height="labelHeight" :text="location.id" @tap="onItemTap(location)" />
       </v-template>
     </ListView>
   </StackLayout>
@@ -19,7 +15,6 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
-import '@/plugins/installMDButton'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
@@ -53,9 +48,7 @@ export default Vue.extend({
   computed: {
     isVisibleLocationsList(): boolean {
       console.log(
-        `LocationsList::computed:isVisibleLocationsList() ${getVisibility(
-          'locationsList',
-        )}`,
+        `LocationsList::computed:isVisibleLocationsList() ${getVisibility('locationsList')}`,
       )
       return getVisibility('locationsList')
     },

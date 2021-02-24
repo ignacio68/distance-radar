@@ -41,14 +41,10 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
-import '@/plugins/installMDButton'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
-import {
-  getAllLocations,
-  updateLocation as updateLocationInStore,
-} from '@/store/locationsStore'
+import { getAllLocations, updateLocation as updateLocationInStore } from '@/store/locationsStore'
 
 export default Vue.extend({
   name: 'LocationsAdjusts',
@@ -71,9 +67,7 @@ export default Vue.extend({
   computed: {
     isVisibleLocationsList(): boolean {
       console.log(
-        `LocationsList::computed:isVisibleLocationsList() ${getVisibility(
-          'locationsList',
-        )}`,
+        `LocationsList::computed:isVisibleLocationsList() ${getVisibility('locationsList')}`,
       )
       return getVisibility('locationsList')
     },

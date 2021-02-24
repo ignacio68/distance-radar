@@ -38,8 +38,6 @@ import Vue from 'nativescript-vue'
 
 // import Icon from '@/components/UI/Icon.vue'
 
-import '@/plugins/installMDSlider'
-
 export default Vue.extend({
   name: 'CustomSlider',
   // components: { Icon },

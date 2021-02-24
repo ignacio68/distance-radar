@@ -1,10 +1,5 @@
 <template>
-  <GridLayout
-    columns="*, auto, auto"
-    rows="*, auto"
-    class="map"
-    horizontalAlignment="right"
-  >
+  <GridLayout columns="*, auto, auto" rows="*, auto" class="map" horizontalAlignment="right">
     <MapBox
       ref="map"
       row="0"
@@ -37,13 +32,7 @@
       @on-tap-alarm-fab="onTapAlarmFAB"
     />
 
-    <GridLayout
-      class="right-menu"
-      rows="*, auto"
-      columns="auto"
-      row="0"
-      col="1"
-    >
+    <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1">
       <!-- TODO: Add animation -->
       <LocationsList
         v-if="isVisibleLocationsList"
@@ -111,13 +100,7 @@ import Vue from 'nativescript-vue'
 
 import { mapToken, customMapStyle } from '@/setup/map'
 
-import {
-  setCenter,
-  addMarkers,
-  flyTo,
-  setOnMapLongClickListener,
-  setMapStyle,
-} from '@/api/map'
+import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
 import { updateUserMarker } from '@/api/userMarker'
 import { getUserCurrentLocation } from '@/services/geolocationService'
 
@@ -133,8 +116,6 @@ import { Elevation } from '@/types/enums/elevations'
 import { MapStyle } from '@/types/enums/mapStyle'
 import { LatLng, Map, GeocoderLocation } from '@/api/types'
 
-import '@/plugins/installMapbox'
-import '@/plugins/installFAB'
 import LocationsList from '@/components/Locations/LocationsList.vue'
 import Geocoder from '@/components/Geocoder/Geocoder.vue'
 import AlarmFAB from './AlarmFAB.vue'
@@ -164,9 +145,7 @@ export default Vue.extend({
 
   computed: {
     mapStyle(): string | MapStyle {
-      return this.customMapStyle !== undefined
-        ? this.customMapStyle
-        : this.defaultMapStyle
+      return this.customMapStyle !== undefined ? this.customMapStyle : this.defaultMapStyle
     },
 
     isVisibleLocationsList(): boolean {
@@ -214,12 +193,7 @@ export default Vue.extend({
 
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
-      pipe(
-        this.setMap(args),
-        addMarkers(),
-        this.setOnMapLongClickAction(),
-        this.setCenter(),
-      )
+      pipe(this.setMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setCenter())
     },
 
     setMap(args: any) {
@@ -230,11 +204,7 @@ export default Vue.extend({
 
     setOnMapLongClickAction(): void {
       setOnMapLongClickListener((point: LatLng) => {
-        console.log(
-          `MapComponent::setOnMapLongClickAction:point: ${JSON.stringify(
-            point,
-          )}`,
-        )
+        console.log(`MapComponent::setOnMapLongClickAction:point: ${JSON.stringify(point)}`)
         updateUserMarker(point)
         return true
       })
@@ -242,8 +212,7 @@ export default Vue.extend({
 
     setCenter(): void {
       setCenter().then(() => {
-        if (numberOfLocations() === undefined)
-          this.$emit('first-location-alert')
+        if (numberOfLocations() === undefined) this.$emit('first-location-alert')
       })
     },
 
@@ -279,9 +248,7 @@ export default Vue.extend({
 
     changeMapStyle() {
       this.isSatelliteMap = !this.isSatelliteMap
-      this.isSatelliteMap
-        ? setMapStyle(this.satelliteMapStyle)
-        : setMapStyle(this.mapStyle)
+      this.isSatelliteMap ? setMapStyle(this.satelliteMapStyle) : setMapStyle(this.mapStyle)
     },
   },
 })

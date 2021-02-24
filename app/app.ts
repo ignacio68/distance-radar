@@ -10,16 +10,22 @@
 import VueDevtools from 'nativescript-vue-devtools'
 import Vue from 'nativescript-vue'
 
+import ComponentsPlugin from './vue.components'
+
 // Internationalization
 import { i18n, setLanguage } from '@/locales'
 
 import { initAudioPlayer } from '@/api/common'
 
 //Components
+// import '@/plugins/installMDBottomSheet'
+import BottomSheetFake from '@/views/TestViews/BottomSheetFake.vue'
 import MainNavigation from '@/views/Navigation/MainNavigation.vue'
 import Main from '@/views/Main/Main.vue'
 import DrawerContent from '@/views/Navigation/DrawerContent.vue'
 // import HomeTest from './views/TestViews/HomeTest.vue'
+
+Vue.use(ComponentsPlugin)
 
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -57,5 +63,5 @@ new Vue({
       h(DrawerContent, { slot: 'drawerContent' }),
       h(Main, { slot: 'mainContent' }),
     ]),
-  // render: (h) => h('frame', [h(HomeTest)]),
+  // render: (h) => h('frame', [h(BottomSheetFake)]),
 }).$start()

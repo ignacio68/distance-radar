@@ -1,10 +1,6 @@
 <template>
   <GridLayout class="Locations" rows="auto, *">
-    <Label
-      row="0"
-      class="Locations-title m-x-16 p-t-8"
-      :text="$t('lang.views.Locations.title')"
-    />
+    <Label row="0" class="Locations-title m-x-16 p-t-8" :text="$t('lang.views.Locations.title')" />
     <StackLayout row="1" class="m-x-16 p-t-16">
       <Label
         v-if="locations.length === 0"
@@ -13,19 +9,12 @@
       />
       <GridLayout v-else rows="*, auto">
         <!-- <ScrollView row="0" class="Locations-list m-x-16"> -->
-        <ListView
-          row="0"
-          for="location in locations"
-          @itemTap="onItemTap"
-          class="Location-list"
-        >
+        <ListView row="0" for="location in locations" @itemTap="onItemTap" class="Location-list">
           <v-template>
             <LocationCard
               :item="location"
               class="Locations-list_item m-y-4"
-              :coordinatesTitle="
-                $t('lang.components.locationCard.coordinatesTitle')
-              "
+              :coordinatesTitle="$t('lang.components.locationCard.coordinatesTitle')"
               @on-tap="onConfirmDeleteLocation(location.id)"
             />
           </v-template>
@@ -54,7 +43,6 @@ import { Location } from '@/api/types'
 import Main from '@/views/Main/Main.vue'
 import CommonActionBar from '@/components/UI/CommonActionBar.vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
-import '@/plugins/installMDButton'
 
 export default Vue.extend({
   name: 'Locations',
@@ -84,9 +72,7 @@ export default Vue.extend({
         title: id,
         message: `${this.$t('lang.dialogs.deleteLocation.message')}`,
         okButtonText: `${this.$t('lang.dialogs.deleteLocation.okButton')}`,
-        cancelButtonText: `${this.$t(
-          'lang.dialogs.deleteLocation.cancelButton',
-        )}`,
+        cancelButtonText: `${this.$t('lang.dialogs.deleteLocation.cancelButton')}`,
       }
       confirmDeleteLocation(options, id)
     },
