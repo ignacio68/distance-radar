@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { removeSecurityArea } from '@/api/securityAreas'
+
 import { mbAddMarkers, mbRemoveMarkers } from '@/services/mapboxService'
 
 import { setVisibility } from '@/composables/useComponent'
@@ -9,8 +11,8 @@ import {
   updateLocation as updateLocationInStore,
   getLocation,
   getAllLocations,
-  deleteLocation,
-  deleteAllLocations,
+  deleteLocations,
+  resetLocationsStore,
   setSelectedLocation,
   isSecurityArea,
 } from '@/store/locationsStore'
@@ -57,13 +59,29 @@ const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation
 
 export const updateLocation = (location: Location): void => updateLocationInStore(location)
 
-export const removeLocation = (id: string): void => {
-  console.log(`locations.ts::removeLocation()::id: ${id}`)
+export const removeLocations = (locations: string[]): void => {
+  console.log(`locations.ts::removeLocation()::locations: ${locations}`)
   const map = getMap()
-  mbRemoveMarkers(map, [id]).then(() => deleteLocation(id))
+  removeAllSecurityAreas(locations).then(() =>
+    mbRemoveMarkers(map, locations).then(() => deleteLocations(locations)),
+  )
+
+  // mbRemoveMarkers(map, locations).then(() => deleteLocations(id))
+}
+// export const removeLocation = (id: string): void => {
+//   console.log(`locations.ts::removeLocation()::id: ${id}`)
+//   const map = getMap()
+//   mbRemoveMarkers(map, [id]).then(() => deleteLocations(id))
+// }
+
+const removeAllSecurityAreas = async (locations: string[]): Promise<void> => {
+  locations.forEach((location) => hasSecurityArea(location))
 }
 
-export const removeAllLocations = (): void => deleteAllLocations()
+const hasSecurityArea = (location: string): Promise<void> =>
+  isSecurityArea(location) && removeSecurityArea(location)
+
+export const removeAllLocations = (): void => resetLocationsStore()
 
 // export const updateLocationAtInit = async (
 //   location: Location,

@@ -97,7 +97,7 @@ const removeSecurityAreafromState = async (index: number): Promise<void> => {
   state.securityAreas.splice(index, 1)
 }
 
-export const deleteAllSecurityAreas = (): void => {
+export const resetSecurityAreasStore = (): void => {
   deleteAllSecurityAreasFromState()
   resetDatabase(database)
 }

@@ -59,10 +59,24 @@ const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: LayerVi
 }
 
 //  TODO: to remove
+// export const removeSecurityArea = async (id: string): Promise<void> => {
+//   const securityArea = getSecurityArea(id)
+//   console.log(`securityAreas.ts::removeSecurityArea()::typeof: ${typeof securityArea}`)
+//   if (typeof securityArea === 'object') {
+//     removeLayer(id)
+//       .then(() => removeSource(id))
+//       .then(() => deleteSecurityArea(id))
+//   }
+//   return
+// }
+export const removeAllSecurityAreas = async (securityAreas: string[]): Promise<void> => {
+  securityAreas.forEach((securityArea) => removeSecurityArea(securityArea))
+}
+
 export const removeSecurityArea = async (id: string): Promise<void> => {
   const securityArea = getSecurityArea(id)
   console.log(`securityAreas.ts::removeSecurityArea()::typeof: ${typeof securityArea}`)
-  if (typeof securityArea === 'object') {
+  if (!!securityArea) {
     removeLayer(id)
       .then(() => removeSource(id))
       .then(() => deleteSecurityArea(id))

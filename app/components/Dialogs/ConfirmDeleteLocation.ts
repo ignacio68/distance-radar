@@ -1,11 +1,8 @@
 // import confirmDialog from './ConfirmDialog'
 import { confirm, ConfirmOptions } from '@nativescript/core'
-import { removeLocation } from '@/api/locations'
+import { removeLocations } from '@/api/locations'
 
-export const confirmDeleteLocation = (
-  options: ConfirmOptions,
-  id: string,
-): void => {
+export const confirmDeleteLocation = (options: ConfirmOptions, id: string): void => {
   const confirmOptions: ConfirmOptions = {
     title: options.title,
     message: options.message,
@@ -13,7 +10,7 @@ export const confirmDeleteLocation = (
     cancelButtonText: options.cancelButtonText,
   }
   confirm(confirmOptions).then((result) => {
-    if (result) removeLocation(id)
+    if (result) removeLocations([id])
   })
 }
 

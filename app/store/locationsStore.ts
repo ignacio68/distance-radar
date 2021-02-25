@@ -73,15 +73,16 @@ const setUpdateLocation = (location: Location): Location => {
 const replaceLocationInState = (location: Location) =>
   state.locations.splice(findIndex(location.id), 1, location)
 
-export const deleteLocation = (id: string): void => {
-  if (isSecurityArea(id)) removeAllSecurityAreas(id)
-  deleteLocationFromState(id).then(() => deleteItemInDatabase(database, id))
+export const deleteLocations = (locations: string[]): void => {
+  locations.forEach((location) =>
+    deleteLocationFromState(location).then(() => deleteItemInDatabase(database, location)),
+  )
 }
 
 const deleteLocationFromState = async (id: string): Promise<Location[]> =>
   state.locations.splice(findIndex(id), 1)
 
-export const deleteAllLocations = (): void => {
+export const resetLocationsStore = (): void => {
   deleteAllLocationsFromState()
   resetDatabase(database)
 }
