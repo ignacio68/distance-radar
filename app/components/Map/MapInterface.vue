@@ -121,7 +121,7 @@ import Geocoder from '@/components/Geocoder/Geocoder.vue'
 import AlarmFAB from './AlarmFAB.vue'
 
 export default Vue.extend({
-  name: 'MapInterface',
+  name: 'MapWrapper',
   components: {
     LocationsList,
     Geocoder,
@@ -184,7 +184,7 @@ export default Vue.extend({
 
   methods: {
     onLocationPermissionGranted() {
-      console.log('MapInterface::onLocationPermissionGranted()')
+      console.log('MapWrapper::onLocationPermissionGranted()')
     },
 
     onLocationPermissionDenied() {

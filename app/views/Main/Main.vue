@@ -32,7 +32,7 @@
         </MDTabStrip>
 
         <MDTabContentItem>
-          <MapWrapper />
+          <Map />
         </MDTabContentItem>
 
         <MDTabContentItem>
@@ -59,7 +59,7 @@ import { getAllSecurityAreas, getSecurityAreasActive } from '@/store/securityAre
 // import { getAllAlarms } from '@/store/alarmsStore'
 import { getUserCurrentLocation, getDistanceToCenter } from '@/store/userLocationStore'
 
-import MapWrapper from './MapWrapper.vue'
+import Map from './Map.vue'
 import Locations from './Locations.vue'
 import SecurityAreas from './SecurityAreas.vue'
 import MainActionBar from '@/components/UI/MainActionBar.vue'
@@ -69,7 +69,7 @@ export default Vue.extend({
 
   components: {
     MainActionBar,
-    MapWrapper,
+    Map,
     Locations,
     SecurityAreas,
   },
