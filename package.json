@@ -1,7 +1,7 @@
 {
   "name": "distance-radar",
   "displayName": "Blank",
-  "version": "0.3.2",
+  "version": "0.4.1",
   "private": "true",
   "description": "NativeScript Application",
   "keywords": [
@@ -31,8 +31,8 @@
   "main": "app.js",
   "scripts": {
     "lint": "eslint --fix . && echo 'Lint complete.'",
-    "devan": "ns debug android --env.snapshot --env.uglify --bundle",
-    "devantime": "ns debug android --env.snapshot --env.uglify --bundle | timeline-view",
+    "deban": "ns debug android --env.snapshot --env.uglify --bundle",
+    "debantime": "ns debug android --env.snapshot --env.uglify --bundle | timeline-view",
     "runan": "ns run android --env.snapshot --env.uglify --bundle --no-hmr",
     "runantime": "ns run android --env.snapshot --env.uglify  --no-hmr | timeline-view",
     "test-unit": "ns test android --watch --env.uglify --env.sourceMap"
