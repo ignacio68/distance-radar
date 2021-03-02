@@ -31,9 +31,9 @@
   "main": "app.js",
   "scripts": {
     "lint": "eslint --fix . && echo 'Lint complete.'",
-    "deban": "ns debug android --env.snapshot --env.uglify --bundle",
-    "debantime": "ns debug android --env.snapshot --env.uglify --bundle | timeline-view",
-    "runan": "ns run android --env.snapshot --env.uglify --bundle --no-hmr",
+    "deban": "ns debug android --no-hmr --env.snapshot --env.uglify",
+    "debantime": "ns debug android --env.snapshot --env.uglify  | timeline-view",
+    "runan": "ns run android --env.snapshot --env.uglify --no-hmr",
     "runantime": "ns run android --env.snapshot --env.uglify  --no-hmr | timeline-view",
     "test-unit": "ns test android --watch --env.uglify --env.sourceMap"
   },
