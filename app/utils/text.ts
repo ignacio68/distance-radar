@@ -3,13 +3,10 @@ interface ObjectToString {
   [key: string]: string
 }
 
-const objectToArray = (obj: ObjectToString): string[] => {
-  const newArray: string[] = Object.values(obj)
-  return newArray
-}
+export const objectToArray = (obj: ObjectToString): string[] => Object.values(obj)
 
-const removeEmptyStrings = (arr: string[]): string[] => arr.filter(Boolean)
+export const removeEmptyStrings = (arr: string[]): string[] => arr.filter(Boolean)
 
-const reduceToString = (arr: string[]): string => `${arr.join(', ')}`
+export const reduceToString = (arr: string[]): string => `${arr.join(', ')}`
 
 export const formattedText = pipe(objectToArray, removeEmptyStrings, reduceToString)
