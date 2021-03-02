@@ -43,7 +43,7 @@
         <MDButton
           class="new-location-menu_button_add m-r-0"
           width="144"
-          :isEnabled="isEnabledAddButton"
+          :isEnabled="isEnabledAddLocationButton"
           :text="$t('lang.components.newLocation.addButton')"
           @tap="onAddNewLocation"
         />
@@ -59,9 +59,7 @@ import { setVisibility, getVisibility } from '@/composables/useComponent'
 
 import { newLocation } from '@/api/locations'
 
-import { isId } from '@/store/locationsStore'
-
-import { Location } from '@/types/commons'
+import { isLocationId } from '@/store/locationsStore'
 
 import TextForm from '@/components/UI/TextForm.vue'
 
@@ -83,17 +81,16 @@ export default Vue.extend({
     return {
       locationValue: '',
       location: {
-        id: '',
+        id: null,
         group: null,
         color: null,
         selected: true,
         icon: 'res://ic_person_pin_pink_48dp',
       },
-      //GroupError: '0',
-      idError: '0',
+      idError: 0,
       isDismissedKeyboard: false,
       isResetTextField: false,
-      isEnabledAddButton: false,
+      isEnabledAddLocationButton: false,
     }
   },
 
@@ -110,84 +107,84 @@ export default Vue.extend({
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
       console.log(`NewLocationMenu::watch:isVisibleNewLocationMenu(): ${newValue}`)
       if (newValue) {
-        this.resetTextField(false)
-        this.dismissKeyboard(false)
+        this.setResetTextField(false)
+        this.setDismissedKeyboard(false)
       } else {
-        this.resetTextField(true)
+        this.setResetTextField(true)
       }
     },
   },
 
-  async mounted() {
+  mounted() {
     console.log('NewLocationMenu::mounted()')
-    await this.reset()
+    this.reset()
   },
 
   methods: {
-    dismissKeyboard(value: boolean) {
-      this.isDismissedKeyboard = value
-      console.log(`NewLocationMenu::dismissKeyboard: ${this.isDismissedKeyboard}`)
-    },
-
-    resetTextField(value: boolean) {
-      this.isResetTextField = value
-      console.log(`NewLocationMenu::resetTextField(): ${this.isResetTextField}`)
-    },
-
-    enabledAddButton(value: boolean) {
-      this.isEnabledAddButton = value
-    },
-
-    setIdError(value: number) {
-      this.idError = value
-    },
-
     async reset() {
-      console.log('NewLocationMenu::reset()')
-      await this.setId(null)
-      await this.setIdError(0)
-      this.enabledAddButton(false)
+      this.location.id = null
+      this.setIdError(0)
+      this.setEnabledAddLocationButton(false)
+      console.log(`NewLocationMenu::reset():isIdError: ${this.isIdError}`)
       // this.group = null
     },
 
-    async hideNewLocationMenu() {
+    hideNewLocationMenu() {
       console.log('NewLocationMenu::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
-      this.reset().then(() => this.dismissKeyboard(true))
+      this.reset().then(() => this.setDismissedKeyboard(true))
     },
 
-    setId(id: string) {
-      this.location.id = id
-      this.setIdError(0)
-      // this.$emit('enabled-fab', false)
+    onReturnPress(textValue: string) {
+      this.setId(textValue)
+      this.setEnabledAddLocationButton(!this.isIdError())
     },
 
-    isIdError() {
-      !this.location.id
-        ? this.setIdError(1)
-        : isId(this.location.id)
-        ? this.setIdError(2)
-        : this.setIdError(0)
-    },
-
-    async newLocation() {
-      newLocation(this.location)
-      this.hideNewLocationMenu()
-    },
-
-    async onReturnPress(textValue: string) {
-      await this.setId(textValue)
-      await this.isIdError()
-      this.enabledAddButton(true)
-    },
-
-    async onCancel() {
-      await this.reset()
+    onCancel() {
+      this.reset()
       this.hideNewLocationMenu()
     },
 
     onAddNewLocation() {
-      !this.idError ? this.newLocation() : console.log(`ID error is: ${this.idError}`)
+      this.isIdError() ? console.log(`ID error is: ${this.idError}`) : this.newLocation()
+    },
+
+    newLocation() {
+      newLocation(this.location)
+      this.hideNewLocationMenu()
+    },
+
+    setId(id: string) {
+      if (id === null || id === '') this.setIdError(1)
+      else if (isLocationId(id)) this.setIdError(2)
+      else {
+        this.location.id = id
+        this.setIdError(0)
+        // this.$emit('enabled-fab', false)
+      }
+    },
+
+    isIdError(): boolean {
+      return Boolean(this.idError)
+    },
+
+    setIdError(value: number) {
+      this.idError = value
+      console.log(`NewLocationMenu::setIdError::error: ${this.idError}`)
+    },
+
+    setDismissedKeyboard(value: boolean) {
+      this.isDismissedKeyboard = value
+      console.log(`NewLocationMenu::isDismissedKeyboard: ${this.isDismissedKeyboard}`)
+    },
+
+    setResetTextField(value: boolean) {
+      this.isResetTextField = value
+      console.log(`NewLocationMenu::isResetTextField(): ${this.isResetTextField}`)
+    },
+
+    setEnabledAddLocationButton(value: boolean) {
+      this.isEnabledAddLocationButton = value
     },
   },
 })

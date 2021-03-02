@@ -12,7 +12,7 @@ import {
   deleteDatabase,
 } from '@/api/storage'
 
-import { Location, Database, SecurityArea } from '@/api/types'
+import { Location, Database } from '@/api/types'
 
 const state = Vue.observable({
   locations: ([] as unknown) as Location[],
@@ -51,12 +51,15 @@ export const getLocation = (id: string): Location =>
 
 export const getAllLocations = (): Location[] => state.locations
 
-export const isId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
+export const isLocationId = (id: string): boolean => (findIndex(id) >= 0 ? true : false)
 
-const findIndex = (id: string): number =>
-  state.locations.findIndex((location) => location.id === id)
+const findIndex = (id: string): number => {
+  const index = state.locations.findIndex((location) => location.id === id)
+  console.log(`locationsStore::findIndex()::index[${id}]: ${index}`)
+  return index
+}
 
-export const numberOfLocations = (): number => state.locations.length
+export const hasLocations = (): boolean => !!state.locations.length
 
 export const updateLocation = (location: Location): void => {
   const updatedLocation = setUpdateLocation(location)
