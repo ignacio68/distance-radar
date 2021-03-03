@@ -29,9 +29,7 @@ export const getUserCurrentLocation = async (): Promise<void | LatLng> => {
       setCurrentUserLocation(userLocation)
       return userLocation
     })
-    .catch((error) =>
-      console.log(`geolocationService::getUserCurrentLocation()::error: ${error.message || error}`),
-    )
+    .catch((error) => console.log(`geolocationService::getUserCurrentLocation()::error: ${error}`))
   return userLocation
 }
 
