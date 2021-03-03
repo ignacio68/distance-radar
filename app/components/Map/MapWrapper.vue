@@ -108,7 +108,7 @@ import { getVisibility, setVisibility } from '@/composables/useComponent'
 
 import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
 import { setMap } from '@/store/mapStore'
-import { numberOfLocations } from '@/store/locationsStore'
+import { hasLocations } from '@/store/locationsStore'
 
 import { pipe } from '@/utils/functional'
 
@@ -157,29 +157,9 @@ export default Vue.extend({
     },
   },
 
-  beforeMount() {
-    console.log('__MapInterface::beforeMount()')
-  },
-
   mounted() {
     console.log('__MapInterface::mounted()')
     getUserCurrentLocation()
-  },
-
-  beforeUpdate() {
-    console.log('__MapInterface::beforeUpdate()')
-  },
-
-  updated() {
-    console.log('__MapInterface::updated()')
-  },
-
-  beforeDestroy() {
-    console.log('__MapInterface::beforeDestroy()')
-  },
-
-  destroyed() {
-    console.log('__MapInterface::beforeDestroy()')
   },
 
   methods: {
@@ -193,7 +173,7 @@ export default Vue.extend({
 
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
-      pipe(this.setMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setCenter())
+      pipe(this.setMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setMapCenter())
     },
 
     setMap(args: any) {
@@ -210,9 +190,9 @@ export default Vue.extend({
       })
     },
 
-    setCenter(): void {
+    setMapCenter(): void {
       setCenter().then(() => {
-        if (numberOfLocations() === undefined) this.$emit('first-location-alert')
+        !hasLocations() && this.$emit('first-location-alert')
       })
     },
 
