@@ -1,5 +1,5 @@
 <template>
-  <StackLayout orientation="vertical">
+  <StackLayout orientation="vertical" @loaded="onLoaded">
     <Label
       class="menu_title"
       :text="$t('lang.components.newArea.title')"
@@ -13,11 +13,11 @@
         iconName="res://ic_visibility_white_24dp"
         iconColor="#004842"
         :sliderName="$t('lang.components.newArea.distance')"
-        :value="radius"
-        :minValue="0"
-        :maxValue="10"
+        :value="securityArea.radius"
+        :minValue="radiusMinValue"
+        :maxValue="radiusMaxValue"
         rippleColor="#007a70"
-        @on-value-changed="onRadiusChanged"
+        @on-value-changed="setRadius"
       />
       <CustomSlider
         class="opacity-slider"
@@ -25,24 +25,24 @@
         iconName="res://ic_visibility_white_24dp"
         iconColor="#004842"
         :sliderName="$t('lang.components.newArea.opacity')"
-        :value="opacity"
-        :minValue="0"
-        :maxValue="1"
+        :value="securityArea.fillOpacity"
+        :minValue="opacityMinValue"
+        :maxValue="opacityMaxValue"
         rippleColor="#007a70"
-        @on-value-changed="onOpacityChanged"
+        @on-value-changed="setOpacity"
       />
       <ColorSelector
         row="2"
         :labelWidth="64"
         :title="$t('lang.components.colorSelector.text')"
-        @on-selected-color="onSetColor"
+        @on-selected-color="setColor"
       />
       <ActivationMenu
         row="3"
         :activationText="$t('lang.components.activationMenu.activation')"
         :isChecked="checkedActivation"
-        @on-checked-change="onActivationChanged"
-        @on-alert-mode-selected="onAlertModeSelected"
+        @on-checked-change="isActivate"
+        @on-alert-mode-selected="setAlertMode"
       />
       <StackLayout
         row="4"
@@ -75,14 +75,13 @@ import Vue from 'nativescript-vue'
 
 import { setVisibility } from '@/composables/useComponent'
 
-import { newSecurityArea, showSecurityArea } from '@/api/securityAreas'
+import { newSecurityArea } from '@/api/securityAreas'
 
 import { round } from '@/utils/maths'
 
-import { isId } from '@/store/securityAreasStore'
 import { getSelectedLocation } from '@/store/locationsStore'
 
-import { LayerVisibility } from '@/api/types'
+import { Location } from '@/api/types'
 
 import CustomSlider from '@/components/UI/CustomSlider.vue'
 import ColorSelector from '@/components/UI/ColorSelector.vue'
@@ -98,137 +97,121 @@ export default Vue.extend({
 
   data() {
     return {
-      radius: 5,
-      opacity: 0.5,
+      radiusMinValue: 0,
+      radiusMaxValue: 10,
+      opacityMinValue: 0,
+      opacityMaxValue: 1,
       securityArea: {
         id: '',
         center: {
           lat: 0,
           lng: 0,
         },
-        radius: 0.1,
-        fillColor: '',
+        radius: 5,
+        fillColor: '#ff765d',
         fillOpacity: 0.5,
         group: null,
         visibility: 'visible',
         isActive: false,
         alertMode: 'EXIT',
       },
-      idError: 0,
       checkedActivation: false,
     }
   },
 
   computed: {
-    currentSelectedLocation() {
+    currentSelectedLocation(): Location {
       return getSelectedLocation()
+    },
+
+    radius(): number {
+      return (this.radiusMaxValue - this.radiusMinValue) / 2
+    },
+
+    opacity(): number {
+      return (this.opacityMaxValue - this.opacityMinValue) / 2
     },
   },
 
-  async mounted() {
+  mounted() {
     console.log('__NewSecurityAreaMenu.vue::mounted()')
-    // this.onSetColor('#ff6ea1')
     this.reset()
   },
 
-  beforeUpdate() {
-    console.log('__NewSecurityAreaMenu::beforeUpdate()')
-  },
-
-  updated() {
-    console.log('__NewSecurityAreaMenu::updated()')
-  },
-
-  beforeDestroy() {
-    console.log('__NewSecurityAreaMenu::beforeDestroy()')
-  },
-
-  destroyed() {
-    console.log('__NewSecurityAreaMenu::beforeDestroy()')
-  },
-
   methods: {
-    reset() {
-      console.log('NewSecurityAreaMenu.vue::reset()')
-      this.radius = 5
-      this.opacity = 0.5
-      this.onSetColor('#ff6ea1')
-      this.checkedActivation = false
-      this.setIdError(0)
-    },
-
-    hideNewSecurityAreaMenu() {
-      // console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
-      setVisibility('newSecurityAreaMenu', false)
+    onLoaded() {
+      console.log(`NewSecurityAreaMenu.vue::onLoaded()`)
       this.reset()
     },
 
-    onRadiusChanged(value: number) {
-      console.log(`NewSecurityAreaMenu.vue::onRadiusChanged: ${value}`)
-      this.securityArea.radius = round(value, 2)
-    },
-
-    onOpacityChanged(value: number) {
-      console.log(`NewSecurityAreaMenu.vue::onOpacityChanged: ${value}`)
-      this.securityArea.fillOpacity = round(value, 1)
-    },
-
-    onActivationChanged(value: boolean) {
-      this.securityArea.isActive = value
-    },
-
-    onAlertModeSelected(value: string) {
-      this.securityArea.alertMode = value
-    },
-
-    onSetColor(color: string) {
-      this.securityArea.fillColor = color
+    onAddNewSecurityArea(): void {
+      this.setIdAndCenter()
+        .then(() => {
+          newSecurityArea(this.securityArea)
+        })
+        .then(() => {
+          console.log(
+            `NewSecurityAreaMenu.vue::addNewSecurityArea():securityArea: ${JSON.stringify(
+              this.securityArea,
+            )}`,
+          )
+          this.hideNewSecurityAreaMenu()
+        })
     },
 
     async setIdAndCenter(): Promise<void> {
-      // console.log('NewSecurityAreaMenu.vue::setIdAndCenter()')
       const { id, lat, lng } = this.currentSelectedLocation
       this.securityArea.id = id
       this.securityArea.center.lat = lat
       this.securityArea.center.lng = lng
     },
 
-    setIdError(value: number) {
-      this.idError = value
+    setRadius(value: number) {
+      console.log(`NewSecurityAreaMenu.vue::setRadius: ${value}`)
+      this.securityArea.radius = round(value, 2)
     },
 
-    isIdError() {
-      !this.securityArea.id
-        ? this.setIdError(1)
-        : isId(this.securityArea.id)
-        ? this.setIdError(2)
-        : this.setIdError(0)
+    setOpacity(value: number) {
+      console.log(`NewSecurityAreaMenu.vue::setOpacity: ${value}`)
+      this.securityArea.fillOpacity = round(value, 1)
     },
 
-    addNewSecurityArea(): void {
-      console.log(
-        `NewSecurityAreaMenu.vue::addNewSecurityArea():securityArea: ${JSON.stringify(
-          this.securityArea,
-        )}`,
-      )
-      this.setIdAndCenter().then(() => {
-        newSecurityArea(this.securityArea)
-      })
-      this.hideNewSecurityAreaMenu()
+    isActivate(value: boolean) {
+      this.securityArea.isActive = value
+    },
+
+    setAlertMode(value: string) {
+      this.securityArea.alertMode = value
+    },
+
+    setColor(color: string) {
+      this.securityArea.fillColor = color
     },
 
     onCancel() {
-      // console.log('NewSecurityAreaMenu.vue::onCancel()')
+      this.reset()
       this.hideNewSecurityAreaMenu()
     },
 
-    onAddNewSecurityArea() {
-      // console.log('NewSecurityAreaMenu.vue::onAddNewSecurityArea()')
-      !this.idError ? this.addNewSecurityArea() : console.log(`ID error is: ${this.idError}`)
+    reset() {
+      ;(this.securityArea.id = null),
+        (this.securityArea.center = { lat: 0, lon: 0 }),
+        (this.securityArea.radius = this.radius),
+        (this.securityArea.fillOpacity = this.opacity),
+        (this.securityArea.fillColor = '#ff765d')
+      this.securityArea.visibility = 'visible'
+      this.securityArea.isActive = false
+      this.securityArea.alertMode = 'EXIT'
+      this.checkedActivation = false
+      console.log(
+        `NewSecurityAreaMenu.vue::reset()::Security Area: ${JSON.stringify(this.securityArea)}`,
+      )
     },
 
-    showSecurityArea(id: string, value: LayerVisibility) {
-      showSecurityArea(id, value)
+    hideNewSecurityAreaMenu() {
+      console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
+      setVisibility('newSecurityAreaMenu', false)
+      this.reset()
     },
   },
 })

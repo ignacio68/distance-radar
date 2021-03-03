@@ -121,30 +121,6 @@ export default Vue.extend({
   },
 
   methods: {
-    async reset() {
-      this.location.id = null
-      this.setIdError(0)
-      this.setEnabledAddLocationButton(false)
-      console.log(`NewLocationMenu::reset():isIdError: ${this.isIdError}`)
-      // this.group = null
-    },
-
-    hideNewLocationMenu() {
-      console.log('NewLocationMenu::hideNewLocationMenu()')
-      setVisibility('newLocationMenu', false)
-      this.reset().then(() => this.setDismissedKeyboard(true))
-    },
-
-    onReturnPress(textValue: string) {
-      this.setId(textValue)
-      this.setEnabledAddLocationButton(!this.isIdError())
-    },
-
-    onCancel() {
-      this.reset()
-      this.hideNewLocationMenu()
-    },
-
     onAddNewLocation() {
       this.isIdError() ? console.log(`ID error is: ${this.idError}`) : this.newLocation()
     },
@@ -152,6 +128,11 @@ export default Vue.extend({
     newLocation() {
       newLocation(this.location)
       this.hideNewLocationMenu()
+    },
+
+    onReturnPress(textValue: string) {
+      this.setId(textValue)
+      this.setEnabledAddLocationButton(!this.isIdError())
     },
 
     setId(id: string) {
@@ -185,6 +166,26 @@ export default Vue.extend({
 
     setEnabledAddLocationButton(value: boolean) {
       this.isEnabledAddLocationButton = value
+    },
+
+    onCancel() {
+      this.reset()
+      this.hideNewLocationMenu()
+    },
+
+    reset() {
+      this.location.id = null
+      this.setIdError(0)
+      this.setEnabledAddLocationButton(false)
+      console.log(`NewLocationMenu::reset():isIdError: ${this.isIdError}`)
+      // this.group = null
+    },
+
+    hideNewLocationMenu() {
+      console.log('NewLocationMenu::hideNewLocationMenu()')
+      setVisibility('newLocationMenu', false)
+      this.reset()
+      this.setDismissedKeyboard(true)
     },
   },
 })
