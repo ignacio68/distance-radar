@@ -20,10 +20,14 @@
       @tap="preventBubbling"
     >
       <Page actionBarHidden="true">
-        <StackLayout>
+        <!-- <StackLayout>
           <keep-alive>
             <component v-bind:is="bottomSheetContent" class="m-16"></component>
           </keep-alive>
+        </StackLayout> -->
+        <StackLayout>
+          <NewLocationMenu v-if="bottomSheetContent === 'NewLocationMenu'" />
+          <NewSecurityAreaMenu v-else-if="bottomSheetContent === 'NewSecurityAreaMenu'" />
         </StackLayout>
       </Page>
     </Frame>
@@ -108,7 +112,7 @@ export default Vue.extend({
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
       console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
       if (newValue) {
-        this.bottomSheetContent = NewLocationMenu
+        this.bottomSheetContent = 'NewLocationMenu'
         this.showBottomSheet()
       } else {
         this.hideBottomSheet()
@@ -118,7 +122,7 @@ export default Vue.extend({
     isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
       console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
       if (newValue) {
-        this.bottomSheetContent = NewSecurityAreaMenu
+        this.bottomSheetContent = 'NewSecurityAreaMenu'
         this.showBottomSheet()
       } else {
         this.hideBottomSheet()
@@ -149,8 +153,8 @@ export default Vue.extend({
 
     /***** BOTTOM SHEET *****/
     loadBottomSheet() {
-      console.log('loadBottomSheet()')
       this.bottomSheet.translateY = this.screenHeight
+      console.log(`MapWrapper::loadBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
     },
 
     // loadBottomSheet(component: any) {
@@ -170,15 +174,16 @@ export default Vue.extend({
     // },
 
     showBottomSheet() {
-      console.log('showBottomSheet()')
       this.backgroundFilter = true
       this.animationBottomSheet(800)
+      console.log(`MapWrapper::showBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
     },
 
     hideBottomSheet() {
-      console.log('hideBottomSheet()')
       this.animationBottomSheet(0)
       this.backgroundFilter = false
+      this.bottomSheetContent = null
+      console.log(`MapWrapper::hideBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
     },
 
     animationBottomSheet(height: number) {
