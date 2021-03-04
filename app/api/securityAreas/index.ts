@@ -6,15 +6,12 @@ import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store
 import { SecurityAreaOptions, SecurityArea, PolygonLayer, LayerVisibility } from '@/api/types'
 
 export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
-  try {
-    console.log('securityAreas::newSecurityArea()')
-    createLayer(args).then((layer) => {
-      const newSecurityAreaToStore = setSecurityAreaOptions(args, layer)
-      addNewSecurityArea(newSecurityAreaToStore)
-    })
-  } catch (error) {
-    console.log(`securityAreas::newSecurityArea():error ${error}`)
-  }
+  const options = args
+  const layer = await createLayer(args)
+  const securityArea = setSecurityAreaOptions(options, layer)
+  addNewSecurityArea(securityArea).catch((error) =>
+    console.log(`securityAreas::newSecurityArea():error ${error}`),
+  )
 }
 
 const setSecurityAreaOptions = (args: SecurityAreaOptions, layer: PolygonLayer): SecurityArea => {
@@ -28,6 +25,9 @@ const setSecurityAreaOptions = (args: SecurityAreaOptions, layer: PolygonLayer):
     alertMode,
     layer,
   }
+  console.log(
+    `securityAreas::setSecurityAreaOptions()::securityArea: ${JSON.stringify(securityArea)}`,
+  )
   return securityArea
 }
 

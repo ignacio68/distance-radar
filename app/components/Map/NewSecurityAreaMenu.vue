@@ -1,12 +1,12 @@
 <template>
-  <StackLayout orientation="vertical" @loaded="onLoaded">
+  <StackLayout orientation="vertical">
     <Label
       class="menu_title"
       :text="$t('lang.components.newArea.title')"
       height="32"
       borderColor="#00251e"
     />
-    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 96" columns="*">
+    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 64" columns="*">
       <CustomSlider
         class="radius-slider"
         row="0"
@@ -139,11 +139,6 @@ export default Vue.extend({
   },
 
   methods: {
-    onLoaded() {
-      console.log(`NewSecurityAreaMenu.vue::onLoaded()`)
-      this.reset()
-    },
-
     onAddNewSecurityArea(): void {
       this.setIdAndCenter()
         .then(() => {
@@ -211,7 +206,7 @@ export default Vue.extend({
     hideNewSecurityAreaMenu() {
       console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
       setVisibility('newSecurityAreaMenu', false)
-      this.reset()
+      // this.reset()
     },
   },
 })
