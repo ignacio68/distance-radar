@@ -1,5 +1,5 @@
 <template>
-  <GridLayout columns="*, auto, auto" rows="*, auto" class="map" horizontalAlignment="right">
+  <GridLayout columns="*, auto" rows="*, auto" class="map" horizontalAlignment="right">
     <MapBox
       ref="map"
       row="0"
@@ -32,7 +32,7 @@
       @on-tap-alarm-fab="onTapAlarmFAB"
     />
 
-    <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1">
+    <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1" rowSpan="2">
       <!-- TODO: Add animation -->
       <LocationsList
         v-if="isVisibleLocationsList"
@@ -116,7 +116,7 @@ import { Elevation } from '@/types/enums/elevations'
 import { MapStyle } from '@/types/enums/mapStyle'
 import { LatLng, Map, GeocoderLocation } from '@/api/types'
 
-import LocationsList from '@/components/Locations/LocationsList.vue'
+import LocationsList from '@/components/Map/LocationsList.vue'
 import Geocoder from '@/components/Geocoder/Geocoder.vue'
 import AlarmFAB from './AlarmFAB.vue'
 
