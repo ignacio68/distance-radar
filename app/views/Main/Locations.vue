@@ -19,13 +19,6 @@
             />
           </v-template>
         </ListView>
-        <MDButton
-          row="1"
-          class="Locations-accept-button m-t-32 pull-right"
-          width="144"
-          @tap="onButtonTap"
-          :text="$t('lang.views.Locations.acceptButton')"
-        />
       </GridLayout>
     </StackLayout>
   </GridLayout>
@@ -40,8 +33,6 @@ import { getAllLocations } from '@/store/locationsStore'
 
 import { Location } from '@/api/types'
 
-import Main from '@/views/Main/Main.vue'
-import CommonActionBar from '@/components/UI/CommonActionBar.vue'
 import LocationCard from '@/components/Locations/LocationCard.vue'
 
 export default Vue.extend({
@@ -49,14 +40,10 @@ export default Vue.extend({
 
   components: {
     LocationCard,
-    CommonActionBar,
-    Main,
   },
 
   data() {
-    return {
-      Main: Main,
-    }
+    return {}
   },
 
   computed: {
@@ -75,11 +62,6 @@ export default Vue.extend({
         cancelButtonText: `${this.$t('lang.dialogs.deleteLocation.cancelButton')}`,
       }
       confirmDeleteLocation(options, id)
-    },
-
-    onButtonTap() {
-      console.log('Locations::onButtonTap()')
-      // this.$navigateTo(this.Main, { ClearHistory: true })
     },
 
     onItemTap() {
