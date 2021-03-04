@@ -3,7 +3,7 @@ import { assert } from 'chai'
 
 import { Circle } from '@/utils/types'
 
-describe('API - Security Areas - Source', function () {
+describe.skip('API - Security Areas - Source', function () {
   describe('#createSource', function () {
     describe('return a valid Mapbox source', function () {
       before(function () {
