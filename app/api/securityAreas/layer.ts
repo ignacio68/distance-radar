@@ -4,12 +4,7 @@ import { mbAddLayer, mbRemoveLayer } from '@/services/mapboxService'
 
 import { getMap } from '@/store/mapStore'
 
-import {
-  SecurityAreaOptions,
-  PolygonLayerStyleOptions,
-  PolygonLayer,
-  Source,
-} from '@/api/types'
+import { SecurityAreaOptions, PolygonLayerStyleOptions, PolygonLayer, Source } from '@/api/types'
 
 // export const createLayer = async (
 //   options: SecurityAreaOptions,
@@ -19,16 +14,11 @@ import {
 //   return layerOptions
 // }
 
-export const createLayer = async (
-  options: SecurityAreaOptions,
-): Promise<PolygonLayer> => {
+export const createLayer = async (options: SecurityAreaOptions): Promise<PolygonLayer> => {
   const map = getMap()
   const layerOptions = await setLayerOptions(options)
-  mbAddLayer(map, layerOptions).then(() => {
-    console.log(
-      `layer.ts::createLayer::layerOptions: ${JSON.stringify(layerOptions)}`,
-    )
-  })
+  mbAddLayer(map, layerOptions)
+
   return layerOptions
 }
 
@@ -37,29 +27,14 @@ export const removeLayer = async (id: string) => {
   mbRemoveLayer(getMap(), layerId)
 }
 
-const setLayerOptions = async (
-  options: SecurityAreaOptions,
-): Promise<PolygonLayer> => {
+const setLayerOptions = async (options: SecurityAreaOptions): Promise<PolygonLayer> => {
   const { id } = options
   const layerId = getLayerId(id)
   const style = getLayerStyle(options)
   const source = await createSource(id, options)
   const layerOptions = getLayerOptions(layerId, source, style)
-  console.log(
-    `layer.ts::setLayerOptions::layerOptions: ${JSON.stringify(layerOptions)}`,
-  )
-
   return layerOptions
 }
-// const setLayerOptions = (options: SecurityAreaOptions): PolygonLayer => {
-//   const { id } = options
-//   const layerId = getLayerId(id)
-//   const style = getLayerStyle(options)
-//   const source = createSource(id, options)
-//   const layerOptions = getLayerOptions(layerId, source, style)
-
-//   return layerOptions
-// }
 
 const getLayerId = (id: string): string => `${id}_layer`
 
