@@ -41,7 +41,9 @@ const addSecurityAreaToState = (securityArea: SecurityArea): void => {
 deleteDatabase(database)
 
 export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
-  console.log(`securityAreaStore.ts::addNewSecurityArea()`)
+  console.log(
+    `securityAreaStore.ts::addNewSecurityArea()::securityArea: ${JSON.stringify(securityArea)}`,
+  )
   addSecurityAreaToState(securityArea)
   addSecurityAreaToLocation(securityArea.id)
   addItemToDatabase<SecurityArea>(database, securityArea, securityArea.id)
