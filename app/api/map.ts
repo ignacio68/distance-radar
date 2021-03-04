@@ -1,10 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import bBox from '@turf/bbox'
+import { BBox } from '@turf/helpers'
 import { createUserMarker, updateUserMarker } from './userMarker'
+import { pipe } from '@/utils/functional'
 
 import { getUserCurrentLocation } from '@/services/geolocationService'
 
 import {
   mbSetMap,
+  mbSetViewport,
   mbSetZoomLevel,
   mbSetCenter,
   mbAddMarkers,
@@ -21,7 +25,7 @@ import { getUserMarker as userMarker } from '@/store/userMarkerStore'
 import { getAllLocations } from '@/store/locationsStore'
 import { getAllSecurityAreas } from '@/store/securityAreasStore'
 
-import { MapSettings, LatLng, Map } from './types'
+import { MapSettings, LatLng, Location, Bounds, SetViewportOptions, GeoJSON } from './types'
 import { SetOnMapLongClickListener } from '@/services/types'
 
 export const initMap = (): void => {
@@ -85,8 +89,8 @@ export const flyTo = (location: LatLng): void => {
   mbAnimateCamera(map, {
     target: location,
     zoomLevel: 15, // Android
-    bearing: 270, // Where the camera is pointing, 0-360 (degrees)
-    tilt: 50,
+    // bearing: 270, // Where the camera is pointing, 0-360 (degrees)
+    // tilt: 50,
     //  TODO: calculate programmatically the duration
     duration: 5000, // default 10000 (milliseconds)
   }).then(() => updateUserMarker(location))
@@ -96,3 +100,44 @@ export const setOnMapLongClickListener = (listener: SetOnMapLongClickListener): 
   mbSetOnMapLongClickListener(getMap(), listener)
 
 export const setMapStyle = (style: string): Promise<unknown> => mbSetMapStyle(getMap(), style)
+
+export const setViewport = (): void => {
+  const map = getMap()
+  const options = setViewportOptions()
+  mbSetViewport(map, options)
+}
+
+const setViewportOptions = (): SetViewportOptions => {
+  const bounds = getBounds()
+  const animation = { animation: true }
+  const padding = { padding: 10000 }
+  const options = { bounds, ...animation, ...padding }
+  return options
+}
+
+const getBounds = (): Bounds =>
+  getBBox(convertToGeoJSON(getLocationsCoordinates(getAllLocations())))
+
+const getBBox = (geoJSONObject: GeoJSON): Bounds => convertBBoxToBounds(bBox(geoJSONObject))
+
+const convertBBoxToBounds = (bbox: BBox): Bounds => ({
+  north: bbox[0],
+  east: bbox[1],
+  south: bbox[2],
+  west: bbox[3],
+})
+
+const convertToGeoJSON = (coordinates: number[][]): GeoJSON => ({
+  type: 'Feature',
+  geometry: {
+    type: 'MultiPoint',
+    coordinates,
+  },
+  properties: {},
+})
+
+const getLocationsCoordinates = (locations: Location[]): number[][] => {
+  const coordinates = locations.map((location) => [location.lat, location.lng])
+  console.log(`map.ts::fetchLocationCoordinates::coordinates: ${JSON.stringify(coordinates)}`)
+  return coordinates
+}

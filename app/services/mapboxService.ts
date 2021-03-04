@@ -11,6 +11,7 @@ import {
   AddLayerOptions,
   AddSourceOptions,
   LayerCommon,
+  SetViewportOptions,
 } from '@nativescript-community/ui-mapbox'
 
 import { SetOnMapLongClickListener } from './types'
@@ -28,6 +29,9 @@ export const mbSetZoomLevel = (
   map: MapboxViewApi,
   options: SetZoomLevelOptions,
 ): Promise<unknown> => map.setZoomLevel(options)
+
+export const mbSetViewport = (map: MapboxViewApi, options: SetViewportOptions): Promise<void> =>
+  map.setViewport(options)
 
 export const mbAnimateCamera = (
   map: MapboxViewApi,
@@ -68,7 +72,7 @@ export const mbRemoveSource = (map: MapboxViewApi, id: string): Promise<void> =>
     .then((result) => console.log(`mapboxService::removeSource: REMOVED SOURCE!!`))
     .catch((error) => console.log(`mapboxService::removeSource: ERROR!!: ${error}`))
 
-export const mbAddLayer = async (map: MapboxViewApi, style: any): Promise<void> =>
+export const mbAddLayer = (map: MapboxViewApi, style: any): Promise<void> =>
   map
     .addLayer(style)
     .then(() => console.log('mapboxService::addLayer(): ADDED LAYER!!'))

@@ -17,8 +17,9 @@ import { i18n, setLanguage } from '@/locales'
 
 import { initAudioPlayer } from '@/api/common'
 
+// import { startFPSMeter } from '@/utils/fps'
+
 //Components
-// import '@/plugins/installMDBottomSheet'
 import BottomSheetFake from '@/views/TestViews/BottomSheetFake.vue'
 import MainNavigation from '@/views/Navigation/MainNavigation.vue'
 import Main from '@/views/Main/Main.vue'
@@ -30,6 +31,8 @@ Vue.use(ComponentsPlugin)
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Vue.use(VueDevtools as any, { host: '192.168.1.22' })
+
+  // startFPSMeter()
 
   const inspect = require('util-inspect')
   const newLineRegExp = /\\n/g

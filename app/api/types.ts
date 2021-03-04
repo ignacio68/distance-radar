@@ -3,7 +3,9 @@ import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
 import { ShowOptions } from '@nativescript-community/ui-mapbox'
 import { GeoJSON } from 'geojson'
 import { LatLng, Id, Location } from '@/types/commons'
-export { Map, GeocoderLocation } from '@/services/types'
+export { Map, GeocoderLocation, SetViewportOptions, Bounds } from '@/services/types'
+export { Position } from '@/utils/types'
+export { LatLng, Id, Location, GeoJSON }
 
 export type Database = CouchBase
 
@@ -85,5 +87,3 @@ export type SoundPlayMode = 'PLAY' | 'STOP'
 //   circleStrokeColor?: string | Color
 //   circleStrokeWidth?: number
 // }
-
-export { LatLng, Id, Location }

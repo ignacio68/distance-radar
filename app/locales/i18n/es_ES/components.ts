@@ -37,4 +37,7 @@ export default {
   locationCard: {
     coordinatesTitle: 'Coordinates',
   },
+  locationsList: {
+    allLocations: 'Todas',
+  },
 }

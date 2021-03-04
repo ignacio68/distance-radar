@@ -1,24 +1,31 @@
 <template>
   <StackLayout
     orientation="vertical"
+    horizontalAlignment="left"
     :width="width"
     :height="listHeight"
     :androidElevation="listElevation"
   >
+    <Label
+      v-if="locations.length >= 2"
+      class="font-weight-bold p-l-8"
+      :text="$t('lang.components.locationsList.allLocations')"
+      @tap="onAllLocationsTap"
+    />
+    <StackLayout class="hr m-x-8"></StackLayout>
     <ListView for="location in locations">
       <v-template>
-        <Label :height="labelHeight" :text="location.id" @tap="onItemTap(location)" />
+        <Label class="p-l-8" :height="labelHeight" :text="location.id" @tap="onItemTap(location)" />
       </v-template>
     </ListView>
   </StackLayout>
 </template>
 <script lang="ts">
 import Vue from 'nativescript-vue'
-import LocationCard from '@/components/Locations/LocationCard.vue'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
-import { flyTo } from '@/api/map'
+import { flyTo, setViewport } from '@/api/map'
 
 import { getAllLocations } from '@/store/locationsStore'
 
@@ -26,12 +33,12 @@ import { LatLng, Location } from '@/types/commons'
 import { Elevation } from '@/types/enums/elevations'
 
 export default Vue.extend({
-  name: 'LocationsAdjust',
+  name: 'LocationsList',
 
   props: {
     width: {
       type: [String, Number],
-      default: 100,
+      default: 200,
     },
     labelHeight: {
       type: [String, Number],
@@ -59,7 +66,7 @@ export default Vue.extend({
 
     listHeight(): number {
       const items: number = this.locations.length
-      return items <= 3 ? this.labelHeight * items : this.labelHeight * 3
+      return items <= 3 ? this.labelHeight * (items + 1) : this.labelHeight * 4
     },
   },
 
@@ -75,6 +82,12 @@ export default Vue.extend({
         lng: args.lng,
       }
       flyTo(coordinates)
+      this.hideLocationsListMenu()
+    },
+
+    onAllLocationsTap(): void {
+      console.log('LocationsListMenu::onAllLocationsTap()')
+      setViewport()
       this.hideLocationsListMenu()
     },
   },
