@@ -14,9 +14,12 @@ import { SecurityAreaOptions, PolygonLayerStyleOptions, PolygonLayer, Source } f
 //   return layerOptions
 // }
 
-export const createLayer = async (options: SecurityAreaOptions): Promise<PolygonLayer> => {
+export const createLayer = async (
+  options: SecurityAreaOptions,
+  sourceId: string,
+): Promise<PolygonLayer> => {
   const map = getMap()
-  const layerOptions = await setLayerOptions(options)
+  const layerOptions = await setLayerOptions(options, sourceId)
   mbAddLayer(map, layerOptions)
 
   return layerOptions
@@ -27,12 +30,15 @@ export const removeLayer = async (id: string) => {
   mbRemoveLayer(getMap(), layerId)
 }
 
-const setLayerOptions = async (options: SecurityAreaOptions): Promise<PolygonLayer> => {
+const setLayerOptions = async (
+  options: SecurityAreaOptions,
+  sourceId: string,
+): Promise<PolygonLayer> => {
   const { id } = options
   const layerId = getLayerId(id)
   const style = getLayerStyle(options)
-  const source = await createSource(id, options)
-  const layerOptions = getLayerOptions(layerId, source, style)
+  // const source = await createSource(id, options)
+  const layerOptions = getLayerOptions(layerId, sourceId, style)
   return layerOptions
 }
 

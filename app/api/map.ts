@@ -12,6 +12,7 @@ import {
   mbSetZoomLevel,
   mbSetCenter,
   mbAddMarkers,
+  mbAddSource,
   mbAddLayer,
   mbAnimateCamera,
   mbSetOnMapLongClickListener,
@@ -78,10 +79,14 @@ const addUserMarker = async () => {
 }
 
 const addSecurityAreas = (): void => {
-  console.log(`map.ts::addSecurityAreas: ${JSON.stringify(getAllSecurityAreas())}`)
   const map = getMap()
   const securityAreas = getAllSecurityAreas()
-  securityAreas.map((securityArea) => mbAddLayer(map, securityArea.layer))
+  console.log(`map.ts::addSecurityAreas: ${JSON.stringify(securityAreas)}`)
+  securityAreas.map((securityArea) =>
+    mbAddSource(map, securityArea.source.id, securityArea.source).then(() =>
+      mbAddLayer(map, securityArea.layer),
+    ),
+  )
 }
 
 export const flyTo = (location: LatLng): void => {

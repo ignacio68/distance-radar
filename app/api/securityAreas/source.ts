@@ -11,15 +11,12 @@ import { Circle } from '@/utils/types'
 import { Position } from '@/types/commons'
 import { GeoJSON } from 'geojson'
 
-export const createSource = async (
-  id: string,
-  args: Circle,
-): Promise<string> => {
+export const createSource = async (id: string, args: Circle): Promise<Source> => {
   console.log('createSource()')
   const sourceId = getSourceId(id)
-  const source = getSource(args)
+  const source: Source = getSource(sourceId, args)
   await mbAddSource(getMap(), sourceId, source)
-  return sourceId
+  return source
 }
 // export const createSource = (id: string, args: Circle): Source => {
 //   console.log('createSource()')
@@ -38,9 +35,10 @@ export const removeSource = async (id: string): Promise<void> => {
 
 const getSourceId = (id: string): string => `${id}_source`
 
-const getSource = (args: Circle) => {
+const getSource = (id: string, args: Circle): Source => {
   const sourceData = getSourceData(args)
-  const source = {
+  const source: Source = {
+    id,
     type: 'geojson' as const,
     data: sourceData,
   }

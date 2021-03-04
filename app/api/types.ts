@@ -42,6 +42,7 @@ export interface SecurityArea {
   isActive: boolean
   alertMode?: AlertMode
   layer: PolygonLayer
+  source: Source
 }
 
 export interface AlertOptions extends Id {

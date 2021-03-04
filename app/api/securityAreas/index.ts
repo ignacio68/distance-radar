@@ -1,20 +1,31 @@
 import { createLayer, removeLayer } from './layer'
-import { removeSource } from './source'
+import { createSource, removeSource } from './source'
 
 import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store/securityAreasStore'
 
-import { SecurityAreaOptions, SecurityArea, PolygonLayer, LayerVisibility } from '@/api/types'
+import {
+  SecurityAreaOptions,
+  SecurityArea,
+  PolygonLayer,
+  LayerVisibility,
+  Source,
+} from '@/api/types'
 
 export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
   const options = args
-  const layer = await createLayer(args)
-  const securityArea = setSecurityAreaOptions(options, layer)
+  const source = await createSource(args.id, args)
+  const layer = await createLayer(args, source.id)
+  const securityArea = setSecurityAreaOptions(options, layer, source)
   addNewSecurityArea(securityArea).catch((error) =>
     console.log(`securityAreas::newSecurityArea():error ${error}`),
   )
 }
 
-const setSecurityAreaOptions = (args: SecurityAreaOptions, layer: PolygonLayer): SecurityArea => {
+const setSecurityAreaOptions = (
+  args: SecurityAreaOptions,
+  layer: PolygonLayer,
+  source: Source,
+): SecurityArea => {
   const { id, radius, center, isActive, alertMode } = args
   const securityArea = {
     id,
@@ -24,6 +35,7 @@ const setSecurityAreaOptions = (args: SecurityAreaOptions, layer: PolygonLayer):
     isActive,
     alertMode,
     layer,
+    source,
   }
   console.log(
     `securityAreas::setSecurityAreaOptions()::securityArea: ${JSON.stringify(securityArea)}`,
