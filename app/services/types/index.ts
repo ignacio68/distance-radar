@@ -1,5 +1,4 @@
 export { LatLng } from '@/types/commons'
-export { MapboxApi as Map } from '@nativescript-community/ui-mapbox'
 export { CouchBase as Database, Query } from '@triniwiz/nativescript-couchbase'
 export * from './geocoding'
 export * from './circle'
