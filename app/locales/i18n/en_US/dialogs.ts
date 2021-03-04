@@ -11,6 +11,12 @@ export default {
     okButton: 'Delete',
     cancelButton: 'Cancel',
   },
+  deleteSecurityArea: {
+    title: 'Delete Security Area',
+    message: 'Are you sure to delete the security area?',
+    okButton: 'Delete',
+    cancelButton: 'Cancel',
+  },
   cancelAlarmIn: {
     message: 'You are OUT of the SECURITY AREA!!!',
     okButtonText: 'Ok',

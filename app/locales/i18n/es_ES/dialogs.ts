@@ -7,7 +7,13 @@ export default {
   },
   deleteLocation: {
     title: 'Eliminar Ubicación',
-    message: '¿Seguro que quieres eliminar la ubicación?',
+    message: '¿Estás seguro/a que quieres eliminar la ubicación?',
+    okButton: 'Eliminar',
+    cancelButton: 'Cancelar',
+  },
+  deleteSecurityArea: {
+    title: 'Eliminar Area de Seguridad',
+    message: '¿Estás seguro/a que quieres eliminar el area de seguridad?',
     okButton: 'Eliminar',
     cancelButton: 'Cancelar',
   },

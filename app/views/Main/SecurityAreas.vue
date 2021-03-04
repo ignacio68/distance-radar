@@ -19,24 +19,13 @@
           class="SecurityAreas-list"
         >
           <v-template>
-            <Label class="SecurityAreas-list_item" :text="securityArea.id" />
-            <!-- <LocationCard
-              :item="location"
+            <SecurityAreaCard
+              :item="securityArea"
               class="SecurityAreas-list_item m-y-4"
-              :coordinatesTitle="
-                $t('lang.components.locationCard.coordinatesTitle')
-              "
-              @on-tap="onConfirmDeleteLocation(location.id)"
-            /> -->
+              @on-tap="onConfirmDeleteSecurityArea(securityArea.id)"
+            />
           </v-template>
         </ListView>
-        <MDButton
-          row="1"
-          class="SecurityAreas-accept-button m-t-32 pull-right"
-          width="144"
-          @tap="onButtonTap"
-          :text="$t('lang.views.SecurityAreas.acceptButton')"
-        />
       </GridLayout>
     </StackLayout>
   </GridLayout>
@@ -45,12 +34,22 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
+import { confirmDeleteSecurityArea } from '@/components/Dialogs/ConfirmDeleteSecurityArea'
+import { ConfirmOptions } from '@nativescript/core'
+
 import { getAllSecurityAreas } from '@/store/securityAreasStore'
 
 import { SecurityArea } from '@/api/types'
 
+import SecurityAreaCard from '@/components/SecurityAreas/SecurityAreaCard.vue'
+
 export default Vue.extend({
   name: 'SecurityAreas',
+
+  components: {
+    SecurityAreaCard,
+  },
+
   data() {
     return {}
   },
@@ -62,8 +61,15 @@ export default Vue.extend({
   },
 
   methods: {
-    onButtonTap() {
-      console.log('Locations::onButtonTap()')
+    onConfirmDeleteSecurityArea(id: string): void {
+      const options: ConfirmOptions = {
+        // title: `${this.$t('lang.dialogs.deleteSecurityArea.title')}`,
+        title: id,
+        message: `${this.$t('lang.dialogs.deleteSecurityArea.message')}`,
+        okButtonText: `${this.$t('lang.dialogs.deleteSecurityArea.okButton')}`,
+        cancelButtonText: `${this.$t('lang.dialogs.deleteSecurityArea.cancelButton')}`,
+      }
+      confirmDeleteSecurityArea(options, id)
     },
 
     onItemTap() {
