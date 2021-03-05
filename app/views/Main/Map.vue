@@ -1,37 +1,7 @@
 <template>
-  <GridLayout>
-    <MapWrapper height="100%" row="0" @first-location-alert="onFirstLocationAlert" />
-    <StackLayout
-      v-if="backgroundFilter"
-      class="backgroundFilter"
-      row="0"
-      height="100%"
-      width="100%"
-    />
-    <Frame
-      id="bottomSheet"
-      ref="bottomSheet"
-      borderTopLeftRadius="16"
-      borderTopRightRadius="16"
-      backgroundColor="white"
-      verticalAlignment="top"
-      androidElevation="16"
-      @loaded="loadBottomSheet"
-      @tap="preventBubbling"
-    >
-      <Page actionBarHidden="true">
-        <!-- <StackLayout>
-          <keep-alive>
-            <component v-bind:is="bottomSheetContent" class="m-16"></component>
-          </keep-alive>
-        </StackLayout> -->
-        <StackLayout>
-          <NewLocationMenu v-if="bottomSheetContent === 'NewLocationMenu'" />
-          <NewSecurityAreaMenu v-else-if="bottomSheetContent === 'NewSecurityAreaMenu'" />
-        </StackLayout>
-      </Page>
-    </Frame>
-  </GridLayout>
+  <StackLayout>
+    <MapWrapper height="100%" width="100%" @first-location-alert="onFirstLocationAlert" />
+  </StackLayout>
 </template>
 
 <script lang="ts">
@@ -44,7 +14,6 @@ import { ConfirmOptions } from '@nativescript/core'
 import { confirmFirstLocation } from '@/components/Dialogs/ConfirmFirstLocation'
 
 import { getVisibility } from '@/composables/useComponent'
-import { Screen, Enums } from '@nativescript/core'
 
 import MapWrapper from '@/components/Map/MapWrapper.vue'
 import NewLocationMenu from '@/components/Map/NewLocationMenu.vue'
@@ -55,87 +24,35 @@ export default Vue.extend({
 
   components: {
     MapWrapper,
-    NewLocationMenu,
-    NewSecurityAreaMenu,
-  },
-
-  props: {
-    isVisible: {
-      type: Boolean,
-      default: true,
-    },
   },
 
   data() {
-    return {
-      screenHeight: Screen.mainScreen.heightDIPs,
-      screenWidth: Screen.mainScreen.widthDIPs,
-      backgroundFilter: false,
-      bottomSheetContent: null,
-    }
+    return {}
   },
 
   computed: {
     isVisibleNewLocationMenu(): boolean {
-      console.log(
-        `MapWrapper::computed:isVisibleNewLocationMenu() ${getVisibility('newLocationMenu')}`,
-      )
       return getVisibility('newLocationMenu')
     },
 
     isVisibleNewSecurityAreaMenu(): boolean {
-      console.log(
-        `MapWrapper::computed:isVisibleNewSecurityAreaMenu() ${getVisibility(
-          'newSecurityAreaMenu',
-        )}`,
-      )
       return getVisibility('newSecurityAreaMenu')
-    },
-
-    bottomSheet() {
-      return this.$refs.bottomSheet.nativeView
     },
   },
 
   watch: {
-    // isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
-    //   console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
-    //   newValue ? this.loadBottomSheet(NewLocationMenu) : this.$closeBottomSheet()
-    // },
-
-    // isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
-    //   console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
-    //   if (newValue) {
-    //     newValue ? this.loadBottomSheet(NewSecurityAreaMenu) : this.$closeBottomSheet()
-    //   }
-    // },
     isVisibleNewLocationMenu(newValue: boolean, oldValue: boolean) {
-      console.log(`MapWrapper::watch:isVisibleNewLocationMenu(): ${newValue}`)
-      if (newValue) {
-        this.bottomSheetContent = 'NewLocationMenu'
-        this.showBottomSheet()
-      } else {
-        this.hideBottomSheet()
-      }
+      if (newValue) this.loadBottomSheet(NewLocationMenu)
+      return
     },
 
     isVisibleNewSecurityAreaMenu(newValue: boolean, oldValue: boolean) {
-      console.log(`MapWrapper::watch:isVisibleNewSecurityAreaMenu(): ${newValue}`)
-      if (newValue) {
-        this.bottomSheetContent = 'NewSecurityAreaMenu'
-        this.showBottomSheet()
-      } else {
-        this.hideBottomSheet()
-      }
+      if (newValue) this.loadBottomSheet(NewSecurityAreaMenu)
+      return
     },
   },
 
   methods: {
-    preventBubbling() {
-      console.log('onTap')
-      return
-    },
-
     onFirstLocationAlert(): void {
       const options = this.setFirstLocationAlertOptions()
       confirmFirstLocation(options)
@@ -151,60 +68,24 @@ export default Vue.extend({
       return options
     },
 
-    /***** BOTTOM SHEET *****/
-    loadBottomSheet() {
-      this.bottomSheet.translateY = this.screenHeight
-      console.log(`MapWrapper::loadBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
+    loadBottomSheet(component: any) {
+      const options = this.setBottomSheetOptions()
+      ;(this as NativeScriptVue).$showBottomSheet(component, options)
+
+      // this.$showBottomSheet(component, options)
     },
 
-    // loadBottomSheet(component: any) {
-    //   // ;(this as NativeScriptVue).$showBottomSheet(component, { animated: true })
-    //   const options: VueBottomSheetOptions = {
-    //     animated: true,
-    //     // dismissOnBackgroundTap: true,
-    //     // dismissOnDraggingDownSheet: true,
-    //     closeCallback: () => console.log('bottom sheet closed!'),
-    //     // transparent: false,
-    //     // ignoreTopSafeArea: true,
-    //     // ignoreBottomSafeArea: true,
-    //     // disableDimBackground: true,
-    //   }
-
-    //   this.$showBottomSheet(component, options)
-    // },
-
-    showBottomSheet() {
-      this.backgroundFilter = true
-      this.animationBottomSheet(800)
-      console.log(`MapWrapper::showBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
-    },
-
-    hideBottomSheet() {
-      this.animationBottomSheet(0)
-      this.backgroundFilter = false
-      this.bottomSheetContent = null
-      console.log(`MapWrapper::hideBottomSheet()::bottomSheetContent: ${this.bottomSheetContent}`)
-    },
-
-    animationBottomSheet(height: number) {
-      this.bottomSheet.animate({
-        duration: 1000,
-        translate: { x: 0, y: this.screenHeight - height },
-        curve: Enums.AnimationCurve.cubicBezier(0.44, 0.63, 0, 1),
-      })
+    setBottomSheetOptions(): VueBottomSheetOptions {
+      const options: VueBottomSheetOptions = {
+        animated: true,
+        dismissOnBackgroundTap: false,
+        dismissOnDraggingDownSheet: false,
+        closeCallback: () => console.log('bottom sheet closed!'),
+        transparent: true,
+        disableDimBackground: false,
+      }
+      return options
     },
   },
 })
 </script>
-<style lang="scss" scoped>
-@import '../../app-variables';
-
-.backgroundFilter {
-  // background-color: red
-  background-color: rgba(255, 255, 255, 0.5);
-}
-
-.newMarker {
-  color: $primary-dark;
-}
-</style>
