@@ -1,26 +1,26 @@
 <template>
-  <GridLayout class="customSlider" columns="auto,*" :width="sliderWidth">
+  <GridLayout class="CustomSlider" columns="auto,*" :width="sliderWidth">
     <!-- <Icon
       col="0"
-      class="customSlider_icon"
+      class="CustomSlider__icon"
       :size="iconSize"
       :name="iconName"
       :iconColor="iconColor"
       :hasRipple="false"
     /> -->
     <StackLayout col="1">
-      <Label class="customSlider_name" :text="sliderName" />
+      <Label class="CustomSlider__name" :text="sliderName" />
       <GridLayout columns="auto, *, auto" class="m-x-32 m-b-0">
-        <Label col="0" color="black" class="customSlider_minValue" :text="minValue" />
+        <Label col="0" color="black" class="CustomSlider__minValue" :text="minValue" />
         <StackLayout col="1" width="100%" color="red"></StackLayout>
-        <Label col="2" class="customSlider_maxValue" :text="maxValue" />
+        <Label col="2" class="CustomSlider__maxValue" :text="maxValue" />
       </GridLayout>
       <MDSlider
         :value="value"
         col="0"
         row="0"
         colSpan="3"
-        class="customSlider_slider m-x-32 m-t-0"
+        class="CustomSlider__slider m-x-32 m-t-0"
         :minValue="minValue"
         :maxValue="maxValue"
         :thumbHollowAtStart="thumbHollowAtStart"
@@ -112,7 +112,7 @@ export default Vue.extend({
 <style lang="scss" scoped>
 @import '../../app-variables.scss';
 
-.customSlider_name {
+.CustomSlider__name {
   padding {
     right: 8;
   }
@@ -120,10 +120,10 @@ export default Vue.extend({
   font-weight: 700;
   color: $primary-variant;
 }
-// .customSlider_icon {
+// .CustomSlider__icon {
 //   vertical-align: bottom;
 // }
-.customSlider_minValue {
+.CustomSlider__minValue {
   padding {
     left: 24;
   }
@@ -131,7 +131,7 @@ export default Vue.extend({
   text-align: left;
   color: $primary;
 }
-.customSlider_maxValue {
+.CustomSlider__maxValue {
   padding {
     right: 24;
   }

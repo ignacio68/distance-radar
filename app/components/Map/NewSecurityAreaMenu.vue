@@ -1,14 +1,9 @@
 <template>
-  <StackLayout orientation="vertical">
-    <Label
-      class="menu_title"
-      :text="$t('lang.components.newArea.title')"
-      height="32"
-      borderColor="#00251e"
-    />
-    <GridLayout class="new-area-menu m-x-16 m-t-16" rows="auto, auto, 56, auto, 64" columns="*">
+  <StackLayout class="bottom-sheet" orientation="vertical">
+    <Label class="bottom-sheet__menu-title" :text="$t('lang.components.newArea.title')" />
+    <GridLayout class="bottom-sheet__content" rows="auto, auto, 56, auto, 64" columns="*">
       <CustomSlider
-        class="radius-slider"
+        class="p-t-16"
         row="0"
         iconName="res://ic_visibility_white_24dp"
         iconColor="#004842"
@@ -20,7 +15,6 @@
         @on-value-changed="setRadius"
       />
       <CustomSlider
-        class="opacity-slider"
         row="1"
         iconName="res://ic_visibility_white_24dp"
         iconColor="#004842"
@@ -52,15 +46,13 @@
         horizontalAlignment="right"
       >
         <MDButton
-          class="new-area-menu_button_cancel"
+          class="button-cancel"
           width="144"
           :text="$t('lang.components.newArea.cancelButton')"
-          borderColor="#007a70"
-          borderWidth="1"
           @tap="onCancel"
         />
         <MDButton
-          class="new-area-menu_button_add m-r-0"
+          class="m-r-0"
           width="144"
           :text="$t('lang.components.newArea.addButton')"
           @tap="onAddNewSecurityArea"
@@ -206,28 +198,9 @@ export default Vue.extend({
     hideNewSecurityAreaMenu() {
       console.log('NewSecurityAreaMenu.vue::hideNewSecurityAreaMenu()')
       setVisibility('newSecurityAreaMenu', false)
+      this.$closeBottomSheet()
       // this.reset()
     },
   },
 })
 </script>
-
-<style lang="scss" scoped>
-@import '../../app-variables';
-
-.menu_title {
-  font-weight: 700;
-  font-size: 16;
-  color: $primary-dark;
-  opacity: 0.8;
-  border-bottom: 1, solid, rgba($primary, 0.1);
-}
-.new-area-menu_button_cancel {
-  color: $primary;
-  background-color: white;
-  text-align: center;
-}
-.divider {
-  background-color: $primary-light;
-}
-</style>

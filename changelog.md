@@ -1,5 +1,30 @@
 # Changelog
 
+## [0.4.1] - 2021-02-22
+
+### Added
+
+- Page to handle the security areas
+- View all the locations on screen
+- New module to add plugins
+
+### Changed
+
+- Method to add plugins
+- Improved newLocation() code
+- getLocations() name to getAllLocations()
+
+### Fixed
+
+- Bottom Sheet component installation
+- Bug when send security areas options from menu page
+- Geocoder position in Map page
+
+### Removed
+
+- fetchSelectedLocation() from locations API
+- Not used components
+
 ## [0.4.0] - 2021-02-11
 
 ### Added

@@ -1,15 +1,10 @@
 <template>
-  <StackLayout orientation="vertical" height="300">
-    <Label
-      class="menu_title"
-      :text="$t('lang.components.newLocation.title')"
-      height="32"
-      borderColor="#00251e"
-    />
-    <GridLayout class="new-location-menu" rows="auto, auto, 64" columns="*">
+  <StackLayout class="bottom-sheet" orientation="vertical" height="500">
+    <Label class="bottom-sheet__menu-title" :text="$t('lang.components.newLocation.title')" />
+    <GridLayout class="bottom-sheet__content" rows="auto, 32, 64, *" columns="*">
       <TextForm
         ref="textForm"
-        class="new-location-menu__id"
+        class="p-t-16"
         row="0"
         :labelWidth="64"
         :labelText="$t('lang.components.newLocation.id')"
@@ -19,35 +14,29 @@
         :isResetTextField="isResetTextField"
         @on-return-press="onReturnPress"
       />
-      <Label
-        v-if="idError"
-        row="1"
-        class="new-location-id_error"
-        :text="$tc('lang.components.newLocation.idError', idError)"
-      />
-      <StackLayout
-        row="2"
-        class="new-location-menu_buttons"
-        width="100%"
-        orientation="horizontal"
-        horizontalAlignment="right"
-      >
+      <StackLayout row="1" height>
+        <Label
+          v-if="idError"
+          class="text-error"
+          :text="$tc('lang.components.newLocation.idError', idError)"
+        />
+      </StackLayout>
+      <StackLayout row="2" width="100%" orientation="horizontal" horizontalAlignment="right">
         <MDButton
-          class="new-location-menu_button_cancel"
+          class="button-cancel"
           width="144"
           :text="$t('lang.components.newLocation.cancelButton')"
-          borderColor="#007a70"
-          borderWidth="1"
           @tap="onCancel"
         />
         <MDButton
-          class="new-location-menu_button_add m-r-0"
+          class="m-r-0"
           width="144"
           :isEnabled="isEnabledAddLocationButton"
           :text="$t('lang.components.newLocation.addButton')"
           @tap="onAddNewLocation"
         />
       </StackLayout>
+      <StackLayout row="3"></StackLayout>
     </GridLayout>
   </StackLayout>
 </template>
@@ -184,30 +173,15 @@ export default Vue.extend({
     hideNewLocationMenu() {
       console.log('NewLocationMenu::hideNewLocationMenu()')
       setVisibility('newLocationMenu', false)
-      this.reset()
+      // this.reset()
       this.setDismissedKeyboard(true)
+      this.$closeBottomSheet()
     },
   },
 })
 </script>
-
-<style scoped lang="scss">
-@import '../../app-variables';
-
-.menu_title {
-  font-weight: 700;
-  font-size: 16;
-  color: $primary-dark;
-  opacity: 0.8;
-  border-bottom: 1, solid, rgba($primary, 0.1);
-}
-.new-location-id_error {
-  color: red;
-  font-size: $font-sz-m;
-}
-.new-location-menu_button_cancel {
-  color: $primary;
-  background-color: white;
-  text-align: center;
+<style lang="scss" scoped>
+.text-error {
+  padding-left: 80;
 }
 </style>
