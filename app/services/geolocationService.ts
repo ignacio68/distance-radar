@@ -10,11 +10,11 @@ import {
   setWatchId,
 } from '@/store/userLocationStore'
 
-const locationOptions: geolocation.Options = {
+const setLocationOptions = (): geolocation.Options => ({
   desiredAccuracy: Enums.Accuracy.high,
   maximumAge: 5000,
   timeout: 10000,
-}
+})
 
 export const getUserCurrentLocation = async (): Promise<void | LatLng> => {
   console.log(`geolocationService::getUserCurrentLocation()`)
@@ -45,26 +45,21 @@ const enableLocationRequest = (): void => {
 
 const getUserLocation = (): Promise<LatLng> => {
   console.log('geolocationService::getUserLocation()')
-  const userLocation = geolocation.getCurrentLocation(locationOptions).then((result) => {
-    const location: LatLng = {
-      lat: result.latitude,
-      lng: result.longitude,
-    }
+  const locationOptions = setLocationOptions()
+  const userLocation = geolocation.getCurrentLocation(locationOptions).then((position) => {
+    const location = positionToCurrentLocation(position)
     console.log(`geolocationService::getUserLocation(): ${location.lat}`)
     return location
   })
   return userLocation
 }
 
-export const watchUserLocation = async (): Promise<void> => {
+export const startWatchUserLocation = async (): Promise<void> => {
   console.log('geolocationService::watchUserLocation()')
   isLocationServicesEnabled().then((): void => {
     const watchId = geolocation.watchLocation(
       (position) => {
-        const currentLocation: LatLng = {
-          lat: position.latitude,
-          lng: position.longitude,
-        }
+        const currentLocation = positionToCurrentLocation(position)
         console.log(
           `geolocationService::watchUserLocation():currentLocation: ${JSON.stringify(
             userCurrentLocation(),
@@ -75,7 +70,7 @@ export const watchUserLocation = async (): Promise<void> => {
       (error) => {
         console.log(`geolocationService::watchUserLocation():error: ${error}`)
       },
-      locationOptions,
+      setLocationOptions(),
     )
     setWatchId(watchId)
   })
@@ -84,7 +79,13 @@ export const watchUserLocation = async (): Promise<void> => {
 export const stopWatchUserLocation = (watchId: number): void => {
   console.log('geolocationService::stopWatchUserLocation()')
   geolocation.clearWatch(watchId)
+  setWatchId(null)
 }
+
+const positionToCurrentLocation = (position: geolocation.Location): LatLng => ({
+  lat: position.latitude,
+  lng: position.longitude,
+})
 
 // export const calculateDistance = (loc1: LatLng, loc2: LatLng): LatLng => {
 //   const distance = geolocation.distance(loc1, loc2)
