@@ -1,105 +1,61 @@
 import { Utils } from '@nativescript/core'
-
-import { i18n } from '@/locales'
-
-import { latLngToPosition } from '@/utils/commons'
-import { playVibration, playSound, stopSound } from '@/api/common'
-import {
-  getUserCurrentLocation,
-  watchUserLocation,
-  stopWatchUserLocation,
-} from '@/services/geolocationService'
 import distance from '@turf/distance'
 import { point } from '@turf/helpers'
+import { turnOnAlarm } from '@/api/securityAreas'
+
+import { latLngToPosition } from '@/utils/commons'
 
 import {
-  getUserCurrentLocation as currentUserLocation,
-  setDistanceToCenter,
-  getWatchId,
-} from '@/store/userLocationStore'
+  getUserCurrentLocation,
+  startWatchUserLocation,
+  stopWatchUserLocation,
+} from '@/services/geolocationService'
 
-import { isWatcherEnabled, setIsWatcherEnabled } from '@/composables/useGeolocation'
+import { getUserCurrentLocation as currentUserLocation } from '@/store/userLocationStore'
+import { addSearchId } from '@/store/alarmsStore'
 
-import { LatLng, Position } from '@/types/commons'
-import { AlertOptions, SecurityDistanceArgs, AlertMode } from './types'
-
-import { CancelAlarm } from '@/components/Dialogs/CancelAlarm'
+import { LatLng, SecurityDistanceArgs } from './types'
 
 // TODO: Revisar
 export const getUserLocation = () => getUserCurrentLocation()
 
-export const startTrackingUserLocation = async (): Promise<void> => {
-  setIsWatcherEnabled(true)
-  watchUserLocation()
+export const initTrackingUser = async (): Promise<void> => startWatchUserLocation()
+
+export const removeTrackingUser = (watchId: number): void => stopWatchUserLocation(watchId)
+
+export const startSearchUser = (args: SecurityDistanceArgs): NodeJS.Timeout => {
+  const searchId = startTimer(args)
+  addSearchId(args.id, searchId)
+  return searchId
 }
 
-export const stopTrackingUserLocation = (watchId: number): void => {
-  setIsWatcherEnabled(false)
-  stopWatchUserLocation(watchId)
-}
-
-export const isUserIntoSecurityArea = (args: SecurityDistanceArgs): void => {
-  searchUserPosition(args)
-}
-
-const searchUserPosition = (args: SecurityDistanceArgs): any => {
-  const { id, mode } = args
-
+const startTimer = (args: SecurityDistanceArgs): NodeJS.Timeout => {
+  const { id, alertMode, interval } = args
   const searchId = Utils.setInterval(() => {
-    const getIsIntoSecurityArea = isUserPositionIntoSecurityArea(args)
-    console.log(`geolocation.ts::modeIn::user is into ${id} area? ${getIsIntoSecurityArea}`)
-
-    if (!getIsIntoSecurityArea && mode === 'EXIT') turnOnAlarm(searchId, id, mode)
-    else if (getIsIntoSecurityArea && mode === 'ENTRANCE') turnOnAlarm(searchId, id, mode)
+    const isUserIntoSecurityArea = getIsUserIntoSecurityArea(args)
+    console.log(`geolocation.ts::modeIn::user is into ${id} area? ${isUserIntoSecurityArea}`)
+    if (!isUserIntoSecurityArea && alertMode === 'EXIT') turnOnAlarm(searchId, id, alertMode)
+    else if (isUserIntoSecurityArea && alertMode === 'ENTRANCE')
+      turnOnAlarm(searchId, id, alertMode)
     return
-  }, args.interval)
+  }, interval)
+
+  return searchId
 }
 
-const isUserPositionIntoSecurityArea = (args: SecurityDistanceArgs): boolean => {
-  const { initialLocation: center, securityDistance } = args
-  const currentDistance = calculateDistanceToCenter(center, currentUserLocation())
-  setDistanceToCenter(currentDistance)
-  // console.log(`${id} alarm: distance: ${securityDistance}, current distance: ${currentDistance}`)
-  const isIntoSecurityArea = currentDistance <= securityDistance ? true : false
-  return isIntoSecurityArea
+export const stopSearchUser = (searchId: NodeJS.Timeout): void => Utils.clearInterval(searchId)
+
+const getIsUserIntoSecurityArea = (args: SecurityDistanceArgs): boolean => {
+  const { id, initialLocation: center, securityDistance } = args
+  const currentDistance = calculateDistanceToCenter(id, center, currentUserLocation())
+  return currentDistance <= securityDistance
 }
 
-const calculateDistanceToCenter = (center: LatLng, userLocation: LatLng): number => {
+const calculateDistanceToCenter = (id: string, center: LatLng, userLocation: LatLng): number => {
   const from = point(latLngToPosition(center))
   const to = point(latLngToPosition(userLocation))
   const options = { units: 'kilometers' as const }
-
   const currentDistance = distance(from, to, options)
-  console.log(`geolocation::calculateCurrentDistance:distance is: ${currentDistance}`)
+  console.log(`geolocation::calculateCurrentDistance:the distance of ${id} is: ${currentDistance}`)
   return currentDistance
-}
-
-const turnOnAlarm = (searchId: any, id: string, mode: AlertMode): void => {
-  activeAlarm(searchId)
-  if (mode === 'EXIT') modeInAlertDialog(id)
-  else modeOutAlertDialog(id)
-}
-
-const activeAlarm = (searchId: any): void => {
-  Utils.clearInterval(searchId)
-  playVibration([300, 500])
-  playSound()
-}
-
-const modeInAlertDialog = (id: string) => {
-  const cancelAlarmOptions = {
-    title: id,
-    message: i18n.tc('lang.dialogs.cancelAlarmIn.message'),
-    okButtonText: i18n.tc('lang.dialogs.cancelAlarmIn.okButtonText'),
-  }
-  CancelAlarm(cancelAlarmOptions)
-}
-
-const modeOutAlertDialog = (id: string) => {
-  const cancelAlarmOptions = {
-    title: id,
-    message: i18n.tc('lang.dialogs.cancelAlarmOut.message'),
-    okButtonText: i18n.tc('lang.dialogs.cancelAlarmOut.okButtonText'),
-  }
-  CancelAlarm(cancelAlarmOptions)
 }
