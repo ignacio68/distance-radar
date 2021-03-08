@@ -6,8 +6,7 @@ const state = Vue.observable({
     lat: 0,
     lng: 0,
   } as LatLng,
-  watchId: 0,
-  distanceToCenter: 0,
+  watchId: null,
 })
 
 export const getInitialLocation = (): InitialCoordinates => {
@@ -28,7 +27,3 @@ export const setCurrentUserLocation = (coordinates: LatLng): void => {
 export const getWatchId = (): number => state.watchId
 
 export const setWatchId = (id: number): number => (state.watchId = id)
-
-export const getDistanceToCenter = (): number => state.distanceToCenter
-
-export const setDistanceToCenter = (distance: number): number => (state.distanceToCenter = distance)
