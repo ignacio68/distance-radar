@@ -1,19 +1,15 @@
 import { alert, AlertOptions } from '@nativescript/core'
-import { stopTrackingUserLocation } from '@/api/geolocation'
-import { stopVibration, stopSound } from '@/api/common'
-import { getWatchId } from '@/store/userLocationStore'
+import { stopAlarmsWork } from '@/api/securityAreas'
 
 export const CancelAlarm = (options: AlertOptions) => {
-  const alertOptions: AlertOptions = {
-    title: options.title,
-    message: options.message,
-    okButtonText: options.okButtonText,
-    cancelable: false,
-  }
+  const alertOptions = setAlertOptions(options)
 
-  alert(alertOptions).then(() => {
-    stopVibration()
-    stopSound()
-    stopTrackingUserLocation(getWatchId())
-  })
+  alert(alertOptions).then(() => stopAlarmsWork([options.title]))
 }
+
+const setAlertOptions = (options: AlertOptions): AlertOptions => ({
+  title: options.title,
+  message: options.message,
+  okButtonText: options.okButtonText,
+  cancelable: false,
+})

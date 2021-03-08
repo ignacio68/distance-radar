@@ -50,14 +50,14 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { activateAlarms } from '@/api/securityAreas'
+import { startAlarmsWork } from '@/api/securityAreas'
 
 import { resetBottomSheet } from '@/composables/useComponent'
 
 import { getAllLocations } from '@/store/locationsStore'
 import { getAllSecurityAreas, getSecurityAreasActive } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
-import { getUserCurrentLocation, getDistanceToCenter } from '@/store/userLocationStore'
+import { getUserCurrentLocation } from '@/store/userLocationStore'
 
 import Map from './Map.vue'
 import Locations from './Locations.vue'
@@ -93,7 +93,6 @@ export default Vue.extend({
     getSecurityAreasActive,
     // getAllAlarms,
     // getUserCurrentLocation,
-    // getDistanceToCenter,
   },
 
   watch: {
@@ -134,7 +133,7 @@ export default Vue.extend({
   methods: {
     activateAlarms(alarms: string[]): void {
       console.log(`Main.vue::activateAlarms:alarms ${JSON.stringify(alarms)}`)
-      activateAlarms(alarms)
+      startAlarmsWork(alarms)
     },
 
     onTabSelected() {

@@ -48,13 +48,18 @@ export interface SecurityArea {
 export interface AlertOptions extends Id {
   initialLocation: LatLng
   securityDistance: number
-  mode: AlertMode
+  alertMode: AlertMode
 }
 
 export interface SecurityDistanceArgs extends AlertOptions {
   interval: number
 }
 
+export interface Alarm extends Id {
+  searchId?: NodeJS.Timeout
+  isActive: boolean
+  alertMode: AlertMode
+}
 export interface SourceOptions {
   type: 'geojson'
   data: GeoJSON

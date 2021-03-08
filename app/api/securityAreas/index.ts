@@ -1,6 +1,7 @@
 import { createLayer, removeLayer } from './layer'
 import { createSource, removeSource } from './source'
 
+import { removeAlarms } from '@/store/alarmsStore'
 import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store/securityAreasStore'
 
 import {
@@ -70,30 +71,19 @@ const changeSecurityAreaVisibility = (securityArea: SecurityArea, value: LayerVi
   console.log(`${securityArea.id} is visible?  ${securityArea.layer.paint.visibility}`)
 }
 
-//  TODO: to remove
-// export const removeSecurityArea = async (id: string): Promise<void> => {
-//   const securityArea = getSecurityArea(id)
-//   console.log(`securityAreas.ts::removeSecurityArea()::typeof: ${typeof securityArea}`)
-//   if (typeof securityArea === 'object') {
-//     removeLayer(id)
-//       .then(() => removeSource(id))
-//       .then(() => deleteSecurityArea(id))
-//   }
-//   return
-// }
 export const removeAllSecurityAreas = async (securityAreas: string[]): Promise<void> => {
   securityAreas.forEach((securityArea) => removeSecurityArea(securityArea))
 }
 
 export const removeSecurityArea = async (id: string): Promise<void> => {
   const securityArea = getSecurityArea(id)
-  console.log(`securityAreas.ts::removeSecurityArea()::typeof: ${typeof securityArea}`)
   if (!!securityArea) {
     removeLayer(id)
       .then(() => removeSource(id))
       .then(() => deleteSecurityArea(id))
+      .then(() => removeAlarms([id]))
   }
   return
 }
 
-export { activateAlarms, fetchAlarmsActive } from './alarms'
+export { startAlarmsWork, stopAlarmsWork, turnOnAlarm, fetchActiveAlarms } from './alarms'

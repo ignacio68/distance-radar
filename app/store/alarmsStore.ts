@@ -10,10 +10,10 @@ import {
   deleteDatabase,
 } from '@/api/storage'
 
-import { Database } from '@/api/types'
+import { Database, Alarm } from '@/api/types'
 
 const state = Vue.observable({
-  alarms: [] as string[],
+  alarms: [] as Alarm[],
 })
 
 // Create persist alarms database
@@ -24,8 +24,8 @@ const database: Database = createDatabase('alarms')
 //     addAlarmToState(alarm),
 //   )
 
-const addAlarmToState = (alarm: string): void => {
-  console.log(`locationsStore::addLocationToState: ${JSON.stringify(alarm)}`)
+const addAlarmToState = (alarm: Alarm): void => {
+  console.log(`locationsStore::addAlarmToState: ${JSON.stringify(alarm)}`)
   state.alarms.push(alarm)
 }
 
@@ -33,20 +33,29 @@ deleteDatabase(database)
 
 // initializeDatabase()
 
-const findAlarm = (id: string): string => state.alarms.find((alarm) => alarm === id)
-
-export const addNewAlarm = (id: string): void => {
-  if (findAlarm(id) === undefined) {
-    addAlarmToState(id)
-    addItemToDatabase<string>(database, id, id)
-    console.log(`alarmsStore::addNewAlar:alarms: ${JSON.stringify(state.alarms)}`)
-  }
+export const addNewAlarm = (alarm: Alarm): void => {
+  addAlarmToState(alarm)
+  addItemToDatabase<Alarm>(database, alarm, alarm.id)
   return
 }
 
-export const getAllAlarms = (): string[] => state.alarms
+export const getAllAlarms = (): Alarm[] => state.alarms
 
-export const removeAlarm = (id: string): void => {
+export const addSearchId = (alarmId: string, searchId: NodeJS.Timeout): void => {
+  const index = findIndex(alarmId)
+  state.alarms[index].searchId = searchId
+}
+
+export const removeSearchId = (alarmId: string): void => {
+  const index = findIndex(alarmId)
+  state.alarms[index].searchId = null
+}
+
+export const removeAlarms = (alarms: string[]): void => {
+  alarms.forEach((alarm) => removeAlarm(alarm))
+}
+
+const removeAlarm = (id: string): void => {
   const index = findIndex(id)
   if (index !== undefined) {
     removeAlarmFromState(id)
@@ -57,8 +66,6 @@ export const removeAlarm = (id: string): void => {
 
 const removeAlarmFromState = (id: string) => state.alarms.splice(findIndex(id), 1)
 
-const findIndex = (id: string): number => state.alarms.findIndex((alarm) => alarm === id)
-
 export const deleteAllAlarms = (): void => {
   deleteAllAlarmsFromState()
   resetDatabase(database)
@@ -67,3 +74,5 @@ export const deleteAllAlarms = (): void => {
 const deleteAllAlarmsFromState = (): void => {
   state.alarms.length = 0
 }
+
+const findIndex = (id: string): number => state.alarms.findIndex((alarm) => alarm.id === id)
