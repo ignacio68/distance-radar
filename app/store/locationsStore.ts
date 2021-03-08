@@ -117,10 +117,10 @@ export const removeAllSecurityAreas = (id: string) => {
   securityAreas.forEach((securityArea: string) => removeSecurityArea(securityArea))
 }
 
-export const removeSecurityAreaFromLocation = (
+export const removeSecurityAreaFromLocation = async (
   locationId: string,
   securityAreaId: string,
-): void => {
+): Promise<void> => {
   const locationIndex = findIndex(locationId)
   if (locationIndex >= 0) {
     const securityAreaIndex = getSecurityAreaIndex(locationIndex, securityAreaId)

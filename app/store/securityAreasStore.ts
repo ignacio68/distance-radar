@@ -11,9 +11,9 @@ import {
 } from '@/api/storage'
 
 import { getLocation, updateLocation, removeSecurityAreaFromLocation } from './locationsStore'
-import { addNewAlarm, removeAlarm } from './alarmsStore'
+import { addNewAlarm, removeAlarms } from './alarmsStore'
 
-import { SecurityArea, LayerVisibility, Database, Location } from '@/api/types'
+import { SecurityArea, LayerVisibility, Database, Location, Alarm } from '@/api/types'
 
 const state = Vue.observable({
   securityAreas: [] as SecurityArea[],
@@ -31,7 +31,7 @@ const database: Database = createDatabase('securityAreas')
 //   return
 // }
 
-const addSecurityAreaToState = (securityArea: SecurityArea): void => {
+const addSecurityAreaToState = async (securityArea: SecurityArea): Promise<void> => {
   console.log(`securityAreaStore.ts::addSecurityAreaToState: ${JSON.stringify(securityArea)}`)
   state.securityAreas.push(securityArea)
 }
@@ -45,13 +45,20 @@ export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<vo
     `securityAreaStore.ts::addNewSecurityArea()::securityArea: ${JSON.stringify(securityArea)}`,
   )
   addSecurityAreaToState(securityArea)
-  addSecurityAreaToLocation(securityArea.id)
-  addItemToDatabase<SecurityArea>(database, securityArea, securityArea.id)
-  // if (securityArea.isActive) addNewAlarm(securityArea.id)
-  return
+    .then(() => addSecurityAreaToLocation(securityArea.id))
+    .then(() => {
+      addItemToDatabase<SecurityArea>(database, securityArea, securityArea.id)
+      if (securityArea.isActive) addNewAlarm(setAlarm(securityArea))
+    })
 }
 
-const addSecurityAreaToLocation = (id: string): void => {
+const setAlarm = (securityArea: SecurityArea): Alarm => {
+  const { id, isActive, alertMode } = securityArea
+  const alarm = { id, isActive, alertMode }
+  return alarm
+}
+
+const addSecurityAreaToLocation = async (id: string): Promise<void> => {
   const location = setLocation(id)
   updateLocation(location)
 }
@@ -85,11 +92,13 @@ export const updateSecurityAreaStore = (securityArea: SecurityArea): void => {
 export const deleteSecurityArea = async (id: string): Promise<void> => {
   const index = findIndex(id)
   const owner = getOwner(index)
-  removeSecurityAreafromState(index).then(() => removeSecurityAreaFromLocation(owner, id))
-  // removeAlarm(id)
-  console.log(`securityAreaStore.ts::deleteSecurityArea()::id: ${id}`)
-  deleteItemFromDatabase(database, id)
-  console.log('removed Security Area!!')
+  removeSecurityAreafromState(index)
+    .then(() => removeSecurityAreaFromLocation(owner, id))
+    .then(() => {
+      deleteItemFromDatabase(database, id)
+      removeAlarms([id])
+      console.log('removed Security Area!!')
+    })
 }
 
 const getOwner = (index: number): string => state.securityAreas[index].owner
