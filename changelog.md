@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.5.0] - 2021-03-11
+
+### Changed
+
+- Alarms handler
+
 ## [0.4.1] - 2021-02-22
 
 ### Added
