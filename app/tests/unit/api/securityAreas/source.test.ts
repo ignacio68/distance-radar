@@ -17,7 +17,7 @@ describe.skip('API - Security Areas - Source', function () {
           numberOfEdges: 32,
         } as Circle
 
-        this.source = createSource(this.id, this.args)
+        this.source = createSource(this.args)
       })
       it('return an object', function () {
         assert.isObject(this.source, 'source is an object')
