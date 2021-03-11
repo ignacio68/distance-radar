@@ -24,11 +24,6 @@ export const initAudioPlayer = () => {
     audioPlayer.debug = false // use only for development
     audioPlayer.initFromFile(playerOptions).then(() => {
       console.log('api::common:: Sound audioPlayer is init')
-      audioPlayer.getAudioTrackDuration().then((duration: string) => {
-        // iOS: duration is in seconds
-        // Android: duration is in milliseconds
-        console.log(`api::common: song duration: ${duration}`)
-      })
     })
   })
 }
