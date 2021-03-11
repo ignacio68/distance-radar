@@ -30,7 +30,8 @@
   "author": "Ignacio Lopez-Amor <ignaciolopezamor@gmail.com>",
   "main": "app.js",
   "scripts": {
-    "lint": "eslint --fix . && echo 'Lint complete.'",
+    "lint": "eslint . --ext .js,.jsx,.ts,.tsx, .vue",
+    "lint:fix": "npm run lint -- --fix . && echo 'Lint complete.'",
     "deban": "ns debug android --no-hmr --env.snapshot --env.uglify",
     "debantime": "ns debug android --env.snapshot --env.uglify  | timeline-view",
     "runan": "ns run android --env.snapshot --env.uglify --no-hmr",
