@@ -35,7 +35,7 @@
         row="3"
         :activationText="$t('lang.components.activationMenu.activation')"
         :isChecked="checkedActivation"
-        @on-checked-change="isActivate"
+        @on-checked-change="isActivated"
         @on-alert-mode-selected="setAlertMode"
       />
       <StackLayout
@@ -104,8 +104,8 @@ export default Vue.extend({
         fillOpacity: 0.5,
         group: null,
         visibility: 'visible',
-        isActive: false,
-        alertMode: 'EXIT',
+        isActivated: false,
+        alarmMode: 'EXIT',
       },
       checkedActivation: false,
     }
@@ -163,12 +163,12 @@ export default Vue.extend({
       this.securityArea.fillOpacity = round(value, 1)
     },
 
-    isActivate(value: boolean) {
-      this.securityArea.isActive = value
+    isActivated(value: boolean) {
+      this.securityArea.isActivated = value
     },
 
     setAlertMode(value: string) {
-      this.securityArea.alertMode = value
+      this.securityArea.alarmMode = value
     },
 
     setColor(color: string) {
@@ -181,18 +181,15 @@ export default Vue.extend({
     },
 
     reset() {
-      ;(this.securityArea.id = null),
-        (this.securityArea.center = { lat: 0, lon: 0 }),
-        (this.securityArea.radius = this.radius),
-        (this.securityArea.fillOpacity = this.opacity),
-        (this.securityArea.fillColor = '#ff765d')
+      this.securityArea.id = null
+      this.securityArea.center = { lat: 0, lon: 0 }
+      this.securityArea.radius = this.radius
+      this.securityArea.fillOpacity = this.opacity
+      this.securityArea.fillColor = '#ff765d'
       this.securityArea.visibility = 'visible'
-      this.securityArea.isActive = false
-      this.securityArea.alertMode = 'EXIT'
+      this.securityArea.isActivated = false
+      this.securityArea.alarmMode = 'EXIT'
       this.checkedActivation = false
-      console.log(
-        `NewSecurityAreaMenu.vue::reset()::Security Area: ${JSON.stringify(this.securityArea)}`,
-      )
     },
 
     hideNewSecurityAreaMenu() {

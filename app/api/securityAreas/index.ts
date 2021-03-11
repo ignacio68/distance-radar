@@ -1,8 +1,14 @@
 import { createLayer, removeLayer } from './layer'
 import { createSource, removeSource } from './source'
+import { createAlarm, setAlarm } from './alarms'
+import { setRadarActivity } from '@/api/radar'
 
-import { removeAlarms } from '@/store/alarmsStore'
-import { addNewSecurityArea, getSecurityArea, deleteSecurityArea } from '@/store/securityAreasStore'
+import {
+  addNewSecurityArea,
+  getSecurityArea,
+  updateSecurityAreaStore,
+  deleteSecurityArea,
+} from '@/store/securityAreasStore'
 
 import {
   SecurityAreaOptions,
@@ -10,47 +16,65 @@ import {
   PolygonLayer,
   LayerVisibility,
   Source,
+  Alarm,
 } from '@/api/types'
 
-export const newSecurityArea = async (args: SecurityAreaOptions): Promise<void> => {
-  const options = args
-  const source = await createSource(args.id, args)
-  const layer = await createLayer(args, source.id)
-  const securityArea = setSecurityAreaOptions(options, layer, source)
-  addNewSecurityArea(securityArea).catch((error) =>
-    console.log(`securityAreas::newSecurityArea():error ${error}`),
-  )
+export const newSecurityArea = (args: SecurityAreaOptions): void => {
+  getSecurityAreaComponents(args).then((components) => {
+    const { layer, source, alarm } = components
+    const securityArea = setSecurityAreaOptions(args, layer, source, alarm)
+    addNewSecurityArea(securityArea)
+      .then(() => setAlarm(alarm))
+      .catch((error) => console.log(`securityAreas::newSecurityArea():error ${error}`))
+  })
+}
+
+export const getSecurityAreaComponents = async (args: SecurityAreaOptions): Promise<any> => {
+  const source = createSource(args)
+  const layer = createLayer(args, source.id)
+  const alarm = createAlarm(args)
+  return { source, layer, alarm }
 }
 
 const setSecurityAreaOptions = (
   args: SecurityAreaOptions,
   layer: PolygonLayer,
   source: Source,
+  alarm: Alarm,
 ): SecurityArea => {
-  const { id, radius, center, isActive, alertMode } = args
+  const { id, radius, center } = args
   const securityArea = {
     id,
     owner: id, // TODO: assign the real owner
     radius,
     center,
-    isActive,
-    alertMode,
     layer,
     source,
+    alarm,
   }
-  console.log(
-    `securityAreas::setSecurityAreaOptions()::securityArea: ${JSON.stringify(securityArea)}`,
-  )
   return securityArea
 }
 
 // TODO: Revisar todos los métodos
-export const updateSecurityArea = (securityArea: SecurityAreaOptions): void => {
-  console.log('securityAreas.ts::updateSecurityArea()')
-  removeSecurityArea(securityArea.id).then(() => {
-    newSecurityArea(securityArea)
-    console.log('Security area is updated!')
-  })
+export const updateSecurityArea = (
+  id: string,
+  args: SecurityAreaOptions | PolygonLayer | Alarm,
+): void => {
+  if ((args as PolygonLayer).type) updateLayer(id, args as PolygonLayer)
+  else if (args as Alarm) updateAlarm(id, args as Alarm)
+  console.log('Security area is updated!')
+}
+
+const updateLayer = (id: string, layer: PolygonLayer) => {
+  const securityArea = getSecurityArea(id)
+  const securityAreaUpdated = { ...securityArea, layer }
+  updateSecurityAreaStore(securityAreaUpdated)
+}
+
+const updateAlarm = (id: string, alarm: Alarm) => {
+  const securityArea = getSecurityArea(id)
+  const securityAreaUpdated = { ...securityArea, alarm }
+  updateSecurityAreaStore(securityAreaUpdated)
 }
 
 export const showSecurityArea = (id: string, value: LayerVisibility): void => {
@@ -77,13 +101,13 @@ export const removeAllSecurityAreas = async (securityAreas: string[]): Promise<v
 
 export const removeSecurityArea = async (id: string): Promise<void> => {
   const securityArea = getSecurityArea(id)
+  setRadarActivity(securityArea.alarm.searchId)
   if (!!securityArea) {
     removeLayer(id)
       .then(() => removeSource(id))
       .then(() => deleteSecurityArea(id))
-      .then(() => removeAlarms([id]))
   }
   return
 }
 
-export { startAlarmsWork, stopAlarmsWork, turnOnAlarm, fetchActiveAlarms } from './alarms'
+export { getAlarmId, turnOnAlarm, turnOffAlarm, alarmHandler, stopAlarm } from './alarms'

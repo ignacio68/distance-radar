@@ -25,41 +25,43 @@ export interface MapSettings extends ShowOptions {
 export interface SecurityAreaOptions extends Id {
   radius: number
   center: LatLng
-  isActive: boolean
-  alertMode?: AlertMode
+  isActivated: boolean
+  alarmMode?: AlarmMode
   fillColor: string | Color
   fillOpacity: number
   visibility: LayerVisibility
 }
 
-export type AlertMode = 'EXIT' | 'ENTRANCE'
+export type AlarmMode = 'EXIT' | 'ENTRANCE'
 
 export interface SecurityArea {
   id: string
   owner: string
   radius: number
   center: LatLng
-  isActive: boolean
-  alertMode?: AlertMode
   layer: PolygonLayer
   source: Source
+  alarm?: Alarm
 }
 
-export interface AlertOptions extends Id {
+export interface RadarOptions extends Id {
   initialLocation: LatLng
   securityDistance: number
-  alertMode: AlertMode
+  alarmOwner: string
+  alarmMode: AlarmMode
 }
 
-export interface SecurityDistanceArgs extends AlertOptions {
+export interface Radar extends RadarOptions {
   interval: number
+  searchId?: number
 }
 
 export interface Alarm extends Id {
-  searchId?: NodeJS.Timeout
-  isActive: boolean
-  alertMode: AlertMode
+  searchId?: number
+  isActivated: boolean
+  alarmMode: AlarmMode
 }
+
 export interface SourceOptions {
   type: 'geojson'
   data: GeoJSON

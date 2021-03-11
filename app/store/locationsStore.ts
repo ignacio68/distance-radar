@@ -77,9 +77,9 @@ const replaceLocationInState = (location: Location) =>
   state.locations.splice(findIndex(location.id), 1, location)
 
 export const deleteLocations = (locations: string[]): void => {
-  locations.forEach((location) =>
-    deleteLocationFromState(location).then(() => deleteItemInDatabase(database, location)),
-  )
+  locations.forEach((location) => {
+    deleteLocationFromState(location).then(() => deleteItemInDatabase(database, location))
+  })
 }
 
 const deleteLocationFromState = async (id: string): Promise<Location[]> =>

@@ -1,10 +1,13 @@
 import { alert, AlertOptions } from '@nativescript/core'
-import { stopAlarmsWork } from '@/api/securityAreas'
+import { stopAlarm } from '@/api/securityAreas'
 
 export const CancelAlarm = (options: AlertOptions) => {
   const alertOptions = setAlertOptions(options)
 
-  alert(alertOptions).then(() => stopAlarmsWork([options.title]))
+  alert(alertOptions).then(() => {
+    console.log('cancel button pressed!!')
+    stopAlarm()
+  })
 }
 
 const setAlertOptions = (options: AlertOptions): AlertOptions => ({

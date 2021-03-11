@@ -19,13 +19,13 @@
     />
     <StackLayout col="1" row="1" class="m-l-8">
       <RadioButton
-        v-for="(alertMode, index) in alertsMode"
+        v-for="(alarmMode, index) in alertsMode"
         :key="index"
         class="alert-mode"
         :isEnabled="isRadioButtonEnabled"
-        :text="$t(alertMode.text)"
-        :isChecked.sync="alertMode.isSelected"
-        @on-item-selected="onAlertModeSelected(alertMode)"
+        :text="$t(alarmMode.text)"
+        :isChecked.sync="alarmMode.isSelected"
+        @on-item-selected="onAlertModeSelected(alarmMode)"
       />
     </StackLayout>
   </GridLayout>
@@ -53,12 +53,12 @@ export default Vue.extend({
       isRadioButtonEnabled: false,
       alertsMode: [
         {
-          text: 'lang.components.activationMenu.alertMode[0]',
+          text: 'lang.components.activationMenu.alarmMode[0]',
           mode: 'EXIT',
           isSelected: true,
         },
         {
-          text: 'lang.components.activationMenu.alertMode[1]',
+          text: 'lang.components.activationMenu.alarmMode[1]',
           mode: 'ENTRANCE',
           isSelected: false,
         },
@@ -75,9 +75,8 @@ export default Vue.extend({
     onAlertModeSelected(alertModeSelected: any): void {
       if (!alertModeSelected.isSelected) {
         alertModeSelected.isSelected = true
-        this.alertsMode.map((alertMode) => {
-          if (alertMode.text !== alertModeSelected.text)
-            alertMode.isSelected = false
+        this.alertsMode.map((alarmMode) => {
+          if (alarmMode.text !== alertModeSelected.text) alarmMode.isSelected = false
         })
         this.$emit('on-alert-mode-selected', alertModeSelected.mode)
         console.log(

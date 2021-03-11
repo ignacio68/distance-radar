@@ -1,7 +1,7 @@
 import { Utils } from '@nativescript/core'
 import distance from '@turf/distance'
 import { point } from '@turf/helpers'
-import { turnOnAlarm } from '@/api/securityAreas'
+import { alarmHandler } from '@/api/securityAreas'
 
 import { latLngToPosition } from '@/utils/commons'
 
@@ -11,41 +11,58 @@ import {
   stopWatchUserLocation,
 } from '@/services/geolocationService'
 
-import { getUserCurrentLocation as currentUserLocation } from '@/store/userLocationStore'
-import { addSearchId } from '@/store/alarmsStore'
+import {
+  getUserCurrentLocation as currentUserLocation,
+  getWatchId as watchId,
+} from '@/store/userLocationStore'
+import { setAlarmOn, getAlarmsActivated } from '@/store/securityAreasStore'
 
-import { LatLng, SecurityDistanceArgs } from './types'
+import { LatLng, Radar } from './types'
 
 // TODO: Revisar
 export const getUserLocation = () => getUserCurrentLocation()
 
-export const initTrackingUser = async (): Promise<void> => startWatchUserLocation()
-
-export const removeTrackingUser = (watchId: number): void => stopWatchUserLocation(watchId)
-
-export const startSearchUser = (args: SecurityDistanceArgs): NodeJS.Timeout => {
-  const searchId = startTimer(args)
-  addSearchId(args.id, searchId)
-  return searchId
+export const startTrackingUser = async (): Promise<void> => {
+  console.log(`geolocation.ts::startTrackingUser()`)
+  if (getAlarmsActivated().length > 0 && watchId() === null) startWatchUserLocation()
+  return
 }
 
-const startTimer = (args: SecurityDistanceArgs): NodeJS.Timeout => {
-  const { id, alertMode, interval } = args
+export const stopTrackingUser = async (): Promise<void> => {
+  const len = getAlarmsActivated().length
+  if ((len <= 1 || len === undefined) && watchId() !== null) stopWatchUserLocation(watchId())
+  return
+}
+
+// TODO: Change name
+export const startSearchUserPosition = (args: Radar): void => {
+  console.log(`geolocation.ts::startSearchUserPosition()`)
+  const searchId = startTimer(args)
+  const alarmId = args.alarmOwner
+  setAlarmOn(alarmId, searchId)
+}
+
+// TODO: Change name
+export const stopSearchUserPosition = (searchId: number): void => stopTimer(searchId)
+
+const startTimer = (args: Radar): number => {
+  console.log(`geolocation.ts::startTimer()`)
+  const { id, interval } = args
   const searchId = Utils.setInterval(() => {
-    const isUserIntoSecurityArea = getIsUserIntoSecurityArea(args)
-    console.log(`geolocation.ts::modeIn::user is into ${id} area? ${isUserIntoSecurityArea}`)
-    if (!isUserIntoSecurityArea && alertMode === 'EXIT') turnOnAlarm(searchId, id, alertMode)
-    else if (isUserIntoSecurityArea && alertMode === 'ENTRANCE')
-      turnOnAlarm(searchId, id, alertMode)
-    return
+    const isUserInside = getIsUserInside(args)
+    console.log(
+      `geolocation.ts::modeIn::${id} is into  area? ${isUserInside}, alert mode is ${args.alarmMode}`,
+    )
+    alarmHandler(args, isUserInside)
   }, interval)
 
-  return searchId
+  return (searchId as unknown) as number
 }
 
-export const stopSearchUser = (searchId: NodeJS.Timeout): void => Utils.clearInterval(searchId)
+const stopTimer = (searchId: number): void => Utils.clearInterval(searchId)
 
-const getIsUserIntoSecurityArea = (args: SecurityDistanceArgs): boolean => {
+const getIsUserInside = (args: Radar): boolean => {
+  console.log(`geolocation.ts::getIsUserInsider()`)
   const { id, initialLocation: center, securityDistance } = args
   const currentDistance = calculateDistanceToCenter(id, center, currentUserLocation())
   return currentDistance <= securityDistance

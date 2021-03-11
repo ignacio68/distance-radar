@@ -22,8 +22,8 @@ export default {
     text: 'Color',
   },
   activationMenu: {
-    activation: 'Activate',
-    alertMode: ['Exit', 'Entrance'],
+    activation: 'Activated',
+    alarmMode: ['Exit', 'Entrance'],
   },
   geocoder: {
     hint: 'Search...',

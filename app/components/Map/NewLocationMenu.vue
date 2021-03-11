@@ -125,22 +125,21 @@ export default Vue.extend({
     },
 
     setId(id: string) {
-      if (id === null || id === '') this.setIdError(1)
+      if (id === null || id === undefined) this.setIdError(1)
       else if (isLocationId(id)) this.setIdError(2)
       else {
         this.location.id = id
         this.setIdError(0)
-        // this.$emit('enabled-fab', false)
       }
     },
 
     isIdError(): boolean {
-      return Boolean(this.idError)
+      return this.idError !== 0
     },
 
     setIdError(value: number) {
       this.idError = value
-      console.log(`NewLocationMenu::setIdError::error: ${this.idError}`)
+      console.log(`NewLocationMenu::setIdError`)
     },
 
     setDismissedKeyboard(value: boolean) {

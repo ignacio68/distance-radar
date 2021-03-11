@@ -23,7 +23,7 @@ export default {
   },
   activationMenu: {
     activation: 'Activar',
-    alertMode: ['Salida', 'Entrada'],
+    alarmMode: ['Salida', 'Entrada'],
   },
   geocoder: {
     hint: 'Buscar...',

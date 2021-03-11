@@ -50,14 +50,12 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 
-import { startAlarmsWork } from '@/api/securityAreas'
-
 import { resetBottomSheet } from '@/composables/useComponent'
 
 import { getAllLocations } from '@/store/locationsStore'
-import { getAllSecurityAreas, getSecurityAreasActive } from '@/store/securityAreasStore'
+import { getAllSecurityAreas } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
-import { getUserCurrentLocation } from '@/store/userLocationStore'
+// import { getUserCurrentLocation } from '@/store/userLocationStore'
 
 import Map from './Map.vue'
 import Locations from './Locations.vue'
@@ -90,7 +88,6 @@ export default Vue.extend({
     securityAreas(): number | undefined {
       return getAllSecurityAreas().length
     },
-    getSecurityAreasActive,
     // getAllAlarms,
     // getUserCurrentLocation,
   },
@@ -102,10 +99,6 @@ export default Vue.extend({
     },
     getAllSecurityAreas(newValue: unknown, oldValue: unknown) {
       if (newValue !== undefined) this.bottomNavigation.showBadge(2, newValue)
-      return
-    },
-    getSecurityAreasActive(newValue: string[], oldValue: string[]) {
-      if (newValue.length !== undefined) this.activateAlarms(newValue)
       return
     },
   },
@@ -131,11 +124,6 @@ export default Vue.extend({
   },
 
   methods: {
-    activateAlarms(alarms: string[]): void {
-      console.log(`Main.vue::activateAlarms:alarms ${JSON.stringify(alarms)}`)
-      startAlarmsWork(alarms)
-    },
-
     onTabSelected() {
       if (this.bottomNavigation.selectedTabIndex !== 0) resetBottomSheet()
       return

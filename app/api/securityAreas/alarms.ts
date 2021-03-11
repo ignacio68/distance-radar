@@ -1,91 +1,78 @@
-import { Utils } from '@nativescript/core'
-import {
-  initTrackingUser,
-  removeTrackingUser,
-  startSearchUser,
-  stopSearchUser,
-} from '@/api/geolocation'
-import { removeAllSecurityAreas } from '@/api/securityAreas'
+import { startRadar, stopRadar } from '@/api/radar'
 import { playVibration, stopVibration, playSound, stopSound } from '@/api/common'
 
-import { getWatchId as watchId } from '@/store/userLocationStore'
-import { getSecurityAreasActive as securityAreasActive } from '@/store/securityAreasStore'
-import { removeAlarms } from '@/store/alarmsStore'
+import { getSearchIdFromAlarmId, setAlarmOff } from '@/store/securityAreasStore'
 
 import { i18n } from '@/locales'
 
-import { SecurityArea, SecurityDistanceArgs, AlertMode, Alarm } from '../types'
+import { SecurityAreaOptions, Alarm, Radar } from '../types'
 
 import { CancelAlarm } from '@/components/Dialogs/CancelAlarm'
 
-export const createAlarm = (args: any) => {}
-
-export const startAlarmsWork = (alarms: string[]): void => {
-  console.log(`alarms.ts::startAlarmsWork():alarms: ${JSON.stringify(alarms)}`)
-  startTrackingUser(securityAreasActive()).then(() => setActiveAlarms(securityAreasActive()))
+export const createAlarm = (args: SecurityAreaOptions): Alarm => {
+  const alarm = setAlarmOptions(args)
+  console.log(`alarms.ts::createAlarm::alarm: ${JSON.stringify(alarm)}`)
+  return alarm
 }
 
-export const stopAlarmsWork = (alarms: string[]): void => {
-  stopTrackingUser().then(() => {
-    removeAllSecurityAreas(alarms).then(() => {
-      removeAlarms(alarms)
-    })
-    turnOffAlarm()
-  })
+// export const setAlarm = (alarm: Pick<Alarm, 'id' | 'isActivated'>) => {
+export const setAlarm = (alarm: Alarm) => {
+  console.log('alarms.ts::setAlarm::setAlarm()')
+  // if (alarm.isActivated) turnOnAlarm(alarm.id)
+  alarm.isActivated && turnOnAlarm(alarm.id)
+  // return
 }
 
-// TODO: review this use case
-export const fetchActiveAlarms = (): string[] =>
-  securityAreasActive().map((securityArea) => securityArea.id)
-
-const startTrackingUser = async (securityAreasActive: SecurityArea[]): Promise<void> => {
-  if (securityAreasActive.length > 0 && watchId() !== null) initTrackingUser()
-  return
+export const turnOnAlarm = (alarmId: string): void => {
+  console.log(`alarms.ts::turnOnAlarm():alarmId: ${alarmId}`)
+  const securityAreaId = getSecurityAreaId(alarmId)
+  startRadar(securityAreaId)
 }
 
-const stopTrackingUser = async (): Promise<void> => {
-  if (securityAreasActive().length === 1) removeTrackingUser(watchId())
-  return
+export const turnOffAlarm = (alarmId: string): void => {
+  const searchId = getSearchIdFromAlarmId(alarmId)
+  setAlarmOff(alarmId).then(() => stopRadar(searchId))
 }
 
-const setActiveAlarms = (securityAreas: SecurityArea[]): void => {
-  const alarms: SecurityDistanceArgs[] = configureAlarms(securityAreas)
-  alarms.forEach((alarm) => startSearchUser(alarm))
-}
-
-const configureAlarms = (securityAreas: SecurityArea[]): SecurityDistanceArgs[] =>
-  securityAreas.map((securityArea) => setAlarmOptions(securityArea))
-
-const setAlarmOptions = (securityArea: SecurityArea): SecurityDistanceArgs => ({
-  id: securityArea.id,
-  initialLocation: securityArea.center,
-  securityDistance: securityArea.radius,
-  interval: 1000,
-  alertMode: securityArea.alertMode,
+const setAlarmOptions = (args: SecurityAreaOptions): Alarm => ({
+  id: getAlarmId(args.id),
+  isActivated: args.isActivated,
+  alarmMode: args.alarmMode,
 })
 
-const getAlarmId = (id: string): string => `${id}_alarm`
+export const getAlarmId = (id: string): string => `${id}_alarm`
 
-export const turnOnAlarm = (searchId: any, id: string, mode: AlertMode): void => {
-  activeAlarm(searchId).then(() => {
-    if (mode === 'EXIT') modeInAlertDialog(id)
-    else if (mode === 'ENTRANCE') modeOutAlertDialog(id)
+const getSecurityAreaId = (id: string): string => id.substring(0, id.length - 6)
+
+export const alarmHandler = (args: Radar, isUserInside: boolean) => {
+  if (
+    (!isUserInside && args.alarmMode === 'EXIT') ||
+    (isUserInside && args.alarmMode === 'ENTRANCE')
+  )
+    activateAlarm(args)
+  return
+}
+
+export const activateAlarm = (args: Radar): void => {
+  turnOffAlarm(args.alarmOwner)
+  playAlarm().then(() => {
+    if (args.alarmMode === 'EXIT') modeInAlarmDialog(args.id)
+    else if (args.alarmMode === 'ENTRANCE') modeOutAlarmDialog(args.id)
     return
   })
 }
 
-const turnOffAlarm = () => {
-  stopVibration()
-  stopSound()
-}
-
-const activeAlarm = async (searchId: NodeJS.Timeout): Promise<void> => {
-  stopSearchUser(searchId)
+const playAlarm = async (): Promise<void> => {
   playVibration([300, 500])
   playSound()
 }
 
-const modeInAlertDialog = (id: string) => {
+export const stopAlarm = () => {
+  stopVibration()
+  stopSound()
+}
+
+const modeInAlarmDialog = (id: string) => {
   const cancelAlarmOptions = setCancelEntranceAlarmDialogOptions(id)
   CancelAlarm(cancelAlarmOptions)
 }
@@ -96,7 +83,7 @@ const setCancelEntranceAlarmDialogOptions = (id: string) => ({
   okButtonText: i18n.tc('lang.dialogs.cancelAlarmIn.okButtonText'),
 })
 
-const modeOutAlertDialog = (id: string) => {
+const modeOutAlarmDialog = (id: string) => {
   const cancelAlarmOptions = setCancelExitAlarmDialogOptions(id)
   CancelAlarm(cancelAlarmOptions)
 }

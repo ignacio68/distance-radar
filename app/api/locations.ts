@@ -9,7 +9,6 @@ import { getMap } from '@/store/mapStore'
 import {
   addNewLocation,
   updateLocation as updateLocationInStore,
-  getLocation,
   getAllLocations,
   deleteLocations,
   resetLocationsStore,
@@ -63,10 +62,10 @@ export const removeLocations = (locations: string[]): void => {
   console.log(`locations.ts::removeLocation()::locations: ${locations}`)
   const map = getMap()
   removeAllSecurityAreas(locations).then(() =>
-    mbRemoveMarkers(map, locations).then(() => deleteLocations(locations)),
+    mbRemoveMarkers(map, locations).then(() => {
+      deleteLocations(locations)
+    }),
   )
-
-  // mbRemoveMarkers(map, locations).then(() => deleteLocations(id))
 }
 // export const removeLocation = (id: string): void => {
 //   console.log(`locations.ts::removeLocation()::id: ${id}`)

@@ -4,8 +4,8 @@
     row="1"
     col="0"
     class="alarm-fab"
-    rippleColor="white"
     color="white"
+    :rippleColor="rippleColor"
     :elevation="elevationFAB"
     src="res://ic_notifications_white_24dp"
     @tap="onTapAlarmFAB"
@@ -16,9 +16,9 @@ import Vue from 'vue'
 import { Color } from '@nativescript/core'
 import { Elevation } from '@/types/enums/elevations'
 
-import { getSecurityAreasActive } from '@/store/securityAreasStore'
+import { getAlarmsActivated } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
-// import { fetchAlarmsActive } from '@/api/securityAreas'
+// import { fetchActiveRadars } from '@/api/securityAreas'
 
 export default Vue.extend({
   name: 'AlarmFAB',
@@ -26,6 +26,7 @@ export default Vue.extend({
   data() {
     return {
       elevationFAB: Elevation.FAB_RESTING,
+      rippleColor: null,
     }
   },
   computed: {
@@ -33,15 +34,16 @@ export default Vue.extend({
       return this.$refs.alarmFAB.nativeView
     },
 
-    isAlarmActive(): boolean {
-      return getSecurityAreasActive().length > 0 ? true : false
+    areAlarmsActivated(): boolean {
+      return getAlarmsActivated().length > 0
     },
   },
   watch: {
-    isAlarmActive: {
+    areAlarmsActivated: {
       // immediate: true,
       handler(newValue: boolean, oldValue: boolean) {
-        this.alarmFAB.backgroundColor = new Color(newValue ? '#dd251b' : '#ced7d8')
+        newValue ? this.isEnabled : this.isNotEnabled
+        // this.alarmFAB.backgroundColor = new Color(newValue ? '#dd251b' : '#ced7d8')
       },
     },
   },
@@ -49,6 +51,16 @@ export default Vue.extend({
     onTapAlarmFAB() {
       console.log(`Alarm button tapped!!`)
       this.$emit('on-tap-alarm-fab')
+    },
+
+    isEnabled() {
+      this.alarmFAB.backgroundColor = new Color('#dd251b')
+      this.rippleColor = 'white'
+    },
+
+    isNotEnabled() {
+      this.alarmFAB.backgroundColor = new Color('#ced7d8')
+      this.rippleColor = null
     },
   },
 })
