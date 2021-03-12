@@ -22,7 +22,8 @@ export interface MapSettings extends ShowOptions {
   onMoveBeginEvent?: MapEvent
 }
 
-export interface SecurityAreaOptions extends Id {
+export interface SecurityAreaOptions {
+  owner: string
   radius: number
   center: LatLng
   isActivated: boolean
@@ -47,6 +48,7 @@ export interface SecurityArea {
 export interface RadarOptions extends Id {
   initialLocation: LatLng
   securityDistance: number
+  owner: string
   alarmOwner: string
   alarmMode: AlarmMode
 }

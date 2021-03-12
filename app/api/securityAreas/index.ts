@@ -43,10 +43,10 @@ const setSecurityAreaOptions = (
   source: Source,
   alarm: Alarm,
 ): SecurityArea => {
-  const { id, radius, center } = args
+  const { owner, radius, center } = args
   const securityArea = {
-    id: getId(id, 'area'),
-    owner: id, // TODO: assign the real owner
+    id: getId(owner, 'area'),
+    owner,
     radius,
     center,
     layer,
@@ -102,13 +102,16 @@ export const removeAllSecurityAreas = async (securityAreas: string[]): Promise<v
 
 export const removeSecurityArea = async (id: string): Promise<void> => {
   const securityArea = getSecurityArea(id)
+  const owner = getOwner(id)
   setRadarActivity(securityArea.alarm.searchId)
   if (!!securityArea) {
-    removeLayer(id)
-      .then(() => removeSource(id))
+    removeLayer(owner)
+      .then(() => removeSource(owner))
       .then(() => deleteSecurityArea(id))
   }
   return
 }
 
-export { getAlarmId, turnOnAlarm, turnOffAlarm, alarmHandler, stopAlarm } from './alarms'
+const getOwner = (id: string): string => id.substring(0, id.length - 5)
+
+export { turnOnAlarm, turnOffAlarm, alarmHandler, stopAlarm } from './alarms'

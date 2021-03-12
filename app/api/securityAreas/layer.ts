@@ -21,7 +21,7 @@ export const removeLayer = async (id: string) => {
 }
 
 const setLayerOptions = (options: SecurityAreaOptions, sourceId: string): PolygonLayer => {
-  const id = getId(options.id, 'layer')
+  const id = getId(options.owner, 'layer')
   const style = getLayerStyle(options)
   // const source = await createSource(id, options)
   const layerOptions = getLayerOptions(id, sourceId, style)

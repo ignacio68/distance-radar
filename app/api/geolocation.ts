@@ -47,11 +47,11 @@ export const stopSearchUserPosition = (searchId: number): void => stopTimer(sear
 
 const startTimer = (args: Radar): number => {
   console.log(`geolocation.ts::startTimer()`)
-  const { id, interval } = args
+  const { owner, interval } = args
   const searchId = Utils.setInterval(() => {
     const isUserInside = getIsUserInside(args)
     console.log(
-      `geolocation.ts::modeIn::${id} is into  area? ${isUserInside}, alert mode is ${args.alarmMode}`,
+      `geolocation.ts::modeIn::${owner} is into  area? ${isUserInside}, alert mode is ${args.alarmMode}`,
     )
     alarmHandler(args, isUserInside)
   }, interval)
@@ -63,8 +63,8 @@ const stopTimer = (searchId: number): void => Utils.clearInterval(searchId)
 
 const getIsUserInside = (args: Radar): boolean => {
   console.log(`geolocation.ts::getIsUserInsider()`)
-  const { id, initialLocation: center, securityDistance } = args
-  const currentDistance = calculateDistanceToCenter(id, center, currentUserLocation())
+  const { owner, initialLocation: center, securityDistance } = args
+  const currentDistance = calculateDistanceToCenter(owner, center, currentUserLocation())
   return currentDistance <= securityDistance
 }
 

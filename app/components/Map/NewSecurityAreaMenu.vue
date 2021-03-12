@@ -94,7 +94,7 @@ export default Vue.extend({
       opacityMinValue: 0,
       opacityMaxValue: 1,
       securityArea: {
-        id: '',
+        owner: '',
         center: {
           lat: 0,
           lng: 0,
@@ -148,7 +148,7 @@ export default Vue.extend({
 
     async setIdAndCenter(): Promise<void> {
       const { id, lat, lng } = this.currentSelectedLocation
-      this.securityArea.id = id
+      this.securityArea.owner = id
       this.securityArea.center.lat = lat
       this.securityArea.center.lng = lng
     },
@@ -181,7 +181,7 @@ export default Vue.extend({
     },
 
     reset() {
-      this.securityArea.id = null
+      this.securityArea.owner = null
       this.securityArea.center = { lat: 0, lon: 0 }
       this.securityArea.radius = this.radius
       this.securityArea.fillOpacity = this.opacity

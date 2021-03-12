@@ -1,5 +1,6 @@
 import { startRadar, stopRadar } from '@/api/radar'
-import { playVibration, stopVibration, playSound, stopSound } from '@/api/common'
+import { playVibration, stopVibration, playSound, stopSound } from '@/api/media'
+import { getId } from '@/utils/commons'
 
 import { getSearchIdFromAlarmId, setAlarmOff } from '@/store/securityAreasStore'
 
@@ -19,7 +20,7 @@ export const createAlarm = (args: SecurityAreaOptions): Alarm => {
 export const setAlarm = (alarm: Alarm) => {
   console.log('alarms.ts::setAlarm::setAlarm()')
   // if (alarm.isActivated) turnOnAlarm(alarm.id)
-  alarm.isActivated && turnOnAlarm(alarm.id)
+  if (alarm.isActivated) turnOnAlarm(alarm.id)
   // return
 }
 
@@ -35,14 +36,16 @@ export const turnOffAlarm = (alarmId: string): void => {
 }
 
 const setAlarmOptions = (args: SecurityAreaOptions): Alarm => ({
-  id: getAlarmId(args.id),
+  id: getId(args.owner, 'alarm'),
   isActivated: args.isActivated,
   alarmMode: args.alarmMode,
 })
 
-export const getAlarmId = (id: string): string => `${id}_alarm`
-
-const getSecurityAreaId = (id: string): string => id.substring(0, id.length - 6)
+const getSecurityAreaId = (id: string): string => {
+  const owner = id.substring(0, id.length - 6)
+  const securityAreaId = getId(owner, 'area')
+  return securityAreaId
+}
 
 export const alarmHandler = (args: Radar, isUserInside: boolean) => {
   if (
@@ -56,8 +59,8 @@ export const alarmHandler = (args: Radar, isUserInside: boolean) => {
 export const activateAlarm = (args: Radar): void => {
   turnOffAlarm(args.alarmOwner)
   playAlarm().then(() => {
-    if (args.alarmMode === 'EXIT') modeInAlarmDialog(args.id)
-    else if (args.alarmMode === 'ENTRANCE') modeOutAlarmDialog(args.id)
+    if (args.alarmMode === 'EXIT') modeInAlarmDialog(args.owner)
+    else if (args.alarmMode === 'ENTRANCE') modeOutAlarmDialog(args.owner)
     return
   })
 }

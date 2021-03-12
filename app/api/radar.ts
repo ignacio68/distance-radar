@@ -16,6 +16,7 @@ export const setRadarActivity = (searchId: number) => {
 }
 
 export const startRadar = (securityAreaId: string): void => {
+  console.log(`radar.ts::startRadar()::securityArea id: ${securityAreaId}`)
   const securityArea = getSecurityArea(securityAreaId)
   const radar = setRadarOptions(securityArea)
   startTrackingUser().then(() => {
@@ -28,7 +29,8 @@ export const stopRadar = async (searchId: number): Promise<void> => {
 }
 
 const setRadarOptions = (securityArea: SecurityArea): Radar => ({
-  id: getId(securityArea.id, 'radar'),
+  id: getId(securityArea.owner, 'radar'),
+  owner: securityArea.owner,
   initialLocation: securityArea.center,
   securityDistance: securityArea.radius,
   interval: 2000,

@@ -13,7 +13,7 @@ import { GeoJSON } from 'geojson'
 
 export const createSource = (args: SecurityAreaOptions): Source => {
   console.log('createSource()')
-  const id = getId(args.id, 'source')
+  const id = getId(args.owner, 'source')
   const source: Source = getSource(id, args)
   mbAddSource(getMap(), id, source)
   return source
