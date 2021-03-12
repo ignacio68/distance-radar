@@ -54,8 +54,6 @@ import { resetBottomSheet } from '@/composables/useComponent'
 
 import { getAllLocations } from '@/store/locationsStore'
 import { getAllSecurityAreas } from '@/store/securityAreasStore'
-// import { getAllAlarms } from '@/store/alarmsStore'
-// import { getUserCurrentLocation } from '@/store/userLocationStore'
 
 import Map from './Map.vue'
 import Locations from './Locations.vue'
@@ -88,11 +86,10 @@ export default Vue.extend({
     securityAreas(): number | undefined {
       return getAllSecurityAreas().length
     },
-    // getAllAlarms,
-    // getUserCurrentLocation,
   },
 
   watch: {
+    // FIXME: Not function
     getLocations(newValue: unknown, oldValue: unknown) {
       if (newValue !== undefined) this.bottomNavigation.showBadge(1, newValue)
       return
@@ -101,26 +98,6 @@ export default Vue.extend({
       if (newValue !== undefined) this.bottomNavigation.showBadge(2, newValue)
       return
     },
-  },
-
-  mounted() {
-    console.log('__Main::mounted()')
-  },
-
-  beforeUpdate() {
-    console.log('__Main::beforeUpdate()')
-  },
-
-  updated() {
-    console.log('__Main::updated()')
-  },
-
-  beforeDestroy() {
-    console.log('__Main::beforeDestroy()')
-  },
-
-  destroyed() {
-    console.log('__Main::beforeDestroy()')
   },
 
   methods: {
@@ -144,42 +121,3 @@ TabStripItem {
   }
 }
 </style>
-
-<!-- <GridLayout class="home" rows="auto, *, auto" columns="*">
-      <MainActionBar class="action-bar" row="0" width="100%" />
-      <MapWrapper
-        id="MapWrapper"
-        row="1"
-        @first-location-alert="onConfirmFirstLocation"
-      /> -->
-
-<!-- <StackLayout class="Bottom" row="2"> -->
-<!-- <StackLayout>
-          <Label textWrap="true">
-            <FormattedString>
-              <Span text="user latitude: " />
-              <Span :text="getUserCurrentLocation.lat" />
-            </FormattedString>
-          </Label>
-          <Label textWrap="true">
-            <FormattedString>
-              <Span text="user longitude: " />
-              <Span :text="getUserCurrentLocation.lng" />
-            </FormattedString>
-          </Label>
-          <Label textWrap="true">
-            <FormattedString>
-              <Span text="distance from location1: " />
-              <Span :text="getDistanceToCenter" />
-            </FormattedString>
-          </Label>
-        </StackLayout> -->
-<!-- <StackLayout orientation="horizontal">
-          <Button text="VIB ON" @tap="onPlayVibration" />
-          <Button text="VIB OFF" @tap="onStopVibration" />
-          <Button text="MUSIC ON" @tap="onPlaySound" />
-          <Button text="MUSIC OFF" @tap="onStopSound" />
-        </StackLayout> -->
-<!-- </StackLayout> -->
-
-<!-- </GridLayout> -->
