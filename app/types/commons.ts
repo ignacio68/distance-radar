@@ -50,10 +50,7 @@ export interface UserMarker extends Id, LatLng {
 
 export interface Location extends Id, LatLng {
   group?: string
-  title?: string
-  subtitle?: string
   icon?: string
-  iconPath?: string
   onTap?: (id?: string) => void
   onCalloutTap?: (id?: string) => void
   selected?: boolean

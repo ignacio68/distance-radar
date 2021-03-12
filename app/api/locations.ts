@@ -36,10 +36,9 @@ const setLocationOptions = (locationProps: Location): Location => {
     id,
     lat,
     lng,
-    title: id,
     selected: true,
     securityAreas: [],
-    onTap: () => onTap(options.title),
+    onTap: () => onTap(options.id),
     onCalloutTap: () => onCalloutTap(),
   }
   const location: Location = { ...locationProps, ...options }
