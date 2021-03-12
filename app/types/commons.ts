@@ -55,7 +55,8 @@ export interface Location extends Id, LatLng {
   onCalloutTap?: (id?: string) => void
   selected?: boolean
   securityAreas?: string[]
-  isFollowed?: boolean
+  followers?: string[]
+  following?: string[]
   update?: (newSettings: unknown) => void
   ios?: boolean
   android?: boolean
