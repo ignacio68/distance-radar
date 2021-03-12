@@ -1,3 +1,5 @@
+import { getId } from '@/utils/commons'
+
 import { mbAddLayer, mbRemoveLayer } from '@/services/mapboxService'
 
 import { getMap } from '@/store/mapStore'
@@ -14,19 +16,17 @@ export const createLayer = (options: SecurityAreaOptions, sourceId: string): Pol
 }
 
 export const removeLayer = async (id: string) => {
-  const layerId = getId(id)
+  const layerId = getId(id, 'layer')
   mbRemoveLayer(getMap(), layerId)
 }
 
 const setLayerOptions = (options: SecurityAreaOptions, sourceId: string): PolygonLayer => {
-  const id = getId(options.id)
+  const id = getId(options.id, 'layer')
   const style = getLayerStyle(options)
   // const source = await createSource(id, options)
   const layerOptions = getLayerOptions(id, sourceId, style)
   return layerOptions
 }
-
-const getId = (id: string): string => `${id}_layer`
 
 const getLayerStyle = (args: SecurityAreaOptions): PolygonLayerStyleOptions => {
   const { fillColor, fillOpacity, visibility } = args

@@ -2,6 +2,7 @@ import { createLayer, removeLayer } from './layer'
 import { createSource, removeSource } from './source'
 import { createAlarm, setAlarm } from './alarms'
 import { setRadarActivity } from '@/api/radar'
+import { getId } from '@/utils/commons'
 
 import {
   addNewSecurityArea,
@@ -44,7 +45,7 @@ const setSecurityAreaOptions = (
 ): SecurityArea => {
   const { id, radius, center } = args
   const securityArea = {
-    id,
+    id: getId(id, 'area'),
     owner: id, // TODO: assign the real owner
     radius,
     center,

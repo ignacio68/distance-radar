@@ -4,6 +4,7 @@ import {
   startSearchUserPosition,
   stopSearchUserPosition,
 } from '@/api/geolocation'
+import { getId } from '@/utils/commons'
 
 import { getSecurityArea } from '@/store/securityAreasStore'
 
@@ -27,7 +28,7 @@ export const stopRadar = async (searchId: number): Promise<void> => {
 }
 
 const setRadarOptions = (securityArea: SecurityArea): Radar => ({
-  id: securityArea.id,
+  id: getId(securityArea.id, 'radar'),
   initialLocation: securityArea.center,
   securityDistance: securityArea.radius,
   interval: 2000,

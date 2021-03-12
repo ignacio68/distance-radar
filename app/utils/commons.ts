@@ -7,3 +7,5 @@ export const latLngToPosition = (coordinates: LatLng): Position => [
 ]
 
 export const isColor = (color: string): boolean => (color && validateColor(color) ? true : false)
+
+export const getId = (id: string, substr: string): string => `${id}_${substr}`
