@@ -2,6 +2,8 @@
 import bBox from '@turf/bbox'
 import { BBox } from '@turf/helpers'
 import { createUserMarker, updateUserMarker } from './userMarker'
+import { onTap, onCalloutTap } from './locations'
+import { setAlarm } from './securityAreas'
 import { pipe } from '@/utils/functional'
 
 import { getUserCurrentLocation } from '@/services/geolocationService'
@@ -64,12 +66,35 @@ export const setCenter = async (): Promise<void> => {
 
 export const addMarkers = (): void => {
   const map = getMap()
-  const locations = getAllLocations()
+  const locations: Location[] = setMarkers()
   if (locations.length > 0) {
     console.log(`map.ts::addMarkers: ${JSON.stringify(locations)}`)
-    mbAddMarkers(map, locations).then(() => addUserMarker().then(() => addSecurityAreas()))
+    mbAddMarkers(map, locations).then(() =>
+      addUserMarker()
+        .then(() => addSecurityAreas())
+        .then(() => console.log('maps.ts::addMarkers:: LOAD MARKERS FINISHED!!')),
+    )
   }
   return
+}
+
+const setMarkers = (): Location[] => {
+  const locations = getAllLocations()
+  const updatedLocations = locations.map((location) => {
+    const { id, lat, lng } = location
+    const options: Location = {
+      id,
+      lat,
+      lng,
+      onTap: () => onTap(id),
+      onCalloutTap: () => onCalloutTap(),
+    }
+    location = { ...location, ...options }
+    console.log(`map.ts::setMarkers::marker: ${JSON.stringify(location)}`)
+    return location
+  })
+  console.log(`map.ts::setMarkers::locations: ${JSON.stringify(locations)}`)
+  return updatedLocations
 }
 
 const addUserMarker = async () => {
@@ -78,14 +103,18 @@ const addUserMarker = async () => {
   return
 }
 
-const addSecurityAreas = (): void => {
+const addSecurityAreas = async (): Promise<void> => {
   const map = getMap()
   const securityAreas = getAllSecurityAreas()
   console.log(`map.ts::addSecurityAreas: ${JSON.stringify(securityAreas)}`)
-  securityAreas.map((securityArea) =>
-    mbAddSource(map, securityArea.source.id, securityArea.source).then(() =>
-      mbAddLayer(map, securityArea.layer),
-    ),
+  securityAreas.map(
+    async (securityArea) =>
+      await mbAddSource(map, securityArea.source.id, securityArea.source).then(() =>
+        mbAddLayer(map, securityArea.layer).then(() => {
+          setAlarm(securityArea.alarm)
+          console.log('maps.ts::addSecurityAreas: ADDED SECURITY AREAS!!')
+        }),
+      ),
   )
 }
 
