@@ -89,11 +89,12 @@ export default Vue.extend({
   },
 
   watch: {
-    // FIXME: Not function
+    // FIXME: Not works
     getLocations(newValue: unknown, oldValue: unknown) {
       if (newValue !== undefined) this.bottomNavigation.showBadge(1, newValue)
       return
     },
+    // FIXME: Not works
     getAllSecurityAreas(newValue: unknown, oldValue: unknown) {
       if (newValue !== undefined) this.bottomNavigation.showBadge(2, newValue)
       return
@@ -108,16 +109,3 @@ export default Vue.extend({
   },
 })
 </script>
-<style lang="scss" scoped>
-@import '../../app-variables';
-
-TabStripItem {
-  background-color: $primary-variant;
-  & Label {
-    color: $onPrimary;
-  }
-  &:active Label {
-    color: $primary-bright;
-  }
-}
-</style>

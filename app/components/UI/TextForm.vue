@@ -85,7 +85,7 @@ export default Vue.extend({
   },
   data() {
     return {
-      textFieldValue: null,
+      textFieldValue: '',
     }
   },
 
@@ -117,7 +117,7 @@ export default Vue.extend({
 
     reset() {
       console.log('TextForm::"TextForm reset()"')
-      this.textFieldValue = null
+      this.textFieldValue = ''
       this.$refs.textField.nativeView.dismissSoftInput()
     },
   },

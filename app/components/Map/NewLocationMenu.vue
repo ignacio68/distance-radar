@@ -46,7 +46,7 @@ import Vue from 'nativescript-vue'
 
 import { setVisibility, getVisibility } from '@/composables/useComponent'
 
-import { newLocation } from '@/api/locations'
+import { createLocation } from '@/api/locations'
 
 import { isLocationId } from '@/store/locationsStore'
 
@@ -70,9 +70,9 @@ export default Vue.extend({
     return {
       locationValue: '',
       location: {
-        id: null,
-        group: null,
-        color: null,
+        id: '',
+        group: '',
+        color: '',
         selected: true,
         icon: 'res://ic_person_pin_pink_48dp',
       },
@@ -115,7 +115,7 @@ export default Vue.extend({
     },
 
     newLocation() {
-      newLocation(this.location)
+      createLocation(this.location)
       this.hideNewLocationMenu()
     },
 
@@ -162,11 +162,11 @@ export default Vue.extend({
     },
 
     reset() {
-      this.location.id = null
+      this.location.id = ''
       this.setIdError(0)
       this.setEnabledAddLocationButton(false)
       console.log(`NewLocationMenu::reset():isIdError: ${this.isIdError}`)
-      // this.group = null
+      // this.group = ''
     },
 
     hideNewLocationMenu() {

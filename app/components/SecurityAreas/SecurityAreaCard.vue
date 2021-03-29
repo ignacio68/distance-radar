@@ -38,7 +38,7 @@ export default Vue.extend({
     },
     coordinatesTitle: {
       type: String,
-      default: null,
+      default: '',
     },
   },
 

@@ -102,7 +102,7 @@ export default Vue.extend({
         radius: 5,
         fillColor: '#ff765d',
         fillOpacity: 0.5,
-        group: null,
+        group: '',
         visibility: 'visible',
         isActivated: false,
         alarmMode: 'EXIT',
@@ -181,7 +181,7 @@ export default Vue.extend({
     },
 
     reset() {
-      this.securityArea.owner = null
+      this.securityArea.owner = ''
       this.securityArea.center = { lat: 0, lon: 0 }
       this.securityArea.radius = this.radius
       this.securityArea.fillOpacity = this.opacity

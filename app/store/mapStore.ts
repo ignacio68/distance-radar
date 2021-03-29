@@ -16,13 +16,17 @@ const state = Vue.observable({
 })
 
 // Create persist locations database
-const database: Database = createDatabase('map')
+let database: Database
 
-const initializeMap = (): void => {
+export const initializeDatabase = (): void => {
+  database = createNewDatabase()
+
   const map: Map = getItemFromDatabase(database, 'map')
 
-  map && setMap(map)
+  if (map !== null || map !== undefined) setMap(map)
 }
+
+const createNewDatabase = (): Database => createDatabase('map')
 
 // initializeMap()
 

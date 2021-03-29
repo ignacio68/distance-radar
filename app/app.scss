@@ -21,6 +21,16 @@ TextView {
   color: $onBackground;
 }
 
+MDTabStripItem {
+  background-color: $primary-variant;
+  & Label {
+    color: $onPrimary;
+  }
+  &:active Label {
+    color: $primary-bright;
+  }
+}
+
 TextField {
   text-align: left;
   // font-weight: bold;

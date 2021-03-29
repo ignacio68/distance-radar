@@ -31,6 +31,7 @@ yarn-error.log*
 .project
 tmp/
 typings/
+*.jks
 
 app/setup/
 nsconfig.json

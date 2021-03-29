@@ -46,7 +46,7 @@ export const deleteItemInDatabase = (database: Database, itemId: string): void =
 export const queryItemsInDatabase = <T>(database: Database, query: QueryDB): Array<T> =>
   cbQueryDocuments(database, query)
 
-// export const initializeDatabase = <T>(nameDB: string, callback: (item: T) => void): Database => {
+// export const initializeDatabase = <T>(nameDB: string, callback: (item: T) => {}): Database => {
 //   const database = createDatabase(nameDB)
 //   getAllTheItems<T>(database).forEach((item: T) => callback(item))
 
@@ -60,6 +60,5 @@ export const resetDatabase = (database: Database): void =>
   getAllItemsFromDatabase(database).forEach((item: any) =>
     deleteItemInDatabase(database, item.itemId),
   )
-// cbDestroyDatabase(database)
 
 export const deleteDatabase = (database: Database): void => cbDestroyDatabase(database)

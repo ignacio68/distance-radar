@@ -15,7 +15,7 @@ import {
   getUserCurrentLocation as currentUserLocation,
   getWatchId as watchId,
 } from '@/store/userLocationStore'
-import { setAlarmOn, getAlarmsActivated } from '@/store/securityAreasStore'
+import { setAlarmOn, getActivatedAlarms } from '@/store/securityAreasStore'
 
 import { LatLng, Radar } from './types'
 
@@ -23,13 +23,17 @@ import { LatLng, Radar } from './types'
 export const getUserLocation = () => getUserCurrentLocation()
 
 export const startTrackingUser = async (): Promise<void> => {
-  console.log(`geolocation.ts::startTrackingUser()`)
-  if (getAlarmsActivated().length > 0 && watchId() === null) startWatchUserLocation()
+  console.log(
+    `geolocation.ts::startTrackingUser()::getActivatedAlarms().length: ${
+      getActivatedAlarms().length
+    }`,
+  )
+  if (getActivatedAlarms().length > 0 && watchId() === null) startWatchUserLocation()
   return
 }
 
 export const stopTrackingUser = async (): Promise<void> => {
-  const len = getAlarmsActivated().length
+  const len = getActivatedAlarms().length
   if ((len <= 1 || len === undefined) && watchId() !== null) stopWatchUserLocation(watchId())
   return
 }

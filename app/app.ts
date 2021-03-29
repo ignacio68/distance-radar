@@ -1,26 +1,26 @@
 /**
- * @file Information and help about Covid-19
+ * @file Handler for distances
  *
- * @copyright Ignacio López-Amor Pinillos 2020
+ * @copyright Ignacio López-Amor Pinillos 2021
  * @author Ignacio López-Amor Pinillos <ignaciolopezamor@gmail.com>
  * @license APACHE
- * @version 0.4.0
+ * @version 0.5.0
  */
 
 import VueDevtools from 'nativescript-vue-devtools'
 import Vue from 'nativescript-vue'
 
-import ComponentsPlugin from './vue.components'
+import ComponentsPlugin from './setup/vue.components'
+import initDatabases from './setup/installDatabases'
 
 // Internationalization
 import { i18n, setLanguage } from '@/locales'
 
-import { initAudioPlayer } from '@/api/common'
+import { initAudioPlayer } from '@/api/media'
 
 // import { startFPSMeter } from '@/utils/fps'
 
 //Components
-import BottomSheetFake from '@/views/TestViews/BottomSheetFake.vue'
 import MainNavigation from '@/views/Navigation/MainNavigation.vue'
 import Main from '@/views/Main/Main.vue'
 import DrawerContent from '@/views/Navigation/DrawerContent.vue'
@@ -30,7 +30,7 @@ Vue.use(ComponentsPlugin)
 
 if (TNS_ENV !== 'production') {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Vue.use(VueDevtools as any, { host: '192.168.1.22' })
+  Vue.use(VueDevtools as any, { host: '192.168.1.25' })
 
   // startFPSMeter()
 
@@ -60,11 +60,12 @@ new Vue({
   created() {
     setLanguage()
     initAudioPlayer()
+    initDatabases()
   },
+  mounted() {},
   render: (h) =>
     h(MainNavigation, [
       h(DrawerContent, { slot: 'drawerContent' }),
       h(Main, { slot: 'mainContent' }),
     ]),
-  // render: (h) => h('frame', [h(BottomSheetFake)]),
 }).$start()

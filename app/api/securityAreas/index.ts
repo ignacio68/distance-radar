@@ -114,4 +114,4 @@ export const removeSecurityArea = async (id: string): Promise<void> => {
 
 const getOwner = (id: string): string => id.substring(0, id.length - 5)
 
-export { turnOnAlarm, turnOffAlarm, alarmHandler, stopAlarm } from './alarms'
+export { turnOnAlarm, turnOffAlarm, alarmHandler, stopAlarm, setAlarm } from './alarms'

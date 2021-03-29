@@ -18,16 +18,17 @@ const onTap = (): boolean => setVisibility('newLocationMenu', true)
 const isUserMarker = (): boolean => (userMarker() ? true : false)
 
 export const createUserMarker = (coordinates?: LatLng): void => {
-  console.log('createUserMarker()')
-  const initialValues: UserMarker = {
-    id: '_user',
-    lat: coordinates.lat || userLocation().lat,
-    lng: coordinates.lng || userLocation().lng,
-    onTap: () => onTap(),
-  }
-  const newUserMarker = [initialValues]
-  mbAddMarkers(map(), newUserMarker).then(() => setUserMarker(initialValues))
+  const userMarker = coordinates ? setUserMarkerOptions(coordinates) : setUserMarkerOptions()
+  console.log(`userMarker.ts::createUserMarker::userMarker: ${JSON.stringify(userMarker)}`)
+  mbAddMarkers(map(), [userMarker]).then(() => setUserMarker(userMarker))
 }
+
+const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
+  id: '_user',
+  lat: coordinates.lat || userLocation().lat,
+  lng: coordinates.lng || userLocation().lng,
+  onTap: () => onTap(),
+})
 
 export const updateUserMarker = (coordinates: LatLng): void => {
   console.log('updateUserMarker()')

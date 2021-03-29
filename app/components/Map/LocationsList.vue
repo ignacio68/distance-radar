@@ -6,13 +6,14 @@
     :height="listHeight"
     :androidElevation="listElevation"
   >
-    <Label
-      v-if="locations.length >= 2"
-      class="font-weight-bold p-l-8"
-      :text="$t('lang.components.locationsList.allLocations')"
-      @tap="onAllLocationsTap"
-    />
-    <StackLayout class="hr m-x-8"></StackLayout>
+    <StackLayout v-if="locations.length >= 2">
+      <Label
+        class="font-weight-bold p-l-8"
+        :text="$t('lang.components.locationsList.allLocations')"
+        @tap="onAllLocationsTap"
+      />
+      <StackLayout class="hr m-x-8"></StackLayout>
+    </StackLayout>
     <ListView for="location in locations">
       <v-template>
         <Label class="p-l-8" :height="labelHeight" :text="location.id" @tap="onItemTap(location)" />

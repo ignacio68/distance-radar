@@ -36,13 +36,8 @@ export default Vue.extend({
 
   computed: {
     isVisibleDrawer(): boolean {
-      console.log(`MainNavigation::computed:isVisibleDrawer() ${getVisibility('drawer')}`)
       return getVisibility('drawer')
     },
-
-    // drawer(): any {
-    //   return this.$refs.drawer.nativeView
-    // }
   },
 
   watch: {

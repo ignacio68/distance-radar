@@ -18,10 +18,11 @@ import {
 import { getUserMarker } from '@/store/userMarkerStore'
 
 import { Location } from './types'
+import { OnTap } from '@/types/commons'
 
 export const showLocations = getAllLocations()
 
-export const newLocation = (locationProps: Location): void => {
+export const createLocation = (locationProps: Location): void => {
   const map = getMap()
   const newLocation: Location = setLocationOptions(locationProps)
   mbAddMarkers(map, [newLocation]).then(() => {
@@ -38,22 +39,22 @@ const setLocationOptions = (locationProps: Location): Location => {
     lng,
     selected: true,
     securityAreas: [],
-    onTap: () => onTap(options.id),
+    onTap: () => onTap(id),
     onCalloutTap: () => onCalloutTap(),
   }
   const location: Location = { ...locationProps, ...options }
   return location
 }
 
-const onTap = (id: string): void => {
+export const onTap = (id: string): any => {
   if (!isSecurityArea(id)) {
     setVisibility('newSecurityAreaMenu', true)
     setSelectedLocation(id)
+    console.log('MarkerTapped!!')
   }
-  return
 }
 
-const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
+export const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapLocation()`)
 
 export const updateLocation = (location: Location): void => updateLocationInStore(location)
 
@@ -66,6 +67,7 @@ export const removeLocations = (locations: string[]): void => {
     }),
   )
 }
+
 // export const removeLocation = (id: string): void => {
 //   console.log(`locations.ts::removeLocation()::id: ${id}`)
 //   const map = getMap()
@@ -73,11 +75,12 @@ export const removeLocations = (locations: string[]): void => {
 // }
 
 const removeAllSecurityAreas = async (locations: string[]): Promise<void> => {
-  locations.forEach((location) => hasSecurityArea(location))
+  locations.forEach((location) => deleteSecurityArea(location))
 }
 
-const hasSecurityArea = (location: string): Promise<void> =>
-  isSecurityArea(location) && removeSecurityArea(location)
+const deleteSecurityArea = (location: string): void => {
+  if (isSecurityArea(location)) removeSecurityArea(location)
+}
 
 export const removeAllLocations = (): void => resetLocationsStore()
 

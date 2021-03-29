@@ -47,8 +47,8 @@ export const mbSetMapStyle = (map: MapboxViewApi, style: string | MapStyle): Pro
   map.setMapStyle(style)
 
 export const mbAddMarkers = async (map: MapboxViewApi, markers: MapboxMarker[]): Promise<void> => {
-  console.log('mapboxService::addMarkers()')
   map.addMarkers(markers)
+  console.log(`mapboxService::addMarkers()::markers: ${JSON.stringify(markers)}`)
 }
 
 export const mbRemoveMarkers = (map: MapboxViewApi, markers?: string[]): Promise<void> =>

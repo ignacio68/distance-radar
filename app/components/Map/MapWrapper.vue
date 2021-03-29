@@ -24,13 +24,13 @@
       @locationPermissionDenied="onLocationPermissionDenied"
       @mapReady="onMapReady($event)"
     />
-    <AlarmFAB
+    <!-- <AlarmFAB
       row="1"
       col="0"
       horizontalAlignment="left"
       class="m-b-32 m-l-16"
       @on-tap-alarm-fab="onTapAlarmFAB"
-    />
+    /> -->
 
     <GridLayout class="right-menu" rows="*, auto" columns="auto" row="0" col="1" rowSpan="2">
       <!-- TODO: Add animation -->
@@ -97,6 +97,7 @@
 
 <script lang="ts">
 import Vue from 'nativescript-vue'
+// import initDatabases from '@/setup/installDatabases'
 
 import { mapToken, customMapStyle } from '@/setup/map'
 
@@ -158,7 +159,7 @@ export default Vue.extend({
   },
 
   mounted() {
-    console.log('__MapInterface::mounted()')
+    // console.log('__MapInterface::mounted()')
     getUserCurrentLocation()
   },
 
@@ -173,6 +174,7 @@ export default Vue.extend({
 
     onMapReady(args: any) {
       console.log('MapComponent::onMapReady()')
+      // initDatabases()
       pipe(this.setMap(args), addMarkers(), this.setOnMapLongClickAction(), this.setMapCenter())
     },
 

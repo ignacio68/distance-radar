@@ -1,10 +1,5 @@
 <template>
-  <StackLayout
-    ref="radioButtonWrap"
-    class="radio-btn"
-    :orientation="orientation"
-    @tap="onTap"
-  >
+  <StackLayout ref="radioButtonWrap" class="radio-btn" :orientation="orientation" @tap="onTap">
     <GridLayout class="radio-btn__radio" columns="auto" rows="auto">
       <Label
         ref="radioRipple"
@@ -71,7 +66,7 @@ export default Vue.extend({
     },
     text: {
       type: String,
-      default: null,
+      default: '',
     },
     isEnabled: {
       type: Boolean,
@@ -111,7 +106,7 @@ export default Vue.extend({
     },
     value: {
       type: String,
-      default: null,
+      default: '',
     },
   },
   data() {

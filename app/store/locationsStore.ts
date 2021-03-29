@@ -1,5 +1,7 @@
 import Vue from 'nativescript-vue'
 
+import { alert } from '@nativescript/core'
+
 import { removeSecurityArea } from '@/api/securityAreas'
 
 import {
@@ -10,9 +12,11 @@ import {
   deleteItemInDatabase,
   resetDatabase,
   deleteDatabase,
+  isDatabaseEmpty,
 } from '@/api/storage'
 
 import { Location, Database } from '@/api/types'
+import { CouchBase } from '@triniwiz/nativescript-couchbase'
 
 const state = Vue.observable({
   locations: ([] as unknown) as Location[],
@@ -20,30 +24,34 @@ const state = Vue.observable({
 })
 
 // Create persist locations database
-const database: Database = createDatabase('locations')
+// const database: Database = createDatabase('locations')
+let database: Database
 
-const initializeDatabase = (): void => {
+export const initializeDatabase = (name: string): void => {
+  database = createDatabase(name)
+  hydratingState(database)
+  // deleteDatabase(database)
+}
+
+const hydratingState = (database: CouchBase) => {
   const locations = getAllItemsFromDatabase(database)
-
-  if (locations.length > 0) {
+  if (!isDatabaseEmpty(database))
     locations.forEach((location: Location) => addLocationToState(location))
-  }
-  return
+  else console.log(`_______NO HAY ELEMENTOS EN LA BASE DE DATOS DE LOCATIONS DB______`)
 }
 
 const addLocationToState = (location: Location): void => {
-  console.log(`locationsStore::addLocationToState: ${JSON.stringify(location)}`)
   state.locations.push(location)
-  console.log(`locationsStore::addLocationToState::length: ${state.locations.length}`)
+  console.log(`locationsStore::addLocationToState::location: ${JSON.stringify(location)}`)
 }
 
-initializeDatabase()
-
-// deleteDatabase(database)
+// initializeDatabase('locations')
 
 export const addNewLocation = (location: Location): void => {
   addLocationToState(location)
   addItemToDatabase<Location>(database, location, location.id)
+  const locations = getAllItemsFromDatabase(database)
+  console.log(`####_locationsStore::addNewLocation::locations: ${JSON.stringify(locations)}`)
 }
 
 export const getLocation = (id: string): Location =>

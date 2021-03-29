@@ -16,7 +16,7 @@ import Vue from 'vue'
 import { Color } from '@nativescript/core'
 import { Elevation } from '@/types/enums/elevations'
 
-import { getAlarmsActivated } from '@/store/securityAreasStore'
+import { getActivatedAlarms } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
 // import { fetchActiveRadars } from '@/api/securityAreas'
 
@@ -26,20 +26,22 @@ export default Vue.extend({
   data() {
     return {
       elevationFAB: Elevation.FAB_RESTING,
-      rippleColor: null,
+      rippleColor: '',
     }
   },
+
   computed: {
     alarmFAB() {
       return this.$refs.alarmFAB.nativeView
     },
 
-    areAlarmsActivated(): boolean {
-      return getAlarmsActivated().length > 0
+    areActivatedAlarms(): boolean {
+      return !!getActivatedAlarms()
     },
   },
+
   watch: {
-    areAlarmsActivated: {
+    areActivatedAlarms: {
       // immediate: true,
       handler(newValue: boolean, oldValue: boolean) {
         newValue ? this.isEnabled : this.isNotEnabled
@@ -47,6 +49,7 @@ export default Vue.extend({
       },
     },
   },
+
   methods: {
     onTapAlarmFAB() {
       console.log(`Alarm button tapped!!`)
@@ -60,7 +63,7 @@ export default Vue.extend({
 
     isNotEnabled() {
       this.alarmFAB.backgroundColor = new Color('#ced7d8')
-      this.rippleColor = null
+      this.rippleColor = ''
     },
   },
 })

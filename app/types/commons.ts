@@ -48,10 +48,15 @@ export interface UserMarker extends Id, LatLng {
   update?: (newSettings: UserMarker) => void
 }
 
+export type OnTap = {
+  (id: string): any
+}
 export interface Location extends Id, LatLng {
   group?: string
   icon?: string
-  onTap?: (id?: string) => void
+  // onTap?(id?: string): any
+  onTap?: (id?: string) => any
+  // onTap?: OnTap
   onCalloutTap?: (id?: string) => void
   selected?: boolean
   securityAreas?: string[]

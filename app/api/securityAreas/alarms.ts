@@ -19,9 +19,8 @@ export const createAlarm = (args: SecurityAreaOptions): Alarm => {
 // export const setAlarm = (alarm: Pick<Alarm, 'id' | 'isActivated'>) => {
 export const setAlarm = (alarm: Alarm) => {
   console.log('alarms.ts::setAlarm::setAlarm()')
-  // if (alarm.isActivated) turnOnAlarm(alarm.id)
   if (alarm.isActivated) turnOnAlarm(alarm.id)
-  // return
+  return
 }
 
 export const turnOnAlarm = (alarmId: string): void => {

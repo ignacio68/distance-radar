@@ -6,7 +6,7 @@ const state = Vue.observable({
     lat: 0,
     lng: 0,
   } as LatLng,
-  watchId: null,
+  watchId: 0,
 })
 
 export const getInitialLocation = (): InitialCoordinates => {

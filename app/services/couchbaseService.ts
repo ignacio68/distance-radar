@@ -4,11 +4,14 @@ export const cbSetDatabase = (name: string): CouchBase => new CouchBase(name)
 
 export const cbCloseDatabase = (database: CouchBase): void => database.close()
 
-export const cbDestroyDatabase = (database: CouchBase): void => database.destroyDatabase()
+export const cbDestroyDatabase = (database: CouchBase): void => {
+  database.destroyDatabase()
+  console.log('____DATABASE DESTROYED____')
+}
 
 export const cbCreateDocument = <T>(database: CouchBase, value: T, documentId: string): void => {
-  const data = JSON.parse(JSON.stringify(value))
-  database.createDocument(data, documentId)
+  const result = database.createDocument(value, documentId)
+  console.log(`couchbaseService::cbCreateDocument::result: ${JSON.stringify(result)}`)
 }
 
 export const cbGetDocument = <T>(database: CouchBase, documentId: string): T =>
