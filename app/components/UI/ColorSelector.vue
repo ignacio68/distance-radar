@@ -2,12 +2,12 @@
   <StackLayout class="color-list" orientation="horizontal" verticalAlignment="middle">
     <Label class="color-list_title" :text="title" :width="labelWidth" textWrap="true" />
     <StackLayout orientation="horizontal">
-      <Label
+      <MDRipple
         v-for="color in colors"
         :key="color.name"
-        ref="colorItem"
         class="color-list_item"
         :backgroundColor="color.color"
+        rippleColor="white"
         borderColor="#00251e"
         borderWidth="1"
         borderRadius="50%"
@@ -19,8 +19,6 @@
 
 <script lang="ts">
 import Vue from 'nativescript-vue'
-
-import { Color, Enums } from '@nativescript/core'
 
 export default Vue.extend({
   name: 'ColorSelector',
@@ -48,31 +46,8 @@ export default Vue.extend({
   },
   methods: {
     onTap(color: { name: string; color: string }) {
-      this.colorItemRipple
       this.$emit('on-selected-color', color.color)
       console.log(`color: ${color.name}`)
-    },
-    // FIXME: fix the color ripple animation, doesn't work
-    colorItemRipple() {
-      const colorItem = this.$refs.colorItem.nativeView
-      const currentColor = colorItem.color
-      const newColor = new Color(50, 0, 122, 122)
-      colorItem
-        .animate({
-          curve: Enums.AnimationCurve.linear,
-          duration: 500,
-          color: newColor,
-        })
-        .then(() => {
-          colorItem
-            .animate({
-              curve: colorItem.linear,
-              duration: 500,
-              color: currentColor,
-            })
-            .then(() => {})
-        })
-        .catch(() => {})
     },
   },
 })
