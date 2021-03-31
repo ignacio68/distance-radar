@@ -12,9 +12,9 @@ Set up your security areas
 
 ![New location menu](./layout/images/phone/small/new_location_menu_512.png)
 
-### New location menu
+### New security area menu
 
-![New location menu](./layout/images/phone/small/new_security_area_menu_512.png)
+![New security area menu](./layout/images/phone/small/new_security_area_menu_512.png)
 
 ### Geocoder
 
