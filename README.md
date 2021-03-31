@@ -10,24 +10,24 @@ Set up your security areas
 
 ### New location menu
 
-![geocoder](./layout/images/phone/small/new_location_menu_512.png)
+![New location menu](./layout/images/phone/small/new_location_menu_512.png)
 
-### New security area menu
+### New location menu
 
-![geocoder](./layout/images/phone/small/new_security_area_menu_512.png)
+![New location menu](./layout/images/phone/small/new_security_area_menu_512.png)
 
 ### Geocoder
 
-![geocoder](./layout/images/phone/small/geocoder_512.png)
+![Geocoder](./layout/images/phone/small/geocoder_512.png)
 
 ### View list navigation
 
-![geocoder](./layout/images/phone/small/view_list_512.png)
+![View list navigation](./layout/images/phone/small/views_list_512.png)
 
 ### Locations list
 
-![geocoder](./layout/images/phone/small/locations_list_512.png)
+![Locations list](./layout/images/phone/small/locations_list_512.png)
 
 ### Security areas list
 
-![geocoder](./layout/images/phone/small/security_areas_list_512.png)
+![Security areas list](./layout/images/phone/small/security_areas_list_512.png)
