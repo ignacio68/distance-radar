@@ -9,6 +9,7 @@ jest/
 hooks/
 .nyc_output/
 .update_backup/
+.migration_backup/
 
 # NativeScript Template
 *.js.map
