@@ -1,19 +1,34 @@
 {
   "compilerOptions": {
-    "target": "esnext",
-    "module": "commonjs",
-    "lib": ["dom", "esnext"],
+    "target": "es2017",
+    "module": "esnext",
+    "lib": [
+      "dom",
+      "esnext",
+      "es2017"
+    ],
     "sourceMap": true,
     "allowJs": true,
     "outDir": "dist",
     "noEmit": false,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["app/*"],
-      "~/*": ["app/*"]
+      "@/*": [
+        "app/*"
+      ],
+      "~/*": [
+        "app/*"
+      ]
     },
-    "typeRoots": ["types"],
-    "types": ["node", "webpack-env", "mocha", "chai"],
+    "typeRoots": [
+      "types"
+    ],
+    "types": [
+      "node",
+      "webpack-env",
+      "mocha",
+      "chai"
+    ],
     "allowSyntheticDefaultImports": true,
     "experimentalDecorators": true,
     "esModuleInterop": true,
@@ -21,9 +36,22 @@
     "importHelpers": true,
     "moduleResolution": "node",
     "skipLibCheck": true,
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "removeComments": false
   },
   "outDir": "dist",
-  "include": ["app/**/*", "app", "types", "tests"],
-  "exclude": ["node_modules", "platforms", "App_Resources", "hooks", "layout", "reports"]
+  "include": [
+    "app/**/*",
+    "app",
+    "types",
+    "tests"
+  ],
+  "exclude": [
+    "node_modules",
+    "platforms",
+    "App_Resources",
+    "hooks",
+    "layout",
+    "reports"
+  ]
 }
