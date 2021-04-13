@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.1] - 2021-03-30
+
+### Added
+
+- Textfield to print the value of the custom slider component
+- Material Ripple component to the ColorSlector component
+
 ## [0.5.0] - 2021-03-26
 
 - Launched Alpha 0.1 !!
