@@ -5,7 +5,7 @@ node_modules/
 platforms/
 reports/
 jest/
-layout/
+# layout/
 hooks/
 .nyc_output/
 .update_backup/
