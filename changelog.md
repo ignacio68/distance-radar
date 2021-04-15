@@ -1,5 +1,23 @@
 # Changelog
 
+## [0.5.2] - 2021-04-14
+
+### Added
+
+- Add item
+
+### Changed
+
+- Change audio player plugin
+
+### Fixed
+
+- Fixed item
+
+### Removed
+
+- Remove item
+
 ## [0.5.1] - 2021-03-30
 
 ### Added
