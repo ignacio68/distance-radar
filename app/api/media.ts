@@ -1,5 +1,5 @@
 import { Vibrate } from 'nativescript-vibrate'
-import { TNSPlayer } from 'nativescript-audio-player'
+import { TNSPlayer } from 'nativescript-audio'
 
 import { SoundPlayMode } from './types'
 
