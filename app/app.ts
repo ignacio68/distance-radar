@@ -28,9 +28,12 @@ import DrawerContent from '@/views/Navigation/DrawerContent.vue'
 
 Vue.use(ComponentsPlugin)
 
-if (TNS_ENV !== 'production') {
+// Prints Vue logs when --env.production is *NOT* set while building
+Vue.config.silent = !__DEV__
+
+if (__DEV__) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Vue.use(VueDevtools as any, { host: '192.168.1.25' })
+  Vue.use(VueDevtools as any, { host: '192.168.1.11' })
 
   // startFPSMeter()
 
@@ -51,9 +54,6 @@ if (TNS_ENV !== 'production') {
     }
   })(console.log, inspect, Vue)
 }
-
-// Prints Vue logs when --env.production is *NOT* set while building
-Vue.config.silent = TNS_ENV === 'production'
 
 new Vue({
   i18n,
