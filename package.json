@@ -28,7 +28,7 @@
   "repository": "https://github.com/ignacio68/distance-radar",
   "license": "SEE LICENSE IN <LICENSE>",
   "author": "Ignacio Lopez-Amor <ignaciolopezamor@gmail.com>",
-  "main": "app.js",
+  "main": "./app/app.ts",
   "scripts": {
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx, .vue",
     "lint:fix": "npm run lint -- --fix . && echo 'Lint complete.'",
@@ -39,6 +39,7 @@
     "test-unit": "ns test android --watch --env.uglify --env.sourceMap"
   },
   "dependencies": {
+    "@nativescript-community/geocoding": "^3.0.2",
     "@nativescript-community/ui-mapbox": "^6.2.6",
     "@nativescript-community/ui-material-bottom-navigation": "^5.2.8",
     "@nativescript-community/ui-material-bottomsheet": "^5.2.8",
@@ -46,7 +47,7 @@
     "@nativescript-community/ui-material-floatingactionbutton": "^5.2.8",
     "@nativescript-community/ui-material-ripple": "^5.2.11",
     "@nativescript-community/ui-material-slider": "^5.2.8",
-    "@nativescript/core": "^7.1.4",
+    "@nativescript/core": "~8.0.0",
     "@nativescript/geolocation": "^7.0.0",
     "@nativescript/secure-storage": "^3.0.0",
     "@nativescript/theme": "^2.5.0",
@@ -62,7 +63,6 @@
     "@types/webpack-env": "^1.15.3",
     "@vue/devtools": "^5.3.4",
     "nativescript-audio": "^6.2.4",
-    "nativescript-geocoding": "^2.0.2",
     "nativescript-ui-sidedrawer": "^9.0.3",
     "nativescript-vibrate": "^4.0.1",
     "nativescript-vue": "^2.9.0",
@@ -71,10 +71,10 @@
   "devDependencies": {
     "@babel/core": "^7.13.1",
     "@babel/preset-env": "^7.13.5",
-    "@nativescript/android": "7.0.1",
-    "@nativescript/ios": "^7.2.0",
-    "@nativescript/types": "~7.1.0",
-    "@nativescript/webpack": "^4.1.0",
+    "@nativescript/android": "8.0.0",
+    "@nativescript/ios": "8.0.0",
+    "@nativescript/types": "~8.0.0",
+    "@nativescript/webpack": "~5.0.0-beta.0",
     "@types/chai": "^4.2.15",
     "@types/mocha": "^8.2.1",
     "@types/node": "^14.14.31",

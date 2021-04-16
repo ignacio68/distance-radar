@@ -2,21 +2,11 @@
 
 ## [0.5.2] - 2021-04-14
 
-### Added
-
-- Add item
-
 ### Changed
 
-- Change audio player plugin
-
-### Fixed
-
-- Fixed item
-
-### Removed
-
-- Remove item
+- Audio player plugin
+- Geocoding
+- Upgraded to N8
 
 ## [0.5.1] - 2021-03-30
 
