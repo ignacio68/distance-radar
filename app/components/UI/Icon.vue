@@ -37,7 +37,7 @@
 import Vue from 'nativescript-vue'
 
 import { EventData } from '@nativescript/core'
-import { AnimationCurve } from '@nativescript/core/ui/enums'
+import { CoreTypes } from '@nativescript/core/ui/enums'
 
 export default Vue.extend({
   name: 'Icon',
@@ -80,14 +80,14 @@ export default Vue.extend({
       const iconRipple = this.$refs.iconRipple.nativeView
       iconRipple
         .animate({
-          curve: AnimationCurve.easeIn,
+          curve: CoreTypes.AnimationCurve.easeIn,
           duration: this.rippleDuration,
           opacity: this.rippleOpacity,
         })
         .then(() => {
           this.$emit('on-tap', e)
           iconRipple.animate({
-            curve: AnimationCurve.easeOut,
+            curve: CoreTypes.AnimationCurve.easeOut,
             duration: this.rippleDuration,
             opacity: 0.0,
           })
