@@ -113,8 +113,7 @@ import { hasLocations } from '@/store/locationsStore'
 
 import { pipe } from '@/utils/functional'
 
-import { Elevation } from '@/types/enums/elevations'
-import { MapStyle } from '@/types/enums/mapStyle'
+import { Elevation, MapStyle } from '@/types'
 import { LatLng, Map, GeocoderLocation } from '@/api/types'
 
 import LocationsList from '@/components/Map/LocationsList.vue'

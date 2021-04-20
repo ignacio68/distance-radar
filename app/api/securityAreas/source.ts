@@ -8,7 +8,7 @@ import { getMap } from '@/store/mapStore'
 
 import { Source, LatLng, SecurityAreaOptions } from '@/api/types'
 import { Circle } from '@/utils/types'
-import { Position } from '@/types/commons'
+import { Position } from '@/types'
 import { GeoJSON } from 'geojson'
 
 export const createSource = (args: SecurityAreaOptions): Source => {

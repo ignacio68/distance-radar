@@ -30,8 +30,7 @@ import { flyTo, setViewport } from '@/api/map'
 
 import { getAllLocations } from '@/store/locationsStore'
 
-import { LatLng, Location } from '@/types/commons'
-import { Elevation } from '@/types/enums/elevations'
+import { LatLng, Location, Elevation } from '@/types'
 
 export default Vue.extend({
   name: 'LocationsList',

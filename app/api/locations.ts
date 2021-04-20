@@ -18,7 +18,6 @@ import {
 import { getUserMarker } from '@/store/userMarkerStore'
 
 import { Location } from './types'
-import { OnTap } from '@/types/commons'
 
 export const showLocations = getAllLocations()
 

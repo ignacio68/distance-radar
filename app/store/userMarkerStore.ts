@@ -1,6 +1,6 @@
 import Vue from 'nativescript-vue'
 
-import { UserMarker, LatLng } from '@/types/commons'
+import { UserMarker, LatLng } from '@/types'
 
 const state = Vue.observable({
   userMarker: [],

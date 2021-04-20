@@ -1,6 +1,6 @@
-import { LatLng } from '@/types/commons'
+import { LatLng } from '@/types'
 
-export { LatLng } from '@/types/commons'
+export { LatLng } from '@/types'
 
 export interface Circle {
   /**

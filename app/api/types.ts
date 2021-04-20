@@ -2,7 +2,7 @@ import { Color } from '@nativescript/core/color'
 import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
 import { ShowOptions } from '@nativescript-community/ui-mapbox'
 import { GeoJSON } from 'geojson'
-import { LatLng, Id, Location } from '@/types/commons'
+import { LatLng, Id, Location } from '@/types'
 export { Map, GeocoderLocation, SetViewportOptions, Bounds } from '@/services/types'
 export { Position } from '@/utils/types'
 export { LatLng, Id, Location, GeoJSON }

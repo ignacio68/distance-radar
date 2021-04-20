@@ -11,7 +11,7 @@ import { getUserCurrentLocation as userLocation } from '@/store/userLocationStor
 
 import { setVisibility } from '@/composables/useComponent'
 
-import { UserMarker, LatLng } from '@/types/commons'
+import { UserMarker, LatLng } from '@/types'
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 

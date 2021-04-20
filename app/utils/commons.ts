@@ -1,5 +1,5 @@
 import validateColor from 'validate-color'
-import { LatLng, Position } from '@/types/commons'
+import { LatLng, Position } from '@/types'
 
 export const latLngToPosition = (coordinates: LatLng): Position => [
   coordinates.lng,

@@ -14,7 +14,7 @@
 <script lang="ts">
 import Vue from 'vue'
 import { Color } from '@nativescript/core'
-import { Elevation } from '@/types/enums/elevations'
+import { Elevation } from '@/types'
 
 import { getActivatedAlarms } from '@/store/securityAreasStore'
 // import { getAllAlarms } from '@/store/alarmsStore'
