@@ -26,7 +26,7 @@
       row="0"
       :width="iconSize"
       :height="iconSize"
-      :color="iconColor"
+      backgroundColor="transparent"
       :src="name"
       :tintColor="iconColor"
       @tap="onTap"
@@ -54,6 +54,10 @@ export default Vue.extend({
       type: [String, Number],
       default: '24',
     },
+    // iconBackgroundColor: {
+    //   type: String,
+    //   default: null,
+    // },
     iconColor: {
       type: String,
       default: 'white',
