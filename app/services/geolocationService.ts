@@ -1,6 +1,6 @@
 import * as geolocation from '@nativescript/geolocation'
 
-import { Enums } from '@nativescript/core/'
+import { CoreTypes } from '@nativescript/core/'
 
 import { LatLng } from './types'
 
@@ -11,7 +11,7 @@ import {
 } from '@/store/userLocationStore'
 
 const setLocationOptions = (): geolocation.Options => ({
-  desiredAccuracy: Enums.Accuracy.high,
+  desiredAccuracy: CoreTypes.Accuracy.high,
   maximumAge: 5000,
   timeout: 10000,
 })
