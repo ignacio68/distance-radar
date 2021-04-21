@@ -1,6 +1,7 @@
 import { LatLng } from '@/types'
-import { CouchBase as Database, Query } from '@triniwiz/nativescript-couchbase'
-export { LatLng, Database, Query }
+export { LatLng }
+import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
+export { CouchBase as Database, Query }
 export * from './geocoding'
 export * from './circle'
 export * from './mapbox'

@@ -1,4 +1,4 @@
-import { Database as CouchBase, Query } from './types'
+import { CouchBase, Query } from './types/couchbase'
 
 export const cbSetDatabase = (name: string): CouchBase => new CouchBase(name)
 
