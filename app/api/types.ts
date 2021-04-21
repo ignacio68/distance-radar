@@ -1,15 +1,30 @@
 import { Color } from '@nativescript/core/color'
-import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
-import { ShowOptions } from '@nativescript-community/ui-mapbox'
+import {
+  Map,
+  GeocoderLocation,
+  SetViewportOptions,
+  Bounds,
+  Database,
+  ShowOptions,
+  Query as QueryDB,
+} from '@/services/types'
 import { GeoJSON } from 'geojson'
 import { LatLng, Id, Location } from '@/types'
-export { Map, GeocoderLocation, SetViewportOptions, Bounds } from '@/services/types'
-export { Position } from '@/utils/types'
-export { LatLng, Id, Location, GeoJSON }
-
-export type Database = CouchBase
-
-export type QueryDB = Query
+import { Position } from '@/utils/types'
+export {
+  Map,
+  GeocoderLocation,
+  SetViewportOptions,
+  Bounds,
+  Database,
+  ShowOptions,
+  QueryDB,
+  LatLng,
+  Id,
+  Location,
+  GeoJSON,
+  Position,
+}
 
 export type MapEvent = {
   (event?: unknown): unknown

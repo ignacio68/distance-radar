@@ -1,4 +1,4 @@
-import { CouchBase, Query } from './types/couchbase'
+import { CouchBase, Query } from '@triniwiz/nativescript-couchbase'
 
 export const cbSetDatabase = (name: string): CouchBase => new CouchBase(name)
 
