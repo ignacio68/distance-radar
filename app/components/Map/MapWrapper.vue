@@ -103,8 +103,7 @@ import { mapToken, customMapStyle } from '@/setup/map'
 
 import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
 import { updateUserMarker } from '@/api/userMarker'
-import { getUserCurrentLocation } from '@/services/geolocationService'
-
+import { getUserLocation } from '@/api/geolocation'
 import { getVisibility, setVisibility } from '@/composables/useComponent'
 
 import { getInitialLocation as initialLocation } from '@/store/userLocationStore'
@@ -157,9 +156,9 @@ export default Vue.extend({
     },
   },
 
-  mounted() {
-    // console.log('__MapInterface::mounted()')
-    getUserCurrentLocation()
+  async mounted() {
+    console.log('__MapWrapper.vue::mounted()')
+    await getUserLocation()
   },
 
   methods: {
@@ -184,6 +183,7 @@ export default Vue.extend({
     },
 
     setOnMapLongClickAction(): void {
+      console.log(`MapComponent::setOnMapLongClickAction()`)
       setOnMapLongClickListener((point: LatLng) => {
         console.log(`MapComponent::setOnMapLongClickAction:point: ${JSON.stringify(point)}`)
         updateUserMarker(point)
@@ -192,6 +192,7 @@ export default Vue.extend({
     },
 
     setMapCenter(): void {
+      console.log('MapComponent::setMapCenter()')
       setCenter().then(() => {
         !hasLocations() && this.$emit('first-location-alert')
       })
