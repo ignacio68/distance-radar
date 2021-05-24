@@ -46,9 +46,7 @@ const addSecurityAreaToState = async (securityArea: SecurityArea): Promise<void>
 // initializeDatabase()
 
 export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<void> => {
-  // console.log(
-  //   `securityAreaStores::addNewSecurityArea()::securityArea: ${JSON.stringify(securityArea)}`,
-  // )
+  console.log(`securityAreaStores::addNewSecurityArea()`)
   addSecurityAreaToState(securityArea)
     .then(() => {
       addSecurityAreaToLocation(securityArea.id, securityArea.owner)
@@ -56,16 +54,17 @@ export const addNewSecurityArea = async (securityArea: SecurityArea): Promise<vo
     })
     .then(() => {
       addItemToDatabase<SecurityArea>(database, securityArea, securityArea.id)
-      const securityAreas = getAllItemsFromDatabase(database)
-      console.log(
-        `####_securityAreaStores::addNewSecurityArea()::securityAreas: ${JSON.stringify(
-          securityAreas,
-        )}`,
-      )
+      // const securityAreas = getAllItemsFromDatabase(database)
+      // console.log(
+      //   `####_securityAreaStores::addNewSecurityArea()::securityAreas: ${JSON.stringify(
+      //     securityAreas,
+      //   )}`,
+      // )
     })
 }
 
 const addSecurityAreaToLocation = async (id: string, owner: string): Promise<void> => {
+  console.log(`securityAreaStores::addSecurityAreaToLocation()`)
   const location = setLocation(id, owner)
   updateLocation(location)
 }
@@ -74,13 +73,25 @@ const setLocation = (id: string, owner: string): Location => {
   const location: Location = getLocation(owner)
   if (!!location) {
     location.securityAreas.push(id)
-    console.log(`securityAreaStores::setLocation()::securityArea id: ${id}`)
+    console.log(`securityAreaStore::setLocation()::securityArea id: ${id}`)
     return location
   } else console.log('the location not exist')
 }
 
-export const getSecurityArea = (id: string): SecurityArea =>
-  state.securityAreas.find((securityArea) => securityArea.id === id)
+export const getSecurityArea = (id: string): SecurityArea => {
+  const index = findSecurityAreaIndex(id)
+  const securityArea = state.securityAreas[index]
+  return securityArea
+}
+
+// export const getSecurityArea = (id: string): SecurityArea => {
+//   const securityArea = state.securityAreas.find((securityArea) => {
+//     securityArea.id === id
+//     console.log(`securityAreaStore::getSecurityArea()::id: ${id}`)
+//   })
+//   console.log(`securityAreaStore::getSecurityArea()::securityArea id: ${securityArea.id}`)
+//   return securityArea
+// }
 
 export const getAllSecurityAreas = (): SecurityArea[] => state.securityAreas
 
@@ -108,7 +119,8 @@ export const updateSecurityAreaStore = (securityArea: SecurityArea): void => {
   return
 }
 
-export const deleteSecurityArea = async (id: string): Promise<void> => {
+export const deleteSecurityArea = (id: string): Promise<void> => {
+  console.log(`securityAreaStore::deleteSecurityArea()::securityArea id: ${id}`)
   if (hasSecurityAreas()) {
     const index = findSecurityAreaIndex(id)
     const owner = getOwner(index)
@@ -158,8 +170,17 @@ export const getAllAlarms = (): Alarm[] =>
   state.securityAreas.map((securityArea) => securityArea.alarm)
 
 export const getActivatedAlarms = (): Alarm[] => {
-  if (hasAlarms()) getAllAlarms().filter((alarm) => alarm.isActivated === true)
-  return
+  if (hasAlarms()) {
+    console.log('securityAreaStore::getActivatedAlarms::error: ARE ACTIVATED ALARMS!!')
+    const activatedAlarms = getAllAlarms().filter((alarm) => alarm.isActivated === true)
+    console.log(
+      `securityAreaStore::getActivatedAlarms::activated alarms: ${activatedAlarms.length}`,
+    )
+    return activatedAlarms
+  } else {
+    console.log('securityAreaStore::getActivatedAlarms::error: ARE NOT ACTIVATED ALARMS!!')
+    return
+  }
 }
 
 export const getSecurityAreaFromAlarmId = (alarmId: string): SecurityArea => {
