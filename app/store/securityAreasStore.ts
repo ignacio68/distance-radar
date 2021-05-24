@@ -84,15 +84,6 @@ export const getSecurityArea = (id: string): SecurityArea => {
   return securityArea
 }
 
-// export const getSecurityArea = (id: string): SecurityArea => {
-//   const securityArea = state.securityAreas.find((securityArea) => {
-//     securityArea.id === id
-//     console.log(`securityAreaStore::getSecurityArea()::id: ${id}`)
-//   })
-//   console.log(`securityAreaStore::getSecurityArea()::securityArea id: ${securityArea.id}`)
-//   return securityArea
-// }
-
 export const getAllSecurityAreas = (): SecurityArea[] => state.securityAreas
 
 export const isId = (id: string): boolean => {
