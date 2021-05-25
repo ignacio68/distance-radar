@@ -2,13 +2,14 @@ import * as geolocation from '@nativescript/geolocation'
 
 import { Application, Device } from '@nativescript/core'
 import { startWatchUserLocation, stopWatchUserLocation } from './geolocationService'
-import { getWatchId, setWatchId } from '@/store/userLocationStore'
+import { getWatchId } from '@/store/userLocationStore'
 
 const _clearWatch = (): void => {
   const watchId = getWatchId()
   if (watchId) {
     stopWatchUserLocation(watchId)
   }
+  return
 }
 
 const _startWatch = (): void => {
@@ -20,7 +21,8 @@ Application.on(Application.exitEvent, _clearWatch)
 export const getBackgroundServiceClass = () => {
   if (Application.android) {
     if (Device.sdkVersion < '26') {
-      @JavaProxy('com.distance-radar.BackgroundService')
+      @NativeClass()
+      @JavaProxy('com.distance.radar.BackgroundService')
       class BackgroundService extends (<any>android).app.Service {
         constructor() {
           super()
@@ -36,18 +38,17 @@ export const getBackgroundServiceClass = () => {
         }
         onBind(intent: android.content.Intent): void {
           console.log('__SERVICE BINDDED__')
-        }
-        onUnBind(intent: android.content.Intent): void {
-          console.log('__SERVICE UNBINDDED__')
+          return null
         }
         onDestroy(): void {
           console.log('__SERVICE DESTROYED__')
-          _clearWatch
+          _clearWatch()
         }
       }
       return BackgroundService
     } else {
-      @JavaProxy('com.distance-radar.BackgroundService')
+      @NativeClass()
+      @JavaProxy('com.distance.radar.BackgroundService26')
       class BackgroundService extends (<any>android.app).job.JobService {
         constructor() {
           super()
@@ -61,7 +62,7 @@ export const getBackgroundServiceClass = () => {
         onStopJob(jobParameters: unknown): boolean {
           console.log('__SERVICE JOB STOPPED_')
           this.jobFinished(jobParameters, false)
-          _clearWatch
+          _clearWatch()
           return false
         }
       }
@@ -71,4 +72,5 @@ export const getBackgroundServiceClass = () => {
     return null
   }
 }
+
 export const BackgroundServiceClass = getBackgroundServiceClass()

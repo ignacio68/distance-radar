@@ -20,6 +20,7 @@ export const createSource = (args: SecurityAreaOptions): Source => {
 }
 
 export const removeSource = async (id: string): Promise<void> => {
+  console.log(`source::removeSource()::source: ${id}`)
   const sourceId = getId(id, 'source')
   sourceId.length > 0
     ? mbRemoveSource(getMap(), sourceId)

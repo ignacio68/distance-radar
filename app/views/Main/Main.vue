@@ -91,15 +91,17 @@ export default Vue.extend({
   watch: {
     // FIXME: Not works
     getLocations(newValue: unknown, oldValue: unknown) {
-      if (newValue !== undefined) this.bottomNavigation.showBadge(1, newValue)
+      if (newValue !== undefined || newValue !== null) this.bottomNavigation.showBadge(1, newValue)
       return
     },
     // FIXME: Not works
     getAllSecurityAreas(newValue: unknown, oldValue: unknown) {
-      if (newValue !== undefined) this.bottomNavigation.showBadge(2, newValue)
+      if (newValue !== undefined || newValue !== null) this.bottomNavigation.showBadge(2, newValue)
       return
     },
   },
+
+  mounted() {},
 
   methods: {
     onTabSelected() {

@@ -58,7 +58,7 @@ export const onCalloutTap = (): void => console.log(`locations.ts::onCalloutTapL
 export const updateLocation = (location: Location): void => updateLocationInStore(location)
 
 export const removeLocations = (locations: string[]): void => {
-  console.log(`locations.ts::removeLocation()::locations: ${locations}`)
+  console.log(`locations.ts::removeLocation()::removeLocations: ${locations}`)
   const map = getMap()
   removeAllSecurityAreas(locations).then(() =>
     mbRemoveMarkers(map, locations).then(() => {
@@ -74,10 +74,12 @@ export const removeLocations = (locations: string[]): void => {
 // }
 
 const removeAllSecurityAreas = async (locations: string[]): Promise<void> => {
+  console.log(`locations.ts::removeLocation()::removeAllSecurityAreas: ${locations}`)
   locations.forEach((location) => deleteSecurityArea(location))
 }
 
 const deleteSecurityArea = (location: string): void => {
+  console.log(`locations.ts::removeLocation()::deleteSecurityArea: ${location}`)
   if (isSecurityArea(location)) removeSecurityArea(location)
 }
 

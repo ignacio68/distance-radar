@@ -83,7 +83,7 @@
 
         <MDFloatingActionButton
           ref="mapStyle"
-          row="2"
+          row="1"
           class="fab map-style_fab m-r-16"
           rippleColor="white"
           :elevation="elevationFAB"

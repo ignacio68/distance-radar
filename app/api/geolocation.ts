@@ -11,9 +11,11 @@ import {
   stopWatchUserLocation,
 } from '@/services/geolocationService'
 
+import { startBackgroundService, stopBackgroundService } from './background'
+
 import {
   getUserCurrentLocation as currentUserLocation,
-  getWatchId as watchId,
+  getWatchId,
 } from '@/store/userLocationStore'
 import { setAlarmOn, getActivatedAlarms } from '@/store/securityAreasStore'
 
@@ -22,21 +24,32 @@ import { LatLng, Radar } from './types'
 // TODO: Revisar
 export const getUserLocation = () => getUserCurrentLocation()
 
-export const startTrackingUser = async (): Promise<void> => {
-  console.log(
-    `geolocation.ts::startTrackingUser()::getActivatedAlarms().length: ${
-      getActivatedAlarms().length
-    }`,
-  )
-  if (getActivatedAlarms().length > 0 && watchId() === null) startWatchUserLocation()
+export const startTrackingUser = (radar: Radar): void => {
+  const areActivatedAlarms = getActivatedAlarmsLength()
+  const watchId = getWatchId()
+  console.log(`geolocation.ts::startTrackingUser():activated alarms: ${areActivatedAlarms}`)
+  console.log(`geolocation.ts::startTrackingUser():getWatchId(): ${watchId}`)
+  if (areActivatedAlarms > 0 && (watchId === 0 || watchId === null)) {
+    console.log(`geolocation.ts::call to startWatchUserLocation`)
+    startBackgroundService().then(() => startSearchUserPosition(radar))
+    // startWatchUserLocation()
+    // startSearchUserPosition(radar)
+  }
   return
 }
 
-export const stopTrackingUser = async (): Promise<void> => {
-  const len = getActivatedAlarms().length
-  if ((len <= 1 || len === undefined) && watchId() !== null) stopWatchUserLocation(watchId())
+export const stopTrackingUser = (searchId: number): void => {
+  const len = getActivatedAlarmsLength()
+  const watchId = getWatchId()
+  if ((len <= 1 || len === undefined) && watchId > 0) {
+    stopBackgroundService().then(() => stopSearchUserPosition(searchId))
+    // stopWatchUserLocation(watchId)
+    // stopSearchUserPosition(searchId)
+  }
   return
 }
+
+const getActivatedAlarmsLength = (): number => getActivatedAlarms().length
 
 // TODO: Change name
 export const startSearchUserPosition = (args: Radar): void => {

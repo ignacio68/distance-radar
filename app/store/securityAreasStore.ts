@@ -27,8 +27,8 @@ let database: Database
 
 export const initializeDatabase = (name: string): void => {
   database = createDatabase(name)
-  hydratingState(database)
-  // deleteDatabase(database)
+  // hydratingState(database)
+  resetDatabase(database)
 }
 
 export const hydratingState = (database: CouchBase) => {
@@ -162,7 +162,6 @@ export const getAllAlarms = (): Alarm[] =>
 
 export const getActivatedAlarms = (): Alarm[] => {
   if (hasAlarms()) {
-    console.log('securityAreaStore::getActivatedAlarms::error: ARE ACTIVATED ALARMS!!')
     const activatedAlarms = getAllAlarms().filter((alarm) => alarm.isActivated === true)
     console.log(
       `securityAreaStore::getActivatedAlarms::activated alarms: ${activatedAlarms.length}`,

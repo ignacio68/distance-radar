@@ -16,6 +16,7 @@ export const createLayer = (options: SecurityAreaOptions, sourceId: string): Pol
 }
 
 export const removeLayer = async (id: string) => {
+  console.log(`layer::removeLayer()::layer: ${id}`)
   const layerId = getId(id, 'layer')
   mbRemoveLayer(getMap(), layerId)
 }

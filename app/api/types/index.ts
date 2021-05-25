@@ -94,6 +94,7 @@ export interface PolygonLayer extends Id {
 }
 
 export type LayerVisibility = 'visible' | 'none'
+
 export interface PolygonLayerStyleOptions {
   'fill-antialias'?: boolean
   'fill-color': string | Color

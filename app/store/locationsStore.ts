@@ -26,11 +26,11 @@ const state = Vue.observable({
 // Create persist locations database
 // const database: Database = createDatabase('locations')
 let database: Database
-
+//
 export const initializeDatabase = (name: string): void => {
   database = createDatabase(name)
-  hydratingState(database)
-  // deleteDatabase(database)
+  // hydratingState(database)
+  resetDatabase(database)
 }
 
 const hydratingState = (database: CouchBase) => {
@@ -116,6 +116,9 @@ export const getSelectedLocation = (): Location => {
 
 export const isSecurityArea = (id: string): boolean => {
   const location = findIndex(id)
+  console.log(
+    `locationsStore::isSecurityArea()::is ${id}? ${state.locations[location].securityAreas.length}`,
+  )
   return state.locations[location].securityAreas.length > 0
 }
 

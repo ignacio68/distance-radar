@@ -18,6 +18,10 @@ import { i18n, setLanguage } from '@/locales'
 
 import { initAudioPlayer } from '@/api/media'
 
+import { stopBackgroundService } from '@/api/background'
+
+import { pipe } from '@/utils/functional'
+
 // import { startFPSMeter } from '@/utils/fps'
 
 //Components
@@ -58,11 +62,11 @@ if (__DEV__) {
 new Vue({
   i18n,
   created() {
-    setLanguage()
-    initAudioPlayer()
-    initDatabases()
+    pipe(stopBackgroundService(), setLanguage(), initDatabases(), initAudioPlayer())
   },
+
   mounted() {},
+
   render: (h) =>
     h(MainNavigation, [
       h(DrawerContent, { slot: 'drawerContent' }),
