@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.5.3] - 2021-04-24
+
+### Changed
+
+- Changed Nativescript Enum to CoreType
+- The import method of types folder
+- Upgraded geolocation plugin
+
+### Fixed
+
+- Icon component background color bug
+- Import interfaces bug
+
 ## [0.5.2] - 2021-04-14
 
 ### Changed
