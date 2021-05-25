@@ -1,11 +1,12 @@
 // import * as map from '@/services/mapboxService'
-import { mbAddMarkers } from '@/services/mapboxService'
+import { mbAddMarkers, mbRemoveMarkers } from '@/services/mapboxService'
 
-import { getMap as map } from '@/store/mapStore'
+import { getMap } from '@/store/mapStore'
 import {
   setUserMarker,
   getUserMarker as userMarker,
   updateUserMarkerPosition,
+  deleteUserMarker,
 } from '@/store/userMarkerStore'
 import { getUserCurrentLocation as userLocation } from '@/store/userLocationStore'
 
@@ -15,12 +16,12 @@ import { UserMarker, LatLng } from '@/types'
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
-const isUserMarker = (): boolean => (userMarker() ? true : false)
+const isUserMarker = (): boolean => (!!userMarker() ? true : false)
 
 export const createUserMarker = (coordinates?: LatLng): void => {
   const userMarker = coordinates ? setUserMarkerOptions(coordinates) : setUserMarkerOptions()
   console.log(`userMarker.ts::createUserMarker::userMarker: ${JSON.stringify(userMarker)}`)
-  mbAddMarkers(map(), [userMarker]).then(() => setUserMarker(userMarker))
+  mbAddMarkers(getMap(), [userMarker]).then(() => setUserMarker(userMarker))
 }
 
 const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
@@ -31,8 +32,8 @@ const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
 })
 
 export const updateUserMarker = (coordinates: LatLng): void => {
-  console.log('updateUserMarker()')
   if (isUserMarker()) {
+    console.log('updateUserMarker()')
     const values = {
       id: '_user',
       lat: coordinates.lat,
@@ -43,4 +44,8 @@ export const updateUserMarker = (coordinates: LatLng): void => {
   } else {
     createUserMarker(coordinates)
   }
+}
+
+export const removeUserMarker = (): void => {
+  mbRemoveMarkers(getMap(), ['_user']).then(() => deleteUserMarker())
 }
