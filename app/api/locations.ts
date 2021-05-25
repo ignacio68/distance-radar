@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { removeSecurityArea } from '@/api/securityAreas'
+import { removeUserMarker } from '@/api/userMarker'
 
 import { mbAddMarkers, mbRemoveMarkers } from '@/services/mapboxService'
 
@@ -24,9 +25,9 @@ export const showLocations = getAllLocations()
 export const createLocation = (locationProps: Location): void => {
   const map = getMap()
   const newLocation: Location = setLocationOptions(locationProps)
-  mbAddMarkers(map, [newLocation]).then(() => {
-    addNewLocation(newLocation)
-  })
+  mbAddMarkers(map, [newLocation])
+    .then(() => removeUserMarker())
+    .then(() => addNewLocation(newLocation))
 }
 
 const setLocationOptions = (locationProps: Location): Location => {
