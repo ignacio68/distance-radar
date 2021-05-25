@@ -30,7 +30,9 @@ export const turnOnAlarm = (alarmId: string): void => {
 }
 
 export const turnOffAlarm = (alarmId: string): void => {
+  console.log(`alarms.ts::turnOffAlarm()`)
   const searchId = getSearchIdFromAlarmId(alarmId)
+  console.log(`alarms.ts::turnOffAlarm()::searchId: ${searchId}`)
   setAlarmOff(alarmId).then(() => stopRadar(searchId))
 }
 
@@ -52,12 +54,16 @@ export const alarmHandler = (args: Radar, isUserInside: boolean) => {
   if (
     (!isUserInside && args.alarmMode === 'EXIT') ||
     (isUserInside && args.alarmMode === 'ENTRANCE')
-  )
+  ) {
+    console.log(`alarms.ts::alarmHandler():activateAlarm()`)
     activateAlarm(args)
-  return
+  } else {
+    console.log(`alarms.ts::alarmHandler()`)
+  }
 }
 
 export const activateAlarm = (args: Radar): void => {
+  console.log(`alarms.ts::activateAlarm()::owner: ${args.owner}`)
   turnOffAlarm(args.alarmOwner)
   playAlarm().then(() => {
     if (args.alarmMode === 'EXIT') modeInAlarmDialog(args.owner)
@@ -67,11 +73,13 @@ export const activateAlarm = (args: Radar): void => {
 }
 
 const playAlarm = async (): Promise<void> => {
+  console.log(`alarms.ts::playAlarm()`)
   playVibration([300, 500])
   playSound()
 }
 
 export const stopAlarm = () => {
+  console.log(`alarms.ts::stopAlarm()`)
   stopVibration()
   stopSound()
 }

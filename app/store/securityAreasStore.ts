@@ -153,7 +153,11 @@ const hasSecurityAreas = (): boolean => !!getAllSecurityAreas() && getAllSecurit
 /******** ALARMS ********/
 
 export const getAlarm = (id: string): Alarm => {
-  if (hasAlarms()) getSecurityAreaFromAlarmId(id).alarm
+  if (areAlarms()) {
+    const alarm = getSecurityAreaFromAlarmId(id).alarm
+    console.log(`securityAreasStore::getAlarm()::alarm: ${alarm.id}`)
+    return alarm
+  }
   return
 }
 
@@ -161,7 +165,7 @@ export const getAllAlarms = (): Alarm[] =>
   state.securityAreas.map((securityArea) => securityArea.alarm)
 
 export const getActivatedAlarms = (): Alarm[] => {
-  if (hasAlarms()) {
+  if (areAlarms()) {
     const activatedAlarms = getAllAlarms().filter((alarm) => alarm.isActivated === true)
     console.log(
       `securityAreaStore::getActivatedAlarms::activated alarms: ${activatedAlarms.length}`,
@@ -174,12 +178,18 @@ export const getActivatedAlarms = (): Alarm[] => {
 }
 
 export const getSecurityAreaFromAlarmId = (alarmId: string): SecurityArea => {
-  if (hasAlarms()) state.securityAreas.find((securityArea) => securityArea.alarm.id === alarmId)
+  console.log('securityAreasStore::getSecurityAreaFromAlarmId()')
+  if (areAlarms()) {
+    const securityArea = state.securityAreas.find(
+      (securityArea) => securityArea.alarm.id === alarmId,
+    )
+    return securityArea
+  }
   return
 }
 
 export const setAlarmOn = (alarmId: string, searchId: number): void => {
-  if (hasAlarms()) {
+  if (areAlarms()) {
     console.log('securityAreasStore::setAlarmOn()')
     const index = findSecurityAreaIndexFromAlarmId(alarmId)
     setAlarmActivation(index, true)
@@ -190,7 +200,8 @@ export const setAlarmOn = (alarmId: string, searchId: number): void => {
 }
 
 export const setAlarmOff = async (alarmId: string): Promise<void> => {
-  if (hasAlarms()) {
+  console.log('securityAreasStore::setAlarmOf()')
+  if (areAlarms()) {
     const index = findSecurityAreaIndexFromAlarmId(alarmId)
     setAlarmActivation(index, false)
     setSearchId(index, null)
@@ -207,7 +218,11 @@ const setSearchId = (index: number, searchId: number): void => {
 }
 
 export const getSearchIdFromAlarmId = (alarmId: string): number => {
-  if (hasAlarms()) getAlarm(alarmId).searchId
+  if (areAlarms()) {
+    const id = getAlarm(alarmId).searchId
+    console.log(`securityAreasStore::getSearchIdFromAlarmId()::id: ${id}`)
+    return id
+  }
   return
 }
 
@@ -217,4 +232,4 @@ const setAlarmActivation = (index: number, value: boolean): void => {
   state.securityAreas[index].alarm.isActivated = value
 }
 
-const hasAlarms = (): boolean => !!getAllAlarms() && getAllAlarms().length > 0
+const areAlarms = (): boolean => !!getAllAlarms() && getAllAlarms().length > 0
