@@ -54,8 +54,10 @@ export const setCenter = async (): Promise<void> => {
         lng: coordinates.lng,
         animated: true,
       }).then(() => {
-        if (!!userMarker()) updateUserMarker(coordinates)
-        else {
+        if (!!userMarker()) {
+          console.log('map.ts::setCenter()::updateUserMarker()')
+          updateUserMarker(coordinates)
+        } else {
           console.log('There is not user marker, create one!')
           createUserMarker(coordinates)
         }

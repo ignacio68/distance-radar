@@ -16,12 +16,18 @@ import { UserMarker, LatLng } from '@/types'
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
-const isUserMarker = (): boolean => (!!userMarker() ? true : false)
+// const isUserMarker = (): boolean => (userMarker().id === '_user' ? true : false)
 
 export const createUserMarker = (coordinates?: LatLng): void => {
-  const userMarker = coordinates ? setUserMarkerOptions(coordinates) : setUserMarkerOptions()
-  console.log(`userMarker.ts::createUserMarker::userMarker: ${JSON.stringify(userMarker)}`)
-  mbAddMarkers(getMap(), [userMarker]).then(() => setUserMarker(userMarker))
+  console.log('userMarker.ts::createUserMarker()')
+
+  if (!!userMarker()) {
+    console.log(`There is an user marker: ${JSON.stringify(userMarker())}`)
+  } else {
+    const userMarker = coordinates ? setUserMarkerOptions(coordinates) : setUserMarkerOptions()
+    console.log(`userMarker.ts::createUserMarker::userMarker: ${JSON.stringify(userMarker)}`)
+    mbAddMarkers(getMap(), [userMarker]).then(() => setUserMarker(userMarker))
+  }
 }
 
 const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
@@ -32,8 +38,8 @@ const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
 })
 
 export const updateUserMarker = (coordinates: LatLng): void => {
-  if (isUserMarker()) {
-    console.log('updateUserMarker()')
+  if (!!userMarker()) {
+    console.log('userMarker::updateUserMarker()')
     const values = {
       id: '_user',
       lat: coordinates.lat,
@@ -42,6 +48,7 @@ export const updateUserMarker = (coordinates: LatLng): void => {
     userMarker().update(values)
     updateUserMarkerPosition(coordinates)
   } else {
+    console.log('userMarker::updateUserMarker():createUserMarker')
     createUserMarker(coordinates)
   }
 }
