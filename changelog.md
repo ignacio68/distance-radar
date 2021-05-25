@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.6.0] - 2021-04-25
+
+### Added
+
+- Geolocation Background Service
+
 ## [0.5.3] - 2021-04-24
 
 ### Changed
