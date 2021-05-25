@@ -6,7 +6,6 @@ platforms/
 reports/
 jest/
 # layout/
-hooks/
 .nyc_output/
 .update_backup/
 .migration_backup/
