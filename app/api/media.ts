@@ -38,7 +38,11 @@ export const stopVibration = (): void => {
 
 export const playSound = () => audioPlayer.play()
 
-export const stopSound = () => {
-  if (audioPlayer.isAudioPlaying()) audioPlayer.pause()
-  return
+export const stopSound = (): void => {
+  if (audioPlayer.isAudioPlaying()) {
+    audioPlayer.dispose().then(() => {
+      console.log('media.ts::stopSound()')
+      initAudioPlayer()
+    })
+  }
 }
