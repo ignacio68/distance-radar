@@ -16,12 +16,10 @@ import { UserMarker, LatLng } from '@/types'
 
 const onTap = (): boolean => setVisibility('newLocationMenu', true)
 
-// const isUserMarker = (): boolean => (userMarker().id === '_user' ? true : false)
-
 export const createUserMarker = (coordinates?: LatLng): void => {
   console.log('userMarker.ts::createUserMarker()')
 
-  if (!!userMarker()) {
+  if (userMarker()) {
     console.log(`There is an user marker: ${JSON.stringify(userMarker())}`)
   } else {
     const userMarker = coordinates ? setUserMarkerOptions(coordinates) : setUserMarkerOptions()
@@ -38,7 +36,7 @@ const setUserMarkerOptions = (coordinates?: LatLng): UserMarker => ({
 })
 
 export const updateUserMarker = (coordinates: LatLng): void => {
-  if (!!userMarker()) {
+  if (userMarker()) {
     console.log('userMarker::updateUserMarker()')
     const values = {
       id: '_user',

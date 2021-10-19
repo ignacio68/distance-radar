@@ -31,7 +31,7 @@ describe.skip('Utils - Text', function () {
 
   describe('#reduceToString', function () {
     describe('reduce an array to a string', function () {
-      it('return a string', () => {
+      it('return a string', function () {
         const arrayFromObject = ['a', 'b']
 
         const stringFromArray = reduceToString(arrayFromObject)

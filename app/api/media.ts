@@ -28,7 +28,7 @@ export const initAudioPlayer = () => {
   })
 }
 
-export const playVibration = (value: number | number[], repeat: number = 0): void => {
+export const playVibration = (value: number | number[], repeat = 0): void => {
   vibrator.vibrate(value, repeat)
 }
 

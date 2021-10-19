@@ -30,7 +30,7 @@ const loadLocaleMessages = () => {
     },
   }
   locales.keys().forEach((key) => {
-    const matched = key.match(/([A-Za-z0-9-_]+)\./i)
+    const matched = /([A-Za-z0-9-_]+)\./i.exec(key)
     if (matched && matched.length > 1) {
       const locale = matched[1]
       messages[locale] = locales(key)

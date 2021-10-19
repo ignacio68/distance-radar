@@ -19,7 +19,7 @@ import { Location, Database } from '@/api/types'
 import { CouchBase } from '@triniwiz/nativescript-couchbase'
 
 const state = Vue.observable({
-  locations: ([] as unknown) as Location[],
+  locations: [] as unknown as Location[],
   selectedLocation: '' as string,
 })
 

@@ -111,7 +111,7 @@ export const removeSecurityArea = async (id: string): Promise<void> => {
   )
   const owner = getOwner(id)
   setRadarActivity(securityArea.alarm.searchId)
-  if (!!securityArea) {
+  if (securityArea) {
     pipe(removeLayer(owner), removeSource(owner), deleteSecurityArea(id))
   }
   return

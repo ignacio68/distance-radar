@@ -71,7 +71,7 @@ const addSecurityAreaToLocation = async (id: string, owner: string): Promise<voi
 
 const setLocation = (id: string, owner: string): Location => {
   const location: Location = getLocation(owner)
-  if (!!location) {
+  if (location) {
     location.securityAreas.push(id)
     console.log(`securityAreaStore::setLocation()::securityArea id: ${id}`)
     return location

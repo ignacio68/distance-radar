@@ -9,12 +9,12 @@
       textWrap="true"
     />
     <Switch
+      v-model="isSwitchEnabled"
       col="1"
       row="0"
       width="64"
       class="activation-menu_switch"
       :checked="isChecked"
-      v-model="isSwitchEnabled"
       @checkedChange="onCheckedChange"
     />
     <StackLayout col="1" row="1" class="m-l-8">
@@ -30,6 +30,7 @@
     </StackLayout>
   </GridLayout>
 </template>
+
 <script lang="ts">
 import Vue from 'nativescript-vue'
 import RadioButton from '@/components/UI/RadioButton.vue'
@@ -88,6 +89,7 @@ export default Vue.extend({
   },
 })
 </script>
+
 <style lang="scss" scoped>
 @import '../../app-variables';
 
