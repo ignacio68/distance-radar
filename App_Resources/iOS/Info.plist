@@ -46,6 +46,8 @@
 	<key>UIStatusBarStyle</key>
 	<string>UIStatusBarStyleLightContent</string>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<key>UIUserInterfaceStyle</key>
+	<string>Light</string>
 	<false/>
 </dict>
 </plist>
