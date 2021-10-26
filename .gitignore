@@ -9,6 +9,7 @@ jest/
 .nyc_output/
 .update_backup/
 .migration_backup/
+.env
 
 # NativeScript Template
 *.js.map
@@ -39,12 +40,21 @@ nsconfig.json
 
 
 # Visual Studio Code
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
+.vscode/
+# !.vscode/settings.json
+# !.vscode/tasks.json
+# !.vscode/launch.json
+# !.vscode/extensions.json
 
 # Tests
 coverage/
 ts-dir/
+
+# Yarn
+.yarn/
+# !.yarn/cache
+# !.yarn/patches
+# !.yarn/plugins
+# !.yarn/releases
+# !.yarn/sdks
+# !.yarn/versions

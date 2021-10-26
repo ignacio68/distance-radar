@@ -1,5 +1,37 @@
 # Changelog
 
+## [0.6.2] - 2021-10-18
+
+### Added
+
+- Updated node modules
+
+### Changed
+
+- Disabled system dark mode
+
+
+## [0.6.1] - 2021-05-25
+
+### Added
+
+- A file to store constants
+
+### Changed
+
+- Remove marker when create a new location
+
+### Fixed
+
+- Boolean control of the User marker
+- Resolved alarms handler bug
+- Resolved the continuos loop of the sound when this is stopped
+
+### Removed
+
+- User marker function in the store
+- User marker function in Api
+
 ## [0.6.0] - 2021-04-25
 
 ### Added
