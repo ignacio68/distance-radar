@@ -14,7 +14,7 @@ import { alertEnableLocationRequest } from '@/components/Dialogs/EnableLocationR
 
 const setLocationOptions = (): geolocation.Options => ({
   desiredAccuracy: CoreTypes.Accuracy.high,
-  maximumAge: 5000,
+  maximumAge: 2000,
   timeout: 10000,
 })
 
@@ -38,10 +38,7 @@ const setLocationOptions = (): geolocation.Options => ({
 export const getUserCurrentLocation = async (): Promise<void | LatLng> => {
   console.log(`geolocationService::getUserCurrentLocation()`)
   const isLocationEnabled = isLocationServicesEnabled()
-  if (!!isLocationEnabled) {
-    console.log(
-      `geolocationService::getUserCurrentLocation():is location enabled? ${isLocationEnabled}`,
-    )
+  if (isLocationEnabled) {
     const userLocation = await getUserLocation()
     console.log(
       `geolocationService::getUserCurrentLocation()::userLocation: ${JSON.stringify(userLocation)}`,
@@ -94,7 +91,7 @@ export const startWatchUserLocation = async (): Promise<void> => {
   console.log('geolocationService::watchUserLocation()')
   const isLocationEnabled = isLocationServicesEnabled()
 
-  if (!!isLocationEnabled) {
+  if (isLocationEnabled) {
     const watchId = geolocation.watchLocation(
       (position) => {
         const currentLocation = positionToCurrentLocation(position)

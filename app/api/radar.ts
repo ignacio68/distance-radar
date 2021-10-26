@@ -22,6 +22,7 @@ const setRadarOptions = (securityArea: SecurityArea): Radar => ({
 
 export const stopRadar = async (searchId: number): Promise<void> => {
   stopTrackingUser(searchId)
+  console.log(`radar.ts::stopRadar()::searchId: ${searchId}`)
   // stopTrackingUser().then(() => stopSearchUserPosition(searchId))
 }
 

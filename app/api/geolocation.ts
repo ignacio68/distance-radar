@@ -12,6 +12,7 @@ import {
 } from '@/services/geolocationService'
 
 import { startBackgroundService, stopBackgroundService } from './background'
+// import { startBackgroundWorker, stopBackgroundWorker } from '@/api/backgroundWorker'
 
 import {
   getUserCurrentLocation as currentUserLocation,
@@ -31,7 +32,8 @@ export const startTrackingUser = (radar: Radar): void => {
   console.log(`geolocation.ts::startTrackingUser():getWatchId(): ${watchId}`)
   if (areActivatedAlarms > 0 && (watchId === 0 || watchId === null)) {
     console.log(`geolocation.ts::call to startWatchUserLocation`)
-    startBackgroundService().then(() => startSearchUserPosition(radar))
+    // startBackground().then(() => startSearchUserPosition(radar)) // background Worker
+    startBackgroundService().then(() => startSearchUserPosition(radar)) // background
     // startWatchUserLocation()
     // startSearchUserPosition(radar)
   }
@@ -39,10 +41,12 @@ export const startTrackingUser = (radar: Radar): void => {
 }
 
 export const stopTrackingUser = (searchId: number): void => {
+  console.log(`geolocation.ts::stopTrackingUser()::searchId: ${searchId}`)
   const len = getActivatedAlarmsLength()
   const watchId = getWatchId()
   if ((len <= 1 || len === undefined) && watchId > 0) {
-    stopBackgroundService().then(() => stopSearchUserPosition(searchId))
+    // stopBackgroundWorker().then(() => stopSearchUserPosition(searchId)) // background Worker
+    stopBackgroundService().then(() => stopSearchUserPosition(searchId)) // background
     // stopWatchUserLocation(watchId)
     // stopSearchUserPosition(searchId)
   }
@@ -53,9 +57,9 @@ const getActivatedAlarmsLength = (): number => getActivatedAlarms().length
 
 // TODO: Change name
 export const startSearchUserPosition = (args: Radar): void => {
-  console.log(`geolocation.ts::startSearchUserPosition()`)
   const searchId = startTimer(args)
   const alarmId = args.alarmOwner
+  console.log(`geolocation.ts::startSearchUserPosition()::searchId: ${searchId}`)
   setAlarmOn(alarmId, searchId)
 }
 
@@ -73,13 +77,13 @@ const startTimer = (args: Radar): number => {
     alarmHandler(args, isUserInside)
   }, interval)
 
-  return (searchId as unknown) as number
+  return searchId as unknown as number
 }
 
 const stopTimer = (searchId: number): void => Utils.clearInterval(searchId)
 
 const getIsUserInside = (args: Radar): boolean => {
-  console.log(`geolocation.ts::getIsUserInsider()`)
+  console.log(`geolocation.ts::getIsUserInside()`)
   const { owner, initialLocation: center, securityDistance } = args
   const currentDistance = calculateDistanceToCenter(owner, center, currentUserLocation())
   return currentDistance <= securityDistance

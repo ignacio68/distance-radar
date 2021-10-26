@@ -36,7 +36,7 @@ export const getBackgroundServiceClass = () => {
           console.log('__SERVICE CREATED__')
           _startWatch()
         }
-        onBind(intent: android.content.Intent): void {
+        onBind(intent: android.content.Intent): android.os.IBinder {
           console.log('__SERVICE BINDDED__')
           return null
         }

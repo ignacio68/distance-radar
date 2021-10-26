@@ -19,6 +19,7 @@ import { i18n, setLanguage } from '@/locales'
 import { initAudioPlayer } from '@/api/media'
 
 import { stopBackgroundService } from '@/api/background'
+// import { stopBackgroundWorker } from '@/api/backgroundWorker'
 
 import { pipe } from '@/utils/functional'
 

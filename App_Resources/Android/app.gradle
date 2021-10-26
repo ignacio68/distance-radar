@@ -1,9 +1,14 @@
 // Add your native dependencies here:
 
 // Uncomment to add recyclerview-v7 dependency
-//dependencies {
-//	implementation 'com.android.support:recyclerview-v7:+'
-//}
+dependencies {
+	// implementation 'com.android.support:recyclerview-v7:+'
+  def work_version = "2.5.0"
+  // (Java only)
+  implementation "androidx.work:work-runtime:$work_version"
+  // Kotlin + coroutines
+  implementation "androidx.work:work-runtime-ktx:$work_version"
+}
 
 // If you want to add something to be applied before applying plugins' include.gradle files
 // e.g. project.ext.googlePlayServicesVersion = "15.0.1"
@@ -11,8 +16,8 @@
 
 android {
   defaultConfig {
-    minSdkVersion 22
-    targetSdkVersion 29
+    minSdkVersion 23
+    targetSdkVersion 30
     generatedDensities = []
   }
   // Set minimum JVM level to ensure availability of, for example, lambda expressions
