@@ -4,12 +4,12 @@
 
 ### Added
 
-- Updated node modules
+- Background services and workers
 
 ### Changed
 
 - Disabled system dark mode
-
+- Updated node modules-
 
 ## [0.6.1] - 2021-05-25
 
