@@ -9,7 +9,9 @@
 ### Changed
 
 - Disabled system dark mode
-- Updated node modules-
+- Updated node modules
+- Update app.gradle to run with M1 chip
+- Upgraded nativescript/android plugin to latest version
 
 ## [0.6.1] - 2021-05-25
 
