@@ -98,8 +98,8 @@
 <script lang="ts">
 import Vue from 'nativescript-vue'
 // import initDatabases from '@/setup/installDatabases'
-
-import { mapToken, customMapStyle } from '@/setup/map'
+import { mapToken } from '@/tokens/mapbox'
+import { customMapStyle } from '@/setup/map'
 
 import { setCenter, addMarkers, flyTo, setOnMapLongClickListener, setMapStyle } from '@/api/map'
 import { updateUserMarker } from '@/api/userMarker'

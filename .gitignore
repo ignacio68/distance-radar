@@ -10,6 +10,7 @@ jest/
 .update_backup/
 .migration_backup/
 .env
+app/tokens/
 
 # NativeScript Template
 *.js.map
@@ -35,6 +36,8 @@ tmp/
 typings/
 *.jks
 
+app/setup/
+nsconfig.json
 
 
 # Visual Studio Code
