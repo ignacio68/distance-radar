@@ -1390,7 +1390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nativescript/android@npm:~8.1.1":
+"@nativescript/android@npm:8.1.1":
   version: 8.1.1
   resolution: "@nativescript/android@npm:8.1.1"
   checksum: 3f19a9eecddd0cdcebdfb85232c01659a70242b941ca70f0969377e6ef9a2abf0e28990a7cbc2fcaa0579c5a345bc285209bec14d78a7466461ad0b6154aacac
@@ -3667,7 +3667,7 @@ __metadata:
     "@nativescript-community/ui-material-floatingactionbutton": ^6.1.2
     "@nativescript-community/ui-material-ripple": ^6.1.2
     "@nativescript-community/ui-material-slider": ^6.1.2
-    "@nativescript/android": ~8.1.1
+    "@nativescript/android": 8.1.1
     "@nativescript/core": ^8.1.4
     "@nativescript/geolocation": ^7.2.2
     "@nativescript/ios": ~8.1.0
@@ -5879,13 +5879,13 @@ fsevents@~2.3.2:
   linkType: hard
 
 "loader-utils@npm:^1.0.2, loader-utils@npm:^1.1.0, loader-utils@npm:^1.4.0":
-  version: 1.4.0
-  resolution: "loader-utils@npm:1.4.0"
+  version: 1.4.1
+  resolution: "loader-utils@npm:1.4.1"
   dependencies:
     big.js: ^5.2.2
     emojis-list: ^3.0.0
     json5: ^1.0.1
-  checksum: d150b15e7a42ac47d935c8b484b79e44ff6ab4c75df7cc4cb9093350cf014ec0b17bdb60c5d6f91a37b8b218bd63b973e263c65944f58ca2573e402b9a27e717
+  checksum: ea0b648cba0194e04a90aab6270619f0e35be009e33a443d9e642e93056cd49e6ca4c9678bd1c777a2392551bc5f4d0f24a87f5040608da1274aa84c6eebb502
   languageName: node
   linkType: hard
 
