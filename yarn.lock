@@ -1390,7 +1390,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nativescript/android@npm:~8.1.1":
+"@nativescript/android@npm:8.1.1":
   version: 8.1.1
   resolution: "@nativescript/android@npm:8.1.1"
   checksum: 3f19a9eecddd0cdcebdfb85232c01659a70242b941ca70f0969377e6ef9a2abf0e28990a7cbc2fcaa0579c5a345bc285209bec14d78a7466461ad0b6154aacac
@@ -3667,7 +3667,7 @@ __metadata:
     "@nativescript-community/ui-material-floatingactionbutton": ^6.1.2
     "@nativescript-community/ui-material-ripple": ^6.1.2
     "@nativescript-community/ui-material-slider": ^6.1.2
-    "@nativescript/android": ~8.1.1
+    "@nativescript/android": 8.1.1
     "@nativescript/core": ^8.1.4
     "@nativescript/geolocation": ^7.2.2
     "@nativescript/ios": ~8.1.0
@@ -5677,13 +5677,13 @@ fsevents@~2.3.2:
   linkType: hard
 
 "json5@npm:^1.0.1":
-  version: 1.0.1
-  resolution: "json5@npm:1.0.1"
+  version: 1.0.2
+  resolution: "json5@npm:1.0.2"
   dependencies:
     minimist: ^1.2.0
   bin:
     json5: lib/cli.js
-  checksum: e76ea23dbb8fc1348c143da628134a98adf4c5a4e8ea2adaa74a80c455fc2cdf0e2e13e6398ef819bfe92306b610ebb2002668ed9fc1af386d593691ef346fc3
+  checksum: 866458a8c58a95a49bef3adba929c625e82532bcff1fe93f01d29cb02cac7c3fe1f4b79951b7792c2da9de0b32871a8401a6e3c5b36778ad852bf5b8a61165d7
   languageName: node
   linkType: hard
 
