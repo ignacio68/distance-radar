@@ -35,8 +35,6 @@ tmp/
 typings/
 *.jks
 
-app/setup/
-nsconfig.json
 
 
 # Visual Studio Code

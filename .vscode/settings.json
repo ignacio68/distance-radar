@@ -29,9 +29,6 @@
     "titleBar.activeForeground": "#e7e7e7",
     "titleBar.inactiveBackground": "#3a57f599",
     "titleBar.inactiveForeground": "#e7e7e799",
-    "editorGroup.border": "#6b80f7",
-    "panel.border": "#6b80f7",
-    "sideBar.border": "#6b80f7",
     "sash.hoverBorder": "#6b80f7",
     "statusBarItem.remoteBackground": "#3a57f5",
     "statusBarItem.remoteForeground": "#e7e7e7",
@@ -40,7 +37,8 @@
     "statusBar.debuggingBorder": "#f5d83a",
     "statusBar.debuggingForeground": "#15202b",
     "tab.activeBorder": "#6b80f7",
-    "titleBar.border": "#3a57f5"
+    "titleBar.border": "#3a57f5",
+    "commandCenter.border": "#e7e7e799"
   },
   "peacock.color": "#3A57F5",
   "cSpell.words": [
