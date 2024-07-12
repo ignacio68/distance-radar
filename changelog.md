@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0] - 2021-10-28
+
+### Added
+
+- Add item
+
+### Changed
+
+- Private tokens location
+
+### Fixed
+
+- Remove UIUserInterfaceStyle from info.plist
+
+### Removed
+
+- Remove item
+
+### Security
+
+- Security item
+
 ## [0.6.2] - 2021-10-18
 
 ### Added
