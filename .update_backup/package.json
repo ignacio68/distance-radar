@@ -89,7 +89,7 @@
     "nativescript-vue-jest": "^3.0.4",
     "nativescript-vue-template-compiler": "~2.8.1",
     "nativescript-worker-loader": "^0.12.1",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "prettier": "^2.1.2",
     "tns-android": "6.5.3",
     "ts-jest": "^26.4.4",
